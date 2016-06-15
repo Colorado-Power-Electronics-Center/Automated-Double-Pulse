@@ -1,8 +1,8 @@
-function [ double_pulse_waveform, total_time ] = double_pulse_generator( lead_dead_t, first_pulse_t, off_t, second_pulse_t, end_dead_t, sampleRate )
-%double_pulse_generator Summary of this function goes here
+function [ pulse_waveform, total_time ] = pulse_generator( sampleRate, varargin )
+%pulse_generator Summary of this function goes here
 %   Detailed explanation goes here
 
-times = [lead_dead_t, first_pulse_t, off_t, second_pulse_t, end_dead_t];
+times = cell2mat(varargin);
 
 zeros_next = true;
 wave_form = [];
@@ -19,7 +19,7 @@ for time = times
     end
 end
 
-double_pulse_waveform = wave_form;
+pulse_waveform = wave_form;
 
 total_time = sum(times);
 

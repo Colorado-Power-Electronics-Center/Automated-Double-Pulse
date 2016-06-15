@@ -41,7 +41,6 @@ classdef SCPI_Instrument < handle
         end
         function disconnect(self)
             fclose(self.visaObj);
-            self.clearVisaObj
             self.connected = false;
         end
         function sendCommand(self, command)
@@ -79,6 +78,9 @@ classdef SCPI_Instrument < handle
         end
         function clearStatus(self)
             self.sendCommand('*CLS');
+        end
+        function out = identity(self)
+            out = self.query('*IDN?');
         end
     end
     
