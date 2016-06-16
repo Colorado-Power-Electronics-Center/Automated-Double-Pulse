@@ -283,7 +283,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % Hard Copy Command
         % Horizontal Command Group
         function set.recordLength(self, length)
-            self.sendCommand([length ' ' int2str(length)]);
+            self.sendCommand([self.recordLengthCommand ' ' int2str(length)]);
         end
         function length = get.recordLength(self)
             length = str2double(self.query([self.recordLengthCommand '?']));
