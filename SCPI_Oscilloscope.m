@@ -6,7 +6,8 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     %   multiple oscilloscopes that are controlled with SCPI commands. This
     %   class lays out the basic, general commands that will work with most
     %   oscilloscopes. Further subclasses for each instrument will allow
-    %   for more specific control of each device.
+    %   for more specific control of each device. This class currently
+    %   works as is for Tektronix 2000, 4000, and 5000 series scopes.
     
     properties (Constant)
         Series4000 = '4XXX'
@@ -108,16 +109,22 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         end
         %% Misc Methods
         function setSeries(self)
+            % setSeries sets series for use with series specific commands
+            %   Currently only works with Tektronix scopes.
+            
             splitID = strsplit(self.identity, ',');
+            vendor = splitID{1};
             model = splitID{2};
             
             Model_Digits = regexp(model, '\d', 'match');
             Model_Digit = Model_Digits{1};
             
-            if Model_Digit == '5'
-                self.scopeSeries = SCPI_Oscilloscope.Series5000;
-            else
-                self.scopeSeries = SCPI_Oscilloscope.Series4000;
+            if strcmpi(vendor, 'TEKTRONIX')
+                if Model_Digit == '5'
+                    self.scopeSeries = SCPI_Oscilloscope.Series5000;
+                else
+                    self.scopeSeries = SCPI_Oscilloscope.Series4000;
+                end
             end
             
             self.setSeriesStr;
@@ -140,6 +147,15 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             self.sendCommand('SELECT:CH4 ON');
         end
         function setupTrigger(self, triggerType, coupling, slope, source, level)
+            % setupTrigger sets up oscilloscope trigger currently only
+            % works with edge trigger
+            %   Args: (triggerType, coupling, slope, source, level)
+            %   triggerType: trigger type {EDGe|LOGic|PULSe|BUS|VIDeo}
+            %   coupling: Trigger Coupling {DC|HFRej|LFRej|NOISErej}
+            %   slope: Trigger Slope {RISe|FALL}
+            %   source: Trigger Source (int) {1-4}
+            %   level: Trigger Level (double)
+            
             self.sendCommand(['TRIGger:A:TYPe ' triggerType]);
             self.sendCommand(['TRIGger:A:EDGE:COUPling ' coupling]);
             self.sendCommand(['TRIGger:A:EDGE:SLOpe ' slope]);
@@ -147,15 +163,26 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             self.sendCommand(['TRIGger:A:LEVel:CH1 ' num2str(level)]);
         end
         function setupWaveformTransfer(self, numBytes, encoding)
+            % setupWaveformTransfer sets binary format for waverform.
+            %   Args: (numBytes, encoding)
+            %   numBytes: Number of bytes to use to send waveform points.
+            %   must be 1 or 2.
+            %   encoding: Encoding scheme to use with binary data, see
+            %   programming manual for acceptable values and descriptions.
             numBits = 8 * numBytes;
             numBits = int2str(numBits);
             numBytes = int2str(numBytes);
-            self.sendCommand(['WFMO:BIT_N ' numBits]);
-            self.sendCommand(['DATA:ENCDG ' encoding]);
+            self.sendCommand(['WFMOutpre:BIT_Nr ' numBits]);
+            self.sendCommand(['DATa:ENCdg ' encoding]);
             self.sendCommand(['WFMOutpre:BYT_Nr ' numBytes]);
             self.sendCommand(['DATa:WIDth ' numBytes]);
         end
         function waveform = getWaveform(self, channel)
+            % getWaveform gets one channels waveform from scope
+            % setupWaveformTransfer should be called first.
+            %   Args: (channel)
+            %   channel: Channel to get waveform from (1-4)
+            
             scopeBufferSize = self.visaObj.InputBufferSize;
             numBytes = self.numQuery('WFMOutpre:BYT_Nr?');
             
@@ -166,9 +193,14 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             % Grab waveform in pieces to keep buffer size low
             num_pieces = ceil((self.recordLength * numBytes) / scopeBufferSize);
             start_pieces = [1 scopeBufferSize/numBytes+1:scopeBufferSize/numBytes:scopeBufferSize/numBytes*num_pieces];
-            stop_pieces = [scopeBufferSize/numBytes:scopeBufferSize/numBytes:scopeBufferSize/numBytes*num_pieces self.recordLength];
+            stop_pieces = scopeBufferSize/numBytes:scopeBufferSize/numBytes:scopeBufferSize/numBytes*num_pieces;
+            if stop_pieces(end) < self.recordLength
+                stop_pieces = [stop_pieces self.recordLength];
+            elseif stop_pieces(end) > self.recordLength
+                stop_pieces(end) = self.recordLength;
+            end
 
-            value = [];
+            value = zeros(1, self.recordLength);
 
             for j = 1:num_pieces
                 % Ensure that the start and stop values for CURVE query match the full
@@ -185,8 +217,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 end
                 jvalue = self.binBlockQuery('CURVE?', precision);
 
-                value = [value 
-                        jvalue];
+                value(start_pieces(j):stop_pieces(j)) = jvalue;
             end
 
             % Scale Data
@@ -199,6 +230,12 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             waveform = value_in_units;
         end
         function rescaleChannel(self, channel, waveform, numDivisions)
+            % rescaleChannel Rescales channel to give full range of values.
+            %   Args: (channel, waveform, numDivisions)
+            %   channel: Channel to rescale
+            %   waveform: Waveform vector containing channel's waveform
+            %   numDivisions: Number of divisions on oscilloscope screen
+            
             curChannel = ['CH' int2str(channel)];
             data_range = max(waveform) - min(waveform);
             new_scale = data_range / numDivisions;
@@ -403,6 +440,5 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         end        
         % Zoom Command Group
     end
-    
 end
 

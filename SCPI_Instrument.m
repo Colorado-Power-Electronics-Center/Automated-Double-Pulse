@@ -1,6 +1,10 @@
 classdef SCPI_Instrument < handle
-    %SCPI_Instrument Summary of this class goes here
-    %   Detailed explanation goes here
+    %SCPI_Instrument Class to handle communication and commands for SCPI
+    %Instruments
+    %   Designed to be used in conjuction with subclasses that further
+    %   expand the abilities for specific types of instruments and specific
+    %   instruments. This particular class handles VISA connections,
+    %   command sending and response reading. 
     
     properties
         visaAddress

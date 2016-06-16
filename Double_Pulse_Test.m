@@ -234,10 +234,12 @@ for idx = 1:4
     WaveForms{idx} = myScope.getWaveform(idx);
 end
 
+% Plot
 for idx = 1:4
     figure
     plot(t, WaveForms{idx})
 end
 
+% Disconnect from instruments
 myScope.disconnect;
 myFGen.disconnect;
