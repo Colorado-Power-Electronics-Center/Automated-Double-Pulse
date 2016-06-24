@@ -1,72 +1,3 @@
-function Double_Pulse_Test(settings)
-    % Create Copy of Settings File in data Folder
-    if ~exist(settings.dataDirectory, 'dir')
-        mkdir(settings.dataDirectory);
-    end
-    save([settings.dataDirectory 'Measurement_Settings.mat'], 'settings');
-
-    %% Setup
-    % Clear Matlab Workspace of any previous instrument connections
-    instrreset;
-
-    % Setup Oscilloscope
-    myScope = SCPI_Oscilloscope(settings.scopeVendor, settings.scopeVisaAddress);
-    myScope.visaObj.InputBufferSize = settings.Scope_Buffer_size;
-    myScope.visaObj.Timeout = settings.scopeTimeout;
-    myScope.visaObj.ByteOrder = settings.scopeByteOrder;
-
-    % Setup Function Generator
-    myFGen = SCPI_FunctionGenerator(settings.FGenVendor, settings.FGenVisaAddress);
-    myFGen.visaObj.InputBufferSize = settings.FGen_buffer_size;
-    myFGen.visaObj.OutputBufferSize = settings.FGen_buffer_size;
-
-    % Connect to devices
-    myScope.connect;
-    myFGen.connect;
-
-    % Reset to default state
-    myScope.reset;
-    myScope.clearStatus;
-    myFGen.reset;
-    myFGen.clearStatus;
-
-    % Find Deskew using lowest load settings
-    loadCurrent = min(settings.loadCurrents);
-    loadVoltage = min(settings.loadVoltages);
-    [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, settings);
-    time = (0:(numel(V_DS) - 1)) / myScope.sampleRate;
-    [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
-        extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
-    % Find Deskew
-    current_delay = findDeskew(turn_on_voltage, turn_on_current, turn_on_time);
-
-    % Set Oscilloscope Deskew
-    myScope.setChDeskew(settings.ID_Channel, -current_delay);   
-
-    % Obtain Measurements
-    for loadVoltage = settings.loadVoltages    
-        % set Voltage (user or auto)
-        disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
-        pause;
-        for loadCurrent = settings.loadCurrents
-            [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, settings);
-
-            file_name = [settings.dataDirectory num2str(loadVoltage) 'V-' num2str(loadCurrent) 'A.mat'];
-            save(file_name, 'V_DS', 'V_GS', 'I_D',...
-                'loadCurrent', 'loadVoltage');
-        end
-    end
-
-    % Disconnect from instruments
-    myScope.disconnect;
-    myFGen.disconnect;
-
-    % Process Measurements
-    %% Find Deskew
-end
-
 function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     loadCurrent, loadVoltage, settings )
 %runDoublePulseTest Summary of this function goes here
@@ -267,3 +198,4 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     I_D = WaveForms{ID_Channel} / currentResistor;
 
 end
+

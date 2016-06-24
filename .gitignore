@@ -1,1 +1,5 @@
+# MATLAB Specific
 *.asv
+
+# Measurements
+Measurements/*
