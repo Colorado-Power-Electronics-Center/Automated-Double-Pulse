@@ -74,6 +74,7 @@ classdef SCPI_Instrument < handle
             self.sendCommand(query);
             out = binblockread(self.visaObj, precision);
         end
+        
         function reset(self)
             self.sendCommand('*RST');
         end
@@ -85,6 +86,17 @@ classdef SCPI_Instrument < handle
         end
         function out = identity(self)
             out = self.query('*IDN?');
+        end
+    end
+    methods (Static)
+        function out = U2Str(UStr)
+            % U2Str Takes unknown data type and converts 
+            % to string if numeric
+            if isnumeric(UStr)
+                out = num2str(UStr);
+            else
+                out = UStr;
+            end
         end
     end
     

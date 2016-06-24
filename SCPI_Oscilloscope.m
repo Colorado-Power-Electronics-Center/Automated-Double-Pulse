@@ -79,18 +79,6 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % Status and Error Command
         % Trigger Command Group
         % Vertical Command
-        ch1ProbeGain
-        ch1OffSet
-        ch1Scale
-        ch2ProbeGain
-        ch2OffSet
-        ch2Scale
-        ch3ProbeGain
-        ch3OffSet
-        ch3Scale
-        ch4ProbeGain
-        ch4OffSet
-        ch4Scale
         % Waveform Transfer Command Group
         dataStart
         dataStop
@@ -141,10 +129,22 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             end
         end
         function allChannelsOn(self)
-            self.sendCommand('SELECT:CH1 ON');
-            self.sendCommand('SELECT:CH2 ON');
-            self.sendCommand('SELECT:CH3 ON');
-            self.sendCommand('SELECT:CH4 ON');
+            self.channelsOn([1, 2, 3, 4]);
+        end
+        function allChannelsOff(self)
+            self.channelsOff([1, 2, 3, 4]);
+        end
+        function channelsOn(self, channels)
+            for channel = channels
+                channelStr = self.U2Str(channel);
+                self.sendCommand(['SELECT:CH' channelStr ' ON']);
+            end
+        end
+        function channelsOff(self, channels)
+            for channel = channels
+                channelStr = self.U2Str(channel);
+                self.sendCommand(['SELECT:CH' channelStr ' OFF']);
+            end
         end
         function setupTrigger(self, triggerType, coupling, slope, source, level)
             % setupTrigger sets up oscilloscope trigger currently only
@@ -242,9 +242,54 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             new_y_pos = (min(waveform)/new_scale) + (numDivisions / 2);
             self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
             self.sendCommand([curChannel ':POSition -' num2str(new_y_pos)]);
-        end        
+        end     
+        % Channel Probe Gain   
+        function setChProbeGain(self, channel, chProbeGain)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':PRObe:GAIN ' num2str(chProbeGain)]);
+        end
+        function chProbeGain = getChProbeGain(self, channel)
+            channel = self.U2Str(channel);
+            chProbeGain = str2double(self.query(['CH' channel ':PRObe:GAIN?']));
+        end
+        % Channel Offset
+        function setChOffSet(self, channel, chOffSet)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':OFFSet ' num2str(chOffSet)]);
+        end
+        function chOffSet = getChOffSet(self, channel)
+            channel = self.U2Str(channel);
+            chOffSet = str2double(self.query(['CH' channel ':OFFSet?']));
+        end
+        % Channel Scale
+        function setChScale(self, channel, chScale)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':SCAle ' num2str(chScale)]);
+        end
+        function chScale = getChScale(self, channel)
+            channel = self.U2Str(channel);
+            chScale = str2double(self.query(['CH' channel ':SCAle?']));
+        end
+        % Channel Position
+        function setChPosition(self, channel, chPosition)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':POSition ' num2str(chPosition)]);
+        end
+        function chPosition = getChPosition(self, channel)
+            channel = self.U2Str(channel);
+            chPosition = str2double(self.query(['CH' channel ':POSition?']));
+        end      
+        % Channel Deskew
+        function setChDeskew(self, channel, chDeskew)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':DESKew ' num2str(chDeskew)]);
+        end
+        function chDeskew = getChDeskew(self, channel)
+            channel = self.U2Str(channel);
+            chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
+        end      
         
-        %% Getter and Setter Commands
+        %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])
 %             self.sendCommand(['[command] ' num2str([property])]);
@@ -330,95 +375,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % Search Command
         % Status and Error Command
         % Trigger Command Group
-        % Vertical Command Group
-        %   Channel1
-        %       Probe Gain
-        function set.ch1ProbeGain(self, ch1ProbeGain)
-            self.sendCommand(['CH1:PRObe:GAIN ' num2str(ch1ProbeGain)]);
-        end
-        function ch1ProbeGain = get.ch1ProbeGain(self)
-            ch1ProbeGain = str2double(self.query('CH1:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch1OffSet(self, ch1OffSet)
-            self.sendCommand(['CH1:OFFSet ' num2str(ch1OffSet)]);
-        end
-        function ch1OffSet = get.ch1OffSet(self)
-            ch1OffSet = str2double(self.query('CH1:OFFSet?'));
-        end
-        %       Scale
-        function set.ch1Scale(self, ch1Scale)
-            self.sendCommand(['CH1:SCAle ' num2str(ch1Scale)]);
-        end
-        function ch1Scale = get.ch1Scale(self)
-            ch1Scale = str2double(self.query('CH1:SCAle?'));
-        end
-        %   Channel2
-        %       Probe Gain
-        function set.ch2ProbeGain(self, ch2ProbeGain)
-            self.sendCommand(['CH2:PRObe:GAIN ' num2str(ch2ProbeGain)]);
-        end
-        function ch2ProbeGain = get.ch2ProbeGain(self)
-            ch2ProbeGain = str2double(self.query('CH2:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch2OffSet(self, ch2OffSet)
-            self.sendCommand(['CH2:OFFSet ' num2str(ch2OffSet)]);
-        end
-        function ch2OffSet = get.ch2OffSet(self)
-            ch2OffSet = str2double(self.query('CH2:OFFSet?'));
-        end
-        %       Scale
-        function set.ch2Scale(self, ch2Scale)
-            self.sendCommand(['CH2:SCAle ' num2str(ch2Scale)]);
-        end
-        function ch2Scale = get.ch2Scale(self)
-            ch2Scale = str2double(self.query('CH2:SCAle?'));
-        end
-        %   Channel3
-        %       Probe Gain
-        function set.ch3ProbeGain(self, ch3ProbeGain)
-            self.sendCommand(['CH3:PRObe:GAIN ' num2str(ch3ProbeGain)]);
-        end
-        function ch3ProbeGain = get.ch3ProbeGain(self)
-            ch3ProbeGain = str3double(self.query('CH3:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch3OffSet(self, ch3OffSet)
-            self.sendCommand(['CH3:OFFSet ' num2str(ch3OffSet)]);
-        end
-        function ch3OffSet = get.ch3OffSet(self)
-            ch3OffSet = str3double(self.query('CH3:OFFSet?'));
-        end
-        %       Scale
-        function set.ch3Scale(self, ch3Scale)
-            self.sendCommand(['CH3:SCAle ' num2str(ch3Scale)]);
-        end
-        function ch3Scale = get.ch3Scale(self)
-            ch3Scale = str3double(self.query('CH3:SCAle?'));
-        end
-        %   Channel4
-        %       Probe Gain
-        function set.ch4ProbeGain(self, ch4ProbeGain)
-            self.sendCommand(['CH4:PRObe:GAIN ' num2str(ch4ProbeGain)]);
-        end
-        function ch4ProbeGain = get.ch4ProbeGain(self)
-            ch4ProbeGain = str4double(self.query('CH4:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch4OffSet(self, ch4OffSet)
-            self.sendCommand(['CH4:OFFSet ' num2str(ch4OffSet)]);
-        end
-        function ch4OffSet = get.ch4OffSet(self)
-            ch4OffSet = str4double(self.query('CH4:OFFSet?'));
-        end
-        %       Scale
-        function set.ch4Scale(self, ch4Scale)
-            self.sendCommand(['CH4:SCAle ' num2str(ch4Scale)]);
-        end
-        function ch4Scale = get.ch4Scale(self)
-            ch4Scale = str4double(self.query('CH4:SCAle?'));
-        end
+        % Vertical Command Group       
         % Waveform Transfer Command Group
         function set.dataStart(self, start)
             self.sendCommand(['DATa:STARt ' int2str(start)]);
