@@ -3,9 +3,9 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.loadVoltages = [1, 2];
-    dpt_settings.loadCurrents = [.1, 1];
-    dpt_settings.currentResistor = 3E-3;
+    dpt_settings.loadVoltages = [21, 21];
+    dpt_settings.loadCurrents = [1, 1];
+    dpt_settings.currentResistor = 100E-3;
     dpt_settings.loadInductor = 500E-6;
     dpt_settings.gateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
@@ -16,8 +16,8 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.Scope_Buffer_size = 200000;
 
         % VISA Resource Strings
-        dpt_settings.scopeVisaAddress = 'USB::0x0699::0x03A4::C030239::INSTR';
-        dpt_settings.FGenVisaAddress = 'USB::0x0957::0x2C07::MY52812846::INSTR';
+        dpt_settings.scopeVisaAddress = 'USB0::0x0699::0x0502::C051196::0::INSTR';
+        dpt_settings.FGenVisaAddress = 'USB0::0x0957::0x2307::MY50000715::0::INSTR';
 
         % Set Vendor Strings
         dpt_settings.scopeVendor = 'tek';
@@ -31,7 +31,7 @@ function [ settings ] = SettingsSweepObject()
         % Channel Numbers
         dpt_settings.VDS_Channel = 1;
         dpt_settings.VGS_Channel = 2;
-        dpt_settings.ID_Channel = 3;
+        dpt_settings.ID_Channel = 4;
 
     %% Pulse Creation
         dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;
@@ -42,7 +42,7 @@ function [ settings ] = SettingsSweepObject()
         
         % Mini Second Pulse
         dpt_settings.use_mini_2nd_pulse = true;
-        dpt_settings.mini_2nd_pulse_off_time = 20e-9;
+        dpt_settings.mini_2nd_pulse_off_time = 30e-9;
 
         % Burst Settings
         dpt_settings.burstMode = 'TRIGgered';
@@ -50,13 +50,13 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.burstCycles = 1;
 
      %% Pulse Measurement
-        dpt_settings.scopeSampleRate = 1E9;
+        dpt_settings.scopeSampleRate = 10E9;
         dpt_settings.scopeRecordLength = 1000000;
 
         % Waveform
         dpt_settings.numBytes = 1;
         dpt_settings.encoding = 'SRI';
-        dpt_settings.numVerticalDivisions = 8;
+        dpt_settings.numVerticalDivisions = 10;
 
         % Probe Gains
         dpt_settings.chProbeGain = [1, 1, 1, 1];
@@ -65,8 +65,9 @@ function [ settings ] = SettingsSweepObject()
         % Initial Vertical Settings
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
         dpt_settings.chInitialScale = [0, 0, 0, 0];
-        dpt_settings.chInitialPosition = ones(1, 4) * -(dpt_settings.numVerticalDivisions - 1);
+        dpt_settings.chInitialPosition = ones(1, 4) * -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
         dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
+        dpt_settings.chInitialPosition(dpt_settings.VGS_Channel) = 0;
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         
