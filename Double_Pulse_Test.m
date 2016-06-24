@@ -34,7 +34,7 @@ function Double_Pulse_Test(settings)
     loadCurrent = min(settings.loadCurrents);
     loadVoltage = min(settings.loadVoltages);
     [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, settings);
+                loadCurrent, loadVoltage, settings, 'turn_on');
     time = (0:(numel(V_DS) - 1)) / myScope.sampleRate;
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
@@ -50,12 +50,15 @@ function Double_Pulse_Test(settings)
         disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
         pause;
         for loadCurrent = settings.loadCurrents
-            [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, settings);
+            for switch_capture = ['turn_on', 'turn_off']
+                [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
+                    loadCurrent, loadVoltage, settings, switch_capture); %#ok<ASGLU>
 
-            file_name = [settings.dataDirectory num2str(loadVoltage) 'V-' num2str(loadCurrent) 'A.mat'];
-            save(file_name, 'V_DS', 'V_GS', 'I_D',...
-                'loadCurrent', 'loadVoltage');
+                file_name = [settings.dataDirectory num2str(loadVoltage)...
+                    'V-' num2str(loadCurrent) 'A-' switch_capture '.mat'];
+                save(file_name, 'V_DS', 'V_GS', 'I_D',...
+                    'loadCurrent', 'loadVoltage', 'switch_capture');
+            end
         end
     end
 
@@ -68,7 +71,7 @@ function Double_Pulse_Test(settings)
 end
 
 function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
-    loadCurrent, loadVoltage, settings )
+    loadCurrent, loadVoltage, settings, switch_capture )
 %runDoublePulseTest Summary of this function goes here
 %   Detailed explanation goes here
     %%% Unpack Settings %%%
@@ -157,13 +160,13 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup CH2 Waveform
     % Generate Single Pulse
-    if false
+    if settings.use_mini_2nd_pulse
         [ch2_wave_points, total_time] = pulse_generator(sampleRate,...
             pulse_lead_dead_t + pulse_first_pulse_t + .1 * pulse_off_t,...
             .8 * pulse_off_t,...
             .1 * pulse_off_t + pulse_second_pulse_t + pulse_end_dead_t);
     else
-        second_pulse_off_t = 20e-9;
+        second_pulse_off_t = settings.mini_2nd_pulse_off_time;
         [ch2_wave_points, total_time] = pulse_generator(sampleRate,...
             0, pulse_lead_dead_t + pulse_first_pulse_t + pulse_off_t,...
             second_pulse_off_t, pulse_second_pulse_t);
@@ -209,12 +212,24 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set Initial Vertical Axis
     chInitialScale(VDS_Channel) = loadVoltage * 2 / (numVerticalDivisions - 1); 
-    chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1); 
-    chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * 2 / (numVerticalDivisions - 1); 
+    chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1);
+    if strcmpi(switch_capture, 'turn_on')
+        chInitialScale(ID_Channel) = (settings.maxCurrentSpike * currentResistor) * 2 / (numVerticalDivisions - 1);
+    else
+        chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * ...
+            (1 + settings.percentBuffer / 100) / (numVerticalDivisions - 1);
+    end
     for channel = 1:4
         myScope.setChOffSet(channel, chInitialOffset(channel));
         myScope.setChScale(channel, chInitialScale(channel));
         myScope.setChPosition(channel, chInitialPosition(channel));
+    end
+    
+    % Invert Current Channel
+    if settings.invertCurrent
+        myScope.setChInvert(ID_Channel, 'ON');
+    else
+        myScope.setChInvert(ID_Channel, 'OFF');
     end
 
     % Set Initial Horizontal Axis
@@ -234,7 +249,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     pause(1);
 
     % Trigger Waveform
-    myFGen.trigger;
+    myFGen.push2Trigger('pulse');
 
     % Setup binary data for the CURVE query
     myScope.setupWaveformTransfer(numBytes, encoding);
@@ -248,7 +263,12 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Rescale Oscilloscope
     for idx = 1:4
-        myScope.rescaleChannel(idx, WaveForms{idx}, numVerticalDivisions);
+        % Skip Rescale if on current channel and looking at the turn off
+        % waveform.
+        if ~(strcmp(switch_capture, 'turn_off') && idx == settings.ID_Channel)
+            myScope.rescaleChannel(idx, WaveForms{idx},...
+                numVerticalDivisions, settings.percentBuffer);
+        end
     end
 
     % Rerun Capture
@@ -257,7 +277,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     pause(1);
 
     % Trigger Waveform
-    myFGen.trigger;
+    myFGen.push2Trigger('pulse');
 
     pause(1);
 

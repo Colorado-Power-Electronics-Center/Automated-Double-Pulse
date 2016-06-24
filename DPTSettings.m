@@ -10,6 +10,7 @@ classdef DPTSettings < handle
 		currentResistor
 		loadInductor
 		gateVoltage
+        gateLogicVoltage
 
 		%% Instrument Setup
 	    % Buffer Sizes
@@ -40,6 +41,10 @@ classdef DPTSettings < handle
 	    pulse_off_t
 	    pulse_second_pulse_t
 	    pulse_end_dead_t
+        
+        % Mini Second Pulse (For Edwards Test Setup)
+        use_mini_2nd_pulse
+        mini_2nd_pulse_off_time
 
 	    % Burst Settings
 	    burstMode
@@ -57,11 +62,14 @@ classdef DPTSettings < handle
 
 	    % Probe Gains
 	    chProbeGain
+        invertCurrent
 
 	    % Initial Vertical Settings
 	    chInitialOffset
 	    chInitialScale
 	    chInitialPosition
+        maxCurrentSpike
+        percentBuffer
 
 	    % Initial Horizontal Settings
 	    horizontalScale

@@ -229,7 +229,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             % Return
             waveform = value_in_units;
         end
-        function rescaleChannel(self, channel, waveform, numDivisions)
+        function rescaleChannel(self, channel, waveform, numDivisions, percentBuffer)
             % rescaleChannel Rescales channel to give full range of values.
             %   Args: (channel, waveform, numDivisions)
             %   channel: Channel to rescale
@@ -238,7 +238,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             
             curChannel = ['CH' int2str(channel)];
             data_range = max(waveform) - min(waveform);
-            new_scale = data_range / numDivisions;
+            new_scale = (data_range / numDivisions) * (1 + percentBuffer / 100);
             new_y_pos = (min(waveform)/new_scale) + (numDivisions / 2);
             self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
             self.sendCommand([curChannel ':POSition -' num2str(new_y_pos)]);
@@ -288,7 +288,16 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             channel = self.U2Str(channel);
             chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
         end      
-        
+        % Channel Invert
+        % chInvert is 'ON' or 'OFF'
+        function setChInvert(self, channel, chInvert)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':INVert ' chInvert]);
+        end
+        function chInvert = getChInvert(self, channel)
+            channel = self.U2Str(channel);
+            chInvert = self.query(['CH' channel ':INVert?']);
+        end      
         %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])

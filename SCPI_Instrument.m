@@ -81,6 +81,14 @@ classdef SCPI_Instrument < handle
         function trigger(self)
             self.sendCommand('*TRG');
         end
+        function push2Trigger(self, triggerStr)
+            if nargin == 1
+                triggerStr = 'trigger';
+            end
+            disp(['Push any button to ' triggerStr '...']);
+            pause;
+            self.trigger;
+        end
         function clearStatus(self)
             self.sendCommand('*CLS');
         end

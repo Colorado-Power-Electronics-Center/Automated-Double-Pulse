@@ -7,7 +7,8 @@ function [ settings ] = SettingsSweepObject()
     dpt_settings.loadCurrents = [.1, 1];
     dpt_settings.currentResistor = 3E-3;
     dpt_settings.loadInductor = 500E-6;
-    dpt_settings.gateVoltage = 1;
+    dpt_settings.gateVoltage = 10;
+    dpt_settings.gateLogicVoltage = 5;
 
     %% Instrument Setup
         % Buffer Sizes
@@ -33,11 +34,15 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.ID_Channel = 3;
 
     %% Pulse Creation
-        dpt_settings.PeakValue = dpt_settings.gateVoltage;
+        dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;
         dpt_settings.pulse_lead_dead_t = 1e-6;
         dpt_settings.pulse_off_t = 5e-6;
         dpt_settings.pulse_second_pulse_t = 5e-6;
         dpt_settings.pulse_end_dead_t = 1e-6;
+        
+        % Mini Second Pulse
+        dpt_settings.use_mini_2nd_pulse = true;
+        dpt_settings.mini_2nd_pulse_off_time = 20e-9;
 
         % Burst Settings
         dpt_settings.burstMode = 'TRIGgered';
@@ -55,12 +60,16 @@ function [ settings ] = SettingsSweepObject()
 
         % Probe Gains
         dpt_settings.chProbeGain = [1, 1, 1, 1];
+        dpt_settings.invertCurrent = true;
 
         % Initial Vertical Settings
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
         dpt_settings.chInitialScale = [0, 0, 0, 0];
         dpt_settings.chInitialPosition = ones(1, 4) * -(dpt_settings.numVerticalDivisions - 1);
-
+        dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
+        dpt_settings.maxCurrentSpike = 100;
+        dpt_settings.percentBuffer = 10;
+        
         % Initial Horizontal Settings
         dpt_settings.horizontalScale = 50e-6;
         dpt_settings.delayMode = 'Off';
