@@ -25,10 +25,6 @@ classdef SCPI_FunctionGenerator < SCPI_Instrument & handle
             %   channel: Function Generator Channel to load waveform, on can
             %   be string or number.
             
-            % Convert Matrix into CSV String
-            strData = sprintf('%d, ', wave_points);
-            strData = strData(1:end-2);
-            
             if isnumeric(channel)
                 channel = int2str(channel);
             end
@@ -40,7 +36,9 @@ classdef SCPI_FunctionGenerator < SCPI_Instrument & handle
             self.sendCommand(['SOURce' channel ':FUNC:ARB:PTPEAK ' num2str(PeakValue)]);
             
             % Load Waveform
-            self.sendCommand(['SOURce' channel ':DATA:ARB ' name ', ' strData]);
+            % Swap Byte order on Function Generator and write datapoints
+            self.sendCommand('FORM:BORD SWAP')
+            binblockwrite(self.visaObj, wave_points, 'float32', ['SOURce' channel ':DATA:ARB ' name ', '])
             self.sendCommand(['SOURce' channel ':FUNC:ARB ' name]);
         end
         function setupBurst(self, mode, nCycles, period, source, channel)
@@ -113,6 +111,9 @@ classdef SCPI_FunctionGenerator < SCPI_Instrument & handle
             end
             
             load = self.numQuery(['SOURce' channel ':FUNC:ARB:SRATE? ' modifier]);
+        end
+        function error = getError(self)
+            error = self.query('SYST:ERR?');
         end
         
     end
