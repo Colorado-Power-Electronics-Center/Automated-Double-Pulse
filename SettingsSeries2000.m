@@ -34,20 +34,12 @@
         scopeRecordLength = 1000000;
         
         % Probe Gains
-        ch1ProbeGain = 1;
-        ch2ProbeGain = 1;
-        ch3ProbeGain = 1;
-        ch4ProbeGain = 1;
+        chProbeGain = [1, 1, 1, 1];
         
         % Initial Vertical Settings
-        ch1InitialOffset = 0;
-        ch1InitialScale = .3;
-        ch2InitialOffset = 0;
-        ch2InitialScale = .3;
-        ch3InitialOffset = 0;
-        ch3InitialScale = .3;
-        ch4InitialOffset = 0;
-        ch4InitialScale = .3;
+        chInitialOffset = [0, 0, 0, 0];
+        chInitialScale = [.3, .3, .3, .3];
+        chInitialPosition = [-3, -3, -3, -3];
         
         % Initial Horizontal Settings
         horizontalScale = 20e-6;
