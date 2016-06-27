@@ -3,10 +3,10 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.loadVoltages = [21, 21];
-    dpt_settings.loadCurrents = [1, 1];
-    dpt_settings.currentResistor = 100E-3;
-    dpt_settings.loadInductor = 500E-6;
+    dpt_settings.loadVoltages = [100, 100];
+    dpt_settings.loadCurrents = [5, 5];
+    dpt_settings.currentResistor = 97E-3;
+    dpt_settings.loadInductor = 700E-6;
     dpt_settings.gateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
 
