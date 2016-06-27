@@ -66,9 +66,8 @@ function [ settings ] = SettingsSweepObject()
         % Initial Vertical Settings
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
         dpt_settings.chInitialScale = [0, 0, 0, 0];
-        dpt_settings.chInitialPosition = ones(1, 4) * -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
-        dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
-        dpt_settings.chInitialPosition(dpt_settings.VGS_Channel) = 0;
+        dpt_settings.chInitialPosition = [0, 0, 0, 0];
+        dpt_settings.chInitialPosition(VDS_Channel) = -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         
