@@ -33,8 +33,15 @@ function Double_Pulse_Test(settings)
     % Find Deskew using lowest load settings
     loadCurrent = min(settings.loadCurrents);
     loadVoltage = min(settings.loadVoltages);
+    
+    % Swtich to triggering on V_GS for IV misalignment pulses
+    deskew_settings = copy(settings);
+    deskew_settings.triggerSource = deskew_settings.VGS_Channel;
+    deskew_settings.triggerLevel = deskew_settings.gateVoltage / 2;
+    deskew_settings.triggerSlope = 'RISe';
+    
     [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, settings, 'turn_on');
+                loadCurrent, loadVoltage, deskew_settings, 'turn_on');
     time = (0:(numel(V_DS) - 1)) / myScope.sampleRate;
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
@@ -84,6 +91,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     VDS_Channel = settings.VDS_Channel;
     VGS_Channel = settings.VGS_Channel;
     ID_Channel = settings.ID_Channel;
+    IL_Channel = settings.IL_Channel;
     
     %% Pulse Creation
     PeakValue = settings.PeakValue;
@@ -184,14 +192,26 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     %% Pulse Measurement
     % Ensure all Channels on
     myScope.allChannelsOn;
-
+    
+    % Set Channel Label Names
+    myScope.setChLabelName(settings.VDS_Channel, 'V_DS');
+    myScope.setChLabelName(settings.VGS_Channel, 'V_GS');
+    myScope.setChLabelName(settings.ID_Channel, 'I_D');
+    myScope.setChLabelName(settings.IL_Channel, 'I_L');
+    
     % Turn Off Headers
     myScope.removeHeaders;
 
-    % Set Scope Depended Properties
+    % Set Scope Dependent Properties
     if myScope.scopeSeries == SCPI_Oscilloscope.Series5000
         % Set Horizontal Axis to maunal mode
         myScope.horizontalMode = 'MANual';
+        
+        % Set Load Current Channel Attenuation
+        if settings.IL_Channel ~= -1
+            myScope.setChExtAtten(settings.IL_Channel, settings.currentResistor);
+            myScope.setChExtAttenUnits(settings.IL_Channel, 'A');
+        end        
     else
         % Set Data Resolution to Full
         myScope.dataResolution = 'FULL';
@@ -219,6 +239,8 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
         chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * ...
             (1 + settings.percentBuffer / 100) / (numVerticalDivisions - 1);
     end
+    chInitialScale(IL_Channel) = chInitialScale(ID_Channel);
+    
     for channel = 1:4
         myScope.setChOffSet(channel, chInitialOffset(channel));
         myScope.setChScale(channel, chInitialScale(channel));
@@ -254,6 +276,11 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     % Setup binary data for the CURVE query
     myScope.setupWaveformTransfer(numBytes, encoding);
 
+    % Check if trigger recieved
+    if myScope.acqState ~= '0'
+        error('Trigger not detected');
+    end
+    
     % Get all four waveforms
     WaveForms = cell(1, 4);
 
@@ -280,6 +307,11 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     myFGen.push2Trigger('pulse');
 
     pause(1);
+    
+    % Check if trigger recieved
+    if myScope.acqState ~= '0'
+        error('Trigger not detected');
+    end
 
     % Get all four waveforms
     WaveForms = cell(1, 4);

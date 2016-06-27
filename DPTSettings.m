@@ -1,4 +1,4 @@
-classdef DPTSettings < handle
+classdef DPTSettings < matlab.mixin.Copyable
     %DPTSettings Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -34,6 +34,7 @@ classdef DPTSettings < handle
 	    VDS_Channel
 	    VGS_Channel
 	    ID_Channel
+        IL_Channel
 	    
 		%% Pulse Creation
 	    PeakValue
