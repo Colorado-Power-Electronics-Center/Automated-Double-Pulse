@@ -239,10 +239,12 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             
             curChannel = ['CH' int2str(channel)];
             data_range = max(waveform) - min(waveform);
-            new_scale = (data_range / numDivisions) * (1 + percentBuffer / 100);
-            new_y_pos = (min(waveform)/new_scale) + (numDivisions / 2);
+            new_scale = (data_range / numDivisions);
+            new_y_pos = ((min(waveform)/new_scale) + (numDivisions / 2));
+            new_scale = new_scale * (1 + percentBuffer / 100);
+            new_y_pos = new_y_pos * (1 - percentBuffer / 100);
             self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
-            self.sendCommand([curChannel ':POSition -' num2str(new_y_pos)]);
+            self.sendCommand([curChannel ':POSition ' num2str(-new_y_pos)]);
         end     
         % Channel Probe Gain   
         function setChProbeGain(self, channel, chProbeGain)
