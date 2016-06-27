@@ -1,5 +1,3 @@
-
-
 classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     %SCPI_Oscilloscope Oscilloscope Super Class for SCPI Controlled Scopes.
     %   The purpose of this super class is to allow code to be reused for
@@ -10,6 +8,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     %   works as is for Tektronix 2000, 4000, and 5000 series scopes.
     
     properties (Constant)
+        Series2000 = '2XXX'
         Series4000 = '4XXX'
         Series5000 = '5XXX'
     end
@@ -110,8 +109,10 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             if strcmpi(vendor, 'TEKTRONIX')
                 if Model_Digit == '5'
                     self.scopeSeries = SCPI_Oscilloscope.Series5000;
-                else
+                elseif Model_Digit == '4'
                     self.scopeSeries = SCPI_Oscilloscope.Series4000;
+                else
+                    self.scopeSeries = SCPI_Oscilloscope.Series2000;
                 end
             end
             
@@ -297,7 +298,53 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function chInvert = getChInvert(self, channel)
             channel = self.U2Str(channel);
             chInvert = self.query(['CH' channel ':INVert?']);
-        end      
+        end
+        % Channel Label Name
+        function setChLabelName(self, channel, chLabel)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':LABel:NAMe "' chLabel '"']);
+        end
+        function chLabel = getChLabelName(self, channel)
+            channel = self.U2Str(channel);
+            chLabelQuoted = self.query(['CH' channel ':LABel:NAMe?']);
+            chLabel = chLabelQuoted(2:end-1);
+        end
+        % Channel External Attenuation
+        function setChExtAtten(self, channel, chExtAtten)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                self.sendCommand(['CH' channel ':PROBEFunc:EXTAtten ' num2str(chExtAtten)]);
+            else
+                warning('External Attentuation not supported for this scope');
+            end
+        end
+        function chExtAtten = getChExtAtten(self, channel)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                chExtAtten = str2double(self.query(['CH' channel ':PROBEFunc:EXTAtten?']));
+            else
+                warning('External Attentuation not supported for this scope');
+            end
+        end
+        % Channel External Attenuation Units
+        function setChExtAttenUnits(self, channel, chExtAttenUnits)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                self.sendCommand(['CH' channel ':PROBEFunc:EXTUnits "' chExtAttenUnits '"']);
+            else
+                warning('External Attentuation not supported for this scope');
+            end
+        end
+        function chExtAttenUnits = getChExtAttenUnits(self, channel)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                chExtAttenUnitsQuoted = self.query(['CH' channel ':PROBEFunc:EXTUnits?']);
+                chExtAttenUnits = chExtAttenUnitsQuoted(2:end-1); % Strip Quotes
+            else
+                warning('External Attentuation not supported for this scope');
+            end
+        end
+        
         %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])

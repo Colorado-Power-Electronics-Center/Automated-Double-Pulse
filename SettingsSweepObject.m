@@ -32,6 +32,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.VDS_Channel = 1;
         dpt_settings.VGS_Channel = 2;
         dpt_settings.ID_Channel = 3;
+        dpt_settings.IL_Channel = 4; % Set to -1 if not measuring load current
 
     %% Pulse Creation
         dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;
@@ -67,6 +68,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.chInitialScale = [0, 0, 0, 0];
         dpt_settings.chInitialPosition = ones(1, 4) * -(dpt_settings.numVerticalDivisions - 1);
         dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
+        dpt_settings.chInitialPosition(dpt_settings.IL_Channel) = 0;
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         

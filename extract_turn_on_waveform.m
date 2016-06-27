@@ -12,6 +12,14 @@ function [ switching_idx, turn_off_idx, turn_on_idx, turn_on_voltage,...
     V_DS_Round_Diff = diff(V_DS_Round);
     switching_idx = find(V_DS_Round_Diff ~= 0);
     
+    % Remove Switches that occour within 50 ns of the previous
+    time_step = time(2) - time(1);
+    num_points = floor(50e-9 / time_step);
+    
+    switching_idx_diff = diff(switching_idx);
+    false_switch_idxs = switching_idx(logical([0 (switching_idx_diff < num_points)]));
+    switching_idx(false_switch_idxs) = [];    
+    
     % Check if first switch is on or off
     % and define turn on and turn off indexs
     if V_DS_Round_Diff(switching_idx(1)) > 0
