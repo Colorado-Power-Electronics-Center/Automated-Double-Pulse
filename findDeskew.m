@@ -25,7 +25,7 @@ function delay = findDeskew(voltage, current, time)
     
     % Find starting and stoping indexs for current
     i_start = find(f_current - 0.1 * I_load < 0, 1, 'last');
-    i_end = find(f_current - 0.9 * I_load > 0, 1, 'last');
+    i_end = find(f_current - 0.9 * I_load > 0, 1);
     i_start = 2 * i_start - i_end;
     
     % Find starting and stopping indexs for voltage

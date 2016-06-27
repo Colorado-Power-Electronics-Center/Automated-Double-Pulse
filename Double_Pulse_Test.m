@@ -34,6 +34,9 @@ function Double_Pulse_Test(settings)
     loadCurrent = min(settings.loadCurrents);
     loadVoltage = min(settings.loadVoltages);
     
+    disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
+    pause;
+    
     % Swtich to triggering on V_GS for IV misalignment pulses
     deskew_settings = copy(settings);
     deskew_settings.triggerSource = deskew_settings.VGS_Channel;
@@ -62,7 +65,7 @@ function Double_Pulse_Test(settings)
                     loadCurrent, loadVoltage, settings, switch_capture); %#ok<ASGLU>
 
                 file_name = [settings.dataDirectory num2str(loadVoltage)...
-                    'V-' num2str(loadCurrent) 'A-' switch_capture '.mat'];
+                    'V_' num2str(loadCurrent) 'A_' switch_capture '.mat'];
                 save(file_name, 'V_DS', 'V_GS', 'I_D',...
                     'loadCurrent', 'loadVoltage', 'switch_capture');
             end
@@ -208,10 +211,8 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
         myScope.horizontalMode = 'MANual';
         
         % Set Load Current Channel Attenuation
-        if settings.IL_Channel ~= -1
-            myScope.setChExtAtten(settings.IL_Channel, settings.currentResistor);
-            myScope.setChExtAttenUnits(settings.IL_Channel, 'A');
-        end        
+        myScope.setChExtAtten(settings.ID_Channel, 1/settings.currentResistor);
+        myScope.setChExtAttenUnits(settings.ID_Channel, 'A'); 
     else
         % Set Data Resolution to Full
         myScope.dataResolution = 'FULL';
@@ -229,14 +230,17 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     else
         % todo
     end
+    
+    % Set Scope Channel Termination
+    myScope.setChTermination(settings.ID_Channel, 50);
 
     % Set Initial Vertical Axis
     chInitialScale(VDS_Channel) = loadVoltage * 2 / (numVerticalDivisions - 1); 
     chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1);
     if strcmpi(switch_capture, 'turn_on')
-        chInitialScale(ID_Channel) = (settings.maxCurrentSpike * currentResistor) * 2 / (numVerticalDivisions - 1);
+        chInitialScale(ID_Channel) = (settings.maxCurrentSpike) * 2 / (numVerticalDivisions - 1);
     else
-        chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * ...
+        chInitialScale(ID_Channel) = (loadCurrent) * ...
             (1 + settings.percentBuffer / 100) / (numVerticalDivisions - 1);
     end
     chInitialScale(IL_Channel) = chInitialScale(ID_Channel);
@@ -249,7 +253,12 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     
     % Invert Current Channel
     if settings.invertCurrent
-        myScope.setChInvert(ID_Channel, 'ON');
+        if myScope.scopeSeries ~= SCPI_Oscilloscope.Series5000
+            myScope.setChInvert(ID_Channel, 'ON');
+        else
+            warning('5000 Series Scopes do not support inverting');
+            myScope.setChInvert(ID_Channel, 'OFF');
+        end
     else
         myScope.setChInvert(ID_Channel, 'OFF');
     end
@@ -268,16 +277,18 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     myScope.acqStopAfter = acquisitionStop;
     myScope.acqState = 'RUN';
 
-    pause(1);
+    pause(2);
 
     % Trigger Waveform
     myFGen.push2Trigger('pulse');
 
     % Setup binary data for the CURVE query
     myScope.setupWaveformTransfer(numBytes, encoding);
+    
+    pause(1);
 
     % Check if trigger recieved
-    if myScope.acqState ~= '0'
+    if myScope.acqState ~= 0
         error('Trigger not detected');
     end
     
@@ -292,9 +303,14 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     for idx = 1:4
         % Skip Rescale if on current channel and looking at the turn off
         % waveform.
-        if ~(strcmp(switch_capture, 'turn_off') && idx == settings.ID_Channel)
-            myScope.rescaleChannel(idx, WaveForms{idx},...
-                numVerticalDivisions, settings.percentBuffer);
+        if ~(strcmp(switch_capture, 'turn_off') && (idx == settings.ID_Channel || idx == settings.IL_Channel))
+            if idx == settings.IL_Channel
+                myScope.rescaleChannel(idx, WaveForms{settings.ID_Channel},...
+                    numVerticalDivisions, settings.percentBuffer);
+            else
+                myScope.rescaleChannel(idx, WaveForms{idx},...
+                    numVerticalDivisions, settings.percentBuffer);
+            end
         end
     end
 
@@ -306,10 +322,10 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     % Trigger Waveform
     myFGen.push2Trigger('pulse');
 
-    pause(1);
+    pause(2);
     
     % Check if trigger recieved
-    if myScope.acqState ~= '0'
+    if myScope.acqState ~= 0
         error('Trigger not detected');
     end
 
@@ -323,6 +339,6 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     % Save Waveforms
     V_DS = WaveForms{VDS_Channel};
     V_GS = WaveForms{VGS_Channel};
-    I_D = WaveForms{ID_Channel} / currentResistor;
+    I_D = WaveForms{ID_Channel} * -1;
 
 end

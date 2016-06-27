@@ -3,9 +3,9 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.loadVoltages = [100, 100];
-    dpt_settings.loadCurrents = [5, 5];
-    dpt_settings.currentResistor = 97E-3;
+    dpt_settings.loadVoltages = [100, 200, 300, 400];
+    dpt_settings.loadCurrents = [20];
+    dpt_settings.currentResistor = 100E-3;
     dpt_settings.loadInductor = 700E-6;
     dpt_settings.gateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
@@ -32,7 +32,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.VDS_Channel = 1;
         dpt_settings.VGS_Channel = 2;
         dpt_settings.ID_Channel = 4;
-        dpt_settings.IL_Channel = 4; % Set to -1 if not measuring load current
+        dpt_settings.IL_Channel = 3; % Set to -1 if not measuring load current
 
     %% Pulse Creation
         dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;
@@ -52,7 +52,7 @@ function [ settings ] = SettingsSweepObject()
 
      %% Pulse Measurement
         dpt_settings.scopeSampleRate = 10E9;
-        dpt_settings.scopeRecordLength = 1000000;
+        dpt_settings.scopeRecordLength = 2000000;
 
         % Waveform
         dpt_settings.numBytes = 1;
@@ -61,13 +61,13 @@ function [ settings ] = SettingsSweepObject()
 
         % Probe Gains
         dpt_settings.chProbeGain = [1, 1, 1, 1];
-        dpt_settings.invertCurrent = true;
+        dpt_settings.invertCurrent = false;
 
         % Initial Vertical Settings
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
         dpt_settings.chInitialScale = [0, 0, 0, 0];
         dpt_settings.chInitialPosition = [0, 0, 0, 0];
-        dpt_settings.chInitialPosition(VDS_Channel) = -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
+        dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         

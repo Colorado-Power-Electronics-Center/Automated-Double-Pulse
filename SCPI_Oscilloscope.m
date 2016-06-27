@@ -290,7 +290,21 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function chDeskew = getChDeskew(self, channel)
             channel = self.U2Str(channel);
             chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
-        end      
+        end    
+        % Channel Termination
+        function setChTermination(self, channel, chTermination)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':TERmination ' num2str(chTermination)]);
+        end
+        function chTermination = getChTermination(self, channel)
+            channel = self.U2Str(channel);
+            chTermination = str2double(self.query(['CH' channel ':TERmination?']));
+        end    
+        % Channel Degauss State
+        function chDeskew = getChDegaussState(self, channel)
+            channel = self.U2Str(channel);
+            chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
+        end   
         % Channel Invert
         % chInvert is 'ON' or 'OFF'
         function setChInvert(self, channel, chInvert)
