@@ -17,7 +17,7 @@ function [ switching_idx, turn_off_idx, turn_on_idx, turn_on_voltage,...
     num_points = floor(50e-9 / time_step);
     
     switching_idx_diff = diff(switching_idx);
-    false_switch_idxs = switching_idx(logical([0 (switching_idx_diff < num_points)]));
+    false_switch_idxs = logical([0 (switching_idx_diff < num_points)]);
     switching_idx(false_switch_idxs) = [];    
     
     % Check if first switch is on or off

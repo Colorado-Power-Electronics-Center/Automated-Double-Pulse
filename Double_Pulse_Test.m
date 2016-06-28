@@ -243,10 +243,10 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     chInitialScale(VDS_Channel) = loadVoltage * 2 / (numVerticalDivisions - 1); 
     chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1);
     if strcmpi(switch_capture, 'turn_on')
-        chInitialScale(ID_Channel) = (settings.maxCurrentSpike) * 2 / (numVerticalDivisions - 1);
+        chInitialScale(ID_Channel) = (settings.maxCurrentSpike) * 2 / (floor(numVerticalDivisions / 2) - 1);
     else
         chInitialScale(ID_Channel) = (loadCurrent) * ...
-            (1 + settings.percentBuffer / 100) / (numVerticalDivisions - 1);
+            (1 + settings.percentBuffer / 100) / (floor(numVerticalDivisions / 2) - 1);
     end
     chInitialScale(IL_Channel) = chInitialScale(ID_Channel);
     
@@ -270,6 +270,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     
     % Set Current Probe Range
     if IL_Channel > 0
+        myScope.setChProbeControl(IL_Channel, 'MANual');
         myScope.setChProbeForcedRange(IL_Channel, 30);
     end
 
