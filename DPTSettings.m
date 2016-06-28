@@ -55,6 +55,8 @@ classdef DPTSettings < matlab.mixin.Copyable
 	 	%% Pulse Measurement
 	    scopeSampleRate
 	    scopeRecordLength
+        useAutoRecordLength
+        autoRecordLengthBuffer
 	    
 	    % Waveform
 	    numBytes

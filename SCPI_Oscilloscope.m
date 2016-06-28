@@ -315,6 +315,16 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             channel = self.U2Str(channel);
             chInvert = self.query(['CH' channel ':INVert?']);
         end
+        % Channel Probe Forced Range
+        function setChProbeForcedRange(self, channel, chForcedRange)
+            channel = self.U2Str(channel);
+            chForcedRange = self.U2Str(chForcedRange);
+            self.sendCommand(['CH' channel ':PRObe:FORCEDRange ' chForcedRange]);
+        end
+        function chForcedRange = getProbeForcedRange(self, channel)
+            channel = self.U2Str(channel);
+            chForcedRange = str2double(self.query(['CH' channel ':PRObe:FORCEDRange?']));
+        end
         % Channel Label Name
         function setChLabelName(self, channel, chLabel)
             channel = self.U2Str(channel);

@@ -53,6 +53,8 @@ function [ settings ] = SettingsSweepObject()
      %% Pulse Measurement
         dpt_settings.scopeSampleRate = 10E9;
         dpt_settings.scopeRecordLength = 2000000;
+        dpt_settings.useAutoRecordLength = true;
+        dpt_settings.autoRecordLengthBuffer = 1.5;
 
         % Waveform
         dpt_settings.numBytes = 1;

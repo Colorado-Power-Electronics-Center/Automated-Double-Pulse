@@ -172,13 +172,13 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     % Setup CH2 Waveform
     % Generate Single Pulse
     if ~settings.use_mini_2nd_pulse
-        [ch2_wave_points, total_time] = pulse_generator(sampleRate,...
+        [ch2_wave_points, ~] = pulse_generator(sampleRate,...
             pulse_lead_dead_t + pulse_first_pulse_t + .1 * pulse_off_t,...
             .8 * pulse_off_t,...
             .1 * pulse_off_t + pulse_second_pulse_t + pulse_end_dead_t);
     else
         second_pulse_off_t = settings.mini_2nd_pulse_off_time;
-        [ch2_wave_points, total_time] = pulse_generator(sampleRate,...
+        [ch2_wave_points, ~] = pulse_generator(sampleRate,...
             0, pulse_lead_dead_t + pulse_first_pulse_t + pulse_off_t + 20e-9,...
             second_pulse_off_t, pulse_second_pulse_t);
     end
@@ -220,7 +220,12 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set scope sample rate and record length
     myScope.sampleRate = scopeSampleRate;
-    myScope.recordLength = scopeRecordLength;
+    if settings.useAutoRecordLength
+        myScope.recordLength = total_time * myScope.sampleRate...
+            * settings.autoRecordLengthBuffer;
+    else
+        myScope.recordLength = scopeRecordLength;
+    end
 
     % Setup Probe Gains of neccessary
     if myScope.scopeSeries == SCPI_Oscilloscope.Series4000
@@ -261,6 +266,11 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
         end
     else
         myScope.setChInvert(ID_Channel, 'OFF');
+    end
+    
+    % Set Current Probe Range
+    if IL_Channel > 0
+        myScope.setChProbeForcedRange(IL_Channel, 30);
     end
 
     % Set Initial Horizontal Axis
