@@ -1,6 +1,6 @@
 function [ turn_on_waveforms, turn_off_waveforms, turn_on_idx,...
     turn_off_idx, turn_on_offset, turn_off_offset, switching_idx ]...
-    = splitWaveforms( loadVoltage, fullWaveforms, settings )
+    = splitWaveforms( loadVoltage, fullWaveforms, time, settings )
 %splitWaveforms Splits Full waveforms into turn off and turn on waveforms.
 %   Args: ( loadVoltage, fullWaveforms, settings )
 %   loadVoltage: Aproximate Bus voltage of measurements

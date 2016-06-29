@@ -40,16 +40,15 @@ function Double_Pulse_Test(settings)
     % Swtich to triggering on V_GS for IV misalignment pulses
     deskew_settings = copy(settings);
     deskew_settings.triggerSource = deskew_settings.VGS_Channel;
-    deskew_settings.triggerLevel = deskew_settings.gateVoltage / 2;
+    deskew_settings.triggerLevel = deskew_settings.maxGateVoltage / 2;
     deskew_settings.triggerSlope = 'RISe';
     
     [ waveForms ] = runDoublePulseTest(myScope, myFGen,...
                 loadCurrent, loadVoltage, deskew_settings);
     [ turn_on_waveforms ] = extractWaveforms('turn_on',...
         waveForms, loadVoltage, settings);
-    [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, 4, turn_on_waveforms, settings);
+    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, 4, turn_on_waveforms, settings);
             
-    time = (0:(numel(V_DS) - 1)) / myScope.sampleRate;
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
     % Find Deskew
@@ -76,12 +75,15 @@ function Double_Pulse_Test(settings)
             [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
                 loadCurrent, loadVoltage, settings );
             for testChannel = [4, 2]
-                for switch_capture = ['turn_on', 'turn_off']
-                    [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, testChannel , zoomedOutWaveforms, settings); %#ok<ASGLU>
+                for switch_capture = {'turn_on', 'turn_off'}
+                    % Get correct waveforms
+                    scalingWaveform = extractWaveforms(switch_capture{1}, zoomedOutWaveforms, loadVoltage, settings);
+                    
+                    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveform, settings); %#ok<ASGLU>
                     sampleRate = myScope.sampleRate; %#ok<NASGU>
                     file_name = [settings.dataDirectory num2str(loadVoltage)...
-                        'V_' num2str(loadCurrent) 'A_' switch_capture '_' testChannel 'CH.mat'];
-                    save(file_name, 'V_DS', 'V_GS', 'I_D', 'sampleRate',...
+                        'V_' num2str(loadCurrent) 'A_' switch_capture{1} '_' num2str(testChannel) 'CH.mat'];
+                    save(file_name, 'V_DS', 'V_GS', 'I_D', 'time', 'sampleRate',...
                         'loadCurrent', 'loadVoltage', 'switch_capture');
                 end
             end
@@ -323,11 +325,14 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         WaveForms{idx} = myScope.getWaveform(idx);
     end
     
+    % Create time vector
+    WaveForms{waveformTimeIdx} = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    
     % Return Waveforms
     returnWaveforms = WaveForms;
 end
 
-function [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, numChannels, waveforms, settings)
+function [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, numChannels, waveforms, settings)
     % Rescale Oscilloscope VDS, VGS, and ID Channels
     for channel = [settings.VDS_Channel settings.VGS_Channel settings.ID_Channel]
         myScope.rescaleChannel(channel, waveforms{channel},...
@@ -367,17 +372,22 @@ function [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, numChannels, w
     end
 
     % Get Desired waveforms
-    V_DS = myScope.getWaveform(VDS_Channel);
-    I_D = myScope.getWaveform(ID_Channel) * -1;
+    V_DS = myScope.getWaveform(settings.VDS_Channel);
+    I_D = myScope.getWaveform(settings.ID_Channel) * -1;
     
     if numChannels == 4
-        V_GS = myScope.getWaveform(VGS_Channel);
+        V_GS = myScope.getWaveform(settings.VGS_Channel);
+    else
+        V_GS = settings.notRecorded;
     end
+    
+    % Create time vector
+    time = (0:myScope.recordLength - 1) / myScope.sampleRate;
 end
 
 function [ returnWaveforms ] = extractWaveforms(switch_capture, unExtractedWaveforms, loadVoltage, settings)
     [ turn_on_waveforms, turn_off_waveforms, ~, ~, ~, ~, ~ ]...
-    = splitWaveforms( loadVoltage, unExtractedWaveforms, settings);
+    = splitWaveforms( loadVoltage, unExtractedWaveforms, unExtractedWaveforms{waveformTimeIdx}, settings);
 
     if strcmp(switch_capture, 'turn_on')
         % Extract Turn on
@@ -386,4 +396,8 @@ function [ returnWaveforms ] = extractWaveforms(switch_capture, unExtractedWavef
         % Extract turn off
         returnWaveforms = turn_off_waveforms;
     end
+end
+
+function timeIdx = waveformTimeIdx
+    timeIdx = 5;
 end

@@ -4,7 +4,7 @@ function [ settings ] = SettingsSweepObject()
     % Double Pulse Test Settings
     %% Test Specific Settings
     dpt_settings.loadVoltages = [100, 200, 300, 400];
-    dpt_settings.loadCurrents = [20];
+    dpt_settings.loadCurrents = [10];
     dpt_settings.currentResistor = 100E-3;
     dpt_settings.loadInductor = 700E-6;
     dpt_settings.minGateVoltage = -10;
@@ -133,7 +133,7 @@ end
 function [scale, position] = min2Scale(minValue, maxValue, numDivisions, percentBuffer)
     data_range = maxValue - minValue;
     scale = (data_range / numDivisions);
-    position = ((min(waveform)/scale) + (numDivisions / 2));
+    position = (minValue/scale) + (numDivisions / 2);
     scale = scale * (1 + percentBuffer / 100);
     position = position * (1 - percentBuffer / 100);
 end
