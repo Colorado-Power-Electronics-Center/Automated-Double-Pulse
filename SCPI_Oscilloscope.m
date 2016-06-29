@@ -52,6 +52,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         acqMode
         acqStopAfter
         acqState
+        acqSamplingMode
         % Alias Command
         % Bus Command Group
         % Calibration and Diagnostic Command Group
@@ -147,6 +148,18 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 self.sendCommand(['SELECT:CH' channelStr ' OFF']);
             end
         end
+        function out = isChannelOn(self, channel)
+            channelStr = self.U2Str(channel);
+            out = logical(str2double(self.query(['SELECT:CH' channelStr '?'])));
+        end
+        function channelStates = getChannelsState(self)
+            tempChannelStates = [0, 0, 0, 0];
+            for i = 1:4
+                tempChannelStates(i) = self.isChannelOn(i);
+            end
+            
+            channelStates = tempChannelStates;
+        end
         function setupTrigger(self, triggerType, coupling, slope, source, level)
             % setupTrigger sets up oscilloscope trigger currently only
             % works with edge trigger
@@ -232,20 +245,36 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         end
         function rescaleChannel(self, channel, waveform, numDivisions, percentBuffer)
             % rescaleChannel Rescales channel to give full range of values.
+            % Based on supplied waveform.
             %   Args: (channel, waveform, numDivisions)
             %   channel: Channel to rescale
             %   waveform: Waveform vector containing channel's waveform
             %   numDivisions: Number of divisions on oscilloscope screen
+            %   percentBuffer: Integer percent buffer to increase scale by
+            %   adds percentBuffer / 2 to top and bottom.
             
+            self.minMaxRescaleChannel(channel, min(waveform),...
+                max(waveform), numDivisions, percentBuffer);
+        end 
+        function minMaxRescaleChannel(self, channel, minValue, maxValue, numDivisions, percentBuffer)
+            % minMaxRescaleChannel Rescales channel to give full range of
+            % values. Based on supplied minimum and maximum values.
+            %   Args: (channel, minValue, maxValue, waveform, numDivisions, percentBuffer)
+            %   channel: Channel to rescale
+            %   minValue: Minimum value to be displayed on Oscilloscope
+            %   maxValue: Maximum Value to be displayed on Oscilloscope
+            %   numDivisions: Number of divisions on oscilloscope screen
+            %   percentBuffer: Integer percent buffer to increase scale by
+            %   adds percentBuffer / 2 to top and bottom.
             curChannel = ['CH' int2str(channel)];
-            data_range = max(waveform) - min(waveform);
+            data_range = maxValue - minValue;
             new_scale = (data_range / numDivisions);
             new_y_pos = ((min(waveform)/new_scale) + (numDivisions / 2));
             new_scale = new_scale * (1 + percentBuffer / 100);
             new_y_pos = new_y_pos * (1 - percentBuffer / 100);
             self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
             self.sendCommand([curChannel ':POSition ' num2str(-new_y_pos)]);
-        end     
+        end
         % Channel Probe Gain   
         function setChProbeGain(self, channel, chProbeGain)
             channel = self.U2Str(channel);
@@ -385,7 +414,8 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])
-%             self.sendCommand(['[command] ' num2str([property])]);
+%             [property] = self.U2Str([property]);
+%             self.sendCommand(['[command] ' [property]]);
 %         end
 %         function [property] = get.[property](self)
 %             [property] = str2double(self.query('[command]?'));
@@ -410,6 +440,13 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function acqState = get.acqState(self)
             acqState = str2double(self.query('ACQuire:STATE?'));
         end
+        function set.acqSamplingMode(self, acqSamplingMode)
+            % Acceptable acqSamplingMode values: {RT|ET|IT}
+            self.sendCommand(['ACQuire:SAMPlingmode ' acqSamplingMode]);
+        end
+        function acqSamplingMode = get.acqSamplingMode(self)
+            acqSamplingMode = self.query('ACQuire:SAMPlingmode?');
+        end        
         % Alias Command
         % Bus Command Group
         % Calibration and Diagnostic Command Group

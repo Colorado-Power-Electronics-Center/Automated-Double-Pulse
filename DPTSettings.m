@@ -2,6 +2,10 @@ classdef DPTSettings < matlab.mixin.Copyable
     %DPTSettings Summary of this class goes here
     %   Detailed explanation goes here
     
+    properties (Constant)
+        notRecorded = -102;
+    end
+    
     properties
         % Double Pulse Test Settings
 		%% Test Specific Settings
@@ -9,7 +13,8 @@ classdef DPTSettings < matlab.mixin.Copyable
 		loadCurrents
 		currentResistor
 		loadInductor
-		gateVoltage
+		minGateVoltage
+        maxGateVoltage
         gateLogicVoltage
 
 		%% Instrument Setup
@@ -73,6 +78,10 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    chInitialPosition
         maxCurrentSpike
         percentBuffer
+        
+        % Deskew Settings
+        deskewVoltage
+        deskewCurrent
 
 	    % Initial Horizontal Settings
 	    horizontalScale
@@ -88,6 +97,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 
 	    % Aquisition
 	    acquisitionMode
+        acquisitionSamplingMode
 	    acquisitionStop
 	    
 		%% Data Saving

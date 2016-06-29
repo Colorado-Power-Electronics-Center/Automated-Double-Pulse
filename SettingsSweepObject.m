@@ -7,7 +7,8 @@ function [ settings ] = SettingsSweepObject()
     dpt_settings.loadCurrents = [20];
     dpt_settings.currentResistor = 100E-3;
     dpt_settings.loadInductor = 700E-6;
-    dpt_settings.gateVoltage = 10;
+    dpt_settings.minGateVoltage = -10;
+    dpt_settings.maxGateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
 
     %% Instrument Setup
@@ -73,6 +74,22 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         
+        % Deskew Settings
+        dpt_settings.deskewVoltage = min(dpt_settings.loadVoltages);
+        dpt_settings.deskewCurrent = max(dpt_settings.loadCurrents);
+        % VDS Vertical Settings
+        dpt_settings.chInitialScale(dpt_settings.VDS_Channel) = dpt_settings.deskewVoltage * 2 / (dpt_settings.numVerticalDivisions - 1);
+        dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = -(dpt_settings.numVerticalDivisions / 2 - 1);
+        % VGS Vertical Settings
+        [dpt_settings.chInitialScale(dpt_settings.VGS_Channel),...
+            dpt_settings.chInitialPosition(dpt_settings.VGS_Channel)] = min2Scale(...
+            dpt_settings.minGateVoltage, dpt_settings.maxGateVoltage,...
+            dpt_settings.numVerticalDivisions, 50);
+        % ID Vertical Settings
+        dpt_settings.chInitialScale(dpt_settings.ID_Channel) = dpt_settings.maxCurrentSpike * 2 / (dpt_settings.numVerticalDivisions / 2 - 1);
+        dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
+        
+        
         % Initial Horizontal Settings
         dpt_settings.horizontalScale = 50e-6;
         dpt_settings.delayMode = 'Off';
@@ -87,6 +104,7 @@ function [ settings ] = SettingsSweepObject()
 
         % Aquisition
         dpt_settings.acquisitionMode = 'SAMple';
+        dpt_settings.acquisitionSamplingMode = 'RT';
         dpt_settings.acquisitionStop = 'SEQuence';
 
     %% Data Saving
@@ -110,4 +128,12 @@ function [ settings ] = SettingsSweepObject()
             floor(dpt_settings.turn_off_time * dpt_settings.scopeSampleRate);
        
     settings = dpt_settings;
+end
+
+function [scale, position] = min2Scale(minValue, maxValue, numDivisions, percentBuffer)
+    data_range = maxValue - minValue;
+    scale = (data_range / numDivisions);
+    position = ((min(waveform)/scale) + (numDivisions / 2));
+    scale = scale * (1 + percentBuffer / 100);
+    position = position * (1 - percentBuffer / 100);
 end

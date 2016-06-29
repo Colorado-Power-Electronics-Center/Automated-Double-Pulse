@@ -43,8 +43,12 @@ function Double_Pulse_Test(settings)
     deskew_settings.triggerLevel = deskew_settings.gateVoltage / 2;
     deskew_settings.triggerSlope = 'RISe';
     
-    [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                loadCurrent, loadVoltage, deskew_settings, 'turn_on');
+    [ waveForms ] = runDoublePulseTest(myScope, myFGen,...
+                loadCurrent, loadVoltage, deskew_settings);
+    [ turn_on_waveforms ] = extractWaveforms('turn_on',...
+        waveForms, loadVoltage, settings);
+    [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, 4, turn_on_waveforms, settings);
+            
     time = (0:(numel(V_DS) - 1)) / myScope.sampleRate;
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
@@ -60,14 +64,26 @@ function Double_Pulse_Test(settings)
         disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
         pause;
         for loadCurrent = settings.loadCurrents
-            for switch_capture = ['turn_on', 'turn_off']
-                [ V_DS, V_GS, I_D ] = runDoublePulseTest(myScope, myFGen,...
-                    loadCurrent, loadVoltage, settings, switch_capture); %#ok<ASGLU>
-
-                file_name = [settings.dataDirectory num2str(loadVoltage)...
-                    'V_' num2str(loadCurrent) 'A_' switch_capture '.mat'];
-                save(file_name, 'V_DS', 'V_GS', 'I_D',...
-                    'loadCurrent', 'loadVoltage', 'switch_capture');
+            % Capture Zoomed Out Waveform
+            % VDS Vertical Settings
+            settings.chInitialScale(settings.VDS_Channel) = loadVoltage * 2 / (settings.numVerticalDivisions - 1);
+            settings.chInitialPosition(settings.VDS_Channel) = -(settings.numVerticalDivisions / 2 - 1);
+            % ID Vertical Settings
+            settings.chInitialScale(settings.ID_Channel) = settings.maxCurrentSpike * 2 / (settings.numVerticalDivisions / 2 - 1);
+            settings.chInitialPosition(settings.ID_Channel) = 0;
+            
+            % Run Zoomed out pulse
+            [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
+                loadCurrent, loadVoltage, settings );
+            for testChannel = [4, 2]
+                for switch_capture = ['turn_on', 'turn_off']
+                    [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, testChannel , zoomedOutWaveforms, settings); %#ok<ASGLU>
+                    sampleRate = myScope.sampleRate; %#ok<NASGU>
+                    file_name = [settings.dataDirectory num2str(loadVoltage)...
+                        'V_' num2str(loadCurrent) 'A_' switch_capture '_' testChannel 'CH.mat'];
+                    save(file_name, 'V_DS', 'V_GS', 'I_D', 'sampleRate',...
+                        'loadCurrent', 'loadVoltage', 'switch_capture');
+                end
             end
         end
     end
@@ -80,14 +96,13 @@ function Double_Pulse_Test(settings)
     %% Find Deskew
 end
 
-function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
-    loadCurrent, loadVoltage, settings, switch_capture )
+function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
+    loadCurrent, loadVoltage, settings )
 %runDoublePulseTest Summary of this function goes here
 %   Detailed explanation goes here
     %%% Unpack Settings %%%
     loadInductor = settings.loadInductor;
     currentResistor = settings.currentResistor;
-    gateVoltage = settings.gateVoltage;
     
     %% Channel Setup
     % Channel Numbers
@@ -139,6 +154,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Aquisition
     acquisitionMode = settings.acquisitionMode;
+    acquisitionSamplingMode = settings.acquisitionSamplingMode;
     acquisitionStop = settings.acquisitionStop;
     
     % Reset to default state
@@ -197,10 +213,10 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     myScope.allChannelsOn;
     
     % Set Channel Label Names
-    myScope.setChLabelName(settings.VDS_Channel, 'V_DS');
-    myScope.setChLabelName(settings.VGS_Channel, 'V_GS');
-    myScope.setChLabelName(settings.ID_Channel, 'I_D');
-    myScope.setChLabelName(settings.IL_Channel, 'I_L');
+    myScope.setChLabelName(VDS_Channel, 'V_DS');
+    myScope.setChLabelName(VGS_Channel, 'V_GS');
+    myScope.setChLabelName(ID_Channel, 'I_D');
+    myScope.setChLabelName(IL_Channel, 'I_L');
     
     % Turn Off Headers
     myScope.removeHeaders;
@@ -238,22 +254,18 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     
     % Set Scope Channel Termination
     myScope.setChTermination(settings.ID_Channel, 50);
-
-    % Set Initial Vertical Axis
-    chInitialScale(VDS_Channel) = loadVoltage * 2 / (numVerticalDivisions - 1); 
-    chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1);
-    if strcmpi(switch_capture, 'turn_on')
-        chInitialScale(ID_Channel) = (settings.maxCurrentSpike) * 2 / (floor(numVerticalDivisions / 2) - 1);
-    else
-        chInitialScale(ID_Channel) = (loadCurrent) * ...
-            (1 + settings.percentBuffer / 100) / (floor(numVerticalDivisions / 2) - 1);
-    end
-    chInitialScale(IL_Channel) = chInitialScale(ID_Channel);
     
+    % Set Initial Vertical Settings
     for channel = 1:4
         myScope.setChOffSet(channel, chInitialOffset(channel));
         myScope.setChScale(channel, chInitialScale(channel));
         myScope.setChPosition(channel, chInitialPosition(channel));
+    end
+    
+    % Set I_L Scaling to the same as I_D
+    if settings.IL_Channel > 0
+        myScope.setChScale(settings.IL_Channel, myScope.getChScale(settings.ID_Channel));
+        myScope.setChPosition(settings.IL_Channel, myScope.getChPosition(settings.ID_Channel));
     end
     
     % Invert Current Channel
@@ -285,6 +297,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup Acquisition
     myScope.acqMode = acquisitionMode;
+    myScope.acqSamplingMode = acquisitionSamplingMode;
     myScope.acqStopAfter = acquisitionStop;
     myScope.acqState = 'RUN';
 
@@ -309,21 +322,34 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     for idx = 1:4
         WaveForms{idx} = myScope.getWaveform(idx);
     end
+    
+    % Return Waveforms
+    returnWaveforms = WaveForms;
+end
 
-    % Rescale Oscilloscope
-    for idx = 1:4
-        % Skip Rescale if on current channel and looking at the turn off
-        % waveform.
-        if ~(strcmp(switch_capture, 'turn_off') && (idx == settings.ID_Channel || idx == settings.IL_Channel))
-            if idx == settings.IL_Channel
-                myScope.rescaleChannel(idx, WaveForms{settings.ID_Channel},...
-                    numVerticalDivisions, settings.percentBuffer);
-            else
-                myScope.rescaleChannel(idx, WaveForms{idx},...
-                    numVerticalDivisions, settings.percentBuffer);
-            end
-        end
+function [ V_DS, I_D, V_GS ] = rescaleAndRepulse(myScope, myFGen, numChannels, waveforms, settings)
+    % Rescale Oscilloscope VDS, VGS, and ID Channels
+    for channel = [settings.VDS_Channel settings.VGS_Channel settings.ID_Channel]
+        myScope.rescaleChannel(channel, waveforms{channel},...
+            settings.numVerticalDivisions, settings.percentBuffer);
     end
+    
+    % Rescale Oscilloscope IL Channel
+    if settings.IL_Channel > 0
+        myScope.setChScale(settings.IL_Channel, myScope.getChScale(settings.ID_Channel));
+        myScope.setChPosition(settings.IL_Channel, myScope.getChPosition(settings.ID_Channel));
+    end
+    
+    % Ensure Channels are all on
+    myScope.allChannelsOn;
+    
+    % Turn Off I_L and V_GS is 2 Channel measurement
+    if numChannels == 2
+        myScope.channelsOff([settings.IL_Channel settings.VGS_Channel]);
+    end
+    
+    % Set Samplerate
+    myScope.sampleRate = settings.scopeSampleRate;
 
     % Rerun Capture
     myScope.acqState = 'RUN';
@@ -340,16 +366,24 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
         error('Trigger not detected');
     end
 
-    % Get all four waveforms
-    WaveForms = cell(1, 4);
-
-    for idx = 1:4
-        WaveForms{idx} = myScope.getWaveform(idx);
+    % Get Desired waveforms
+    V_DS = myScope.getWaveform(VDS_Channel);
+    I_D = myScope.getWaveform(ID_Channel) * -1;
+    
+    if numChannels == 4
+        V_GS = myScope.getWaveform(VGS_Channel);
     end
+end
 
-    % Save Waveforms
-    V_DS = WaveForms{VDS_Channel};
-    V_GS = WaveForms{VGS_Channel};
-    I_D = WaveForms{ID_Channel} * -1;
+function [ returnWaveforms ] = extractWaveforms(switch_capture, unExtractedWaveforms, loadVoltage, settings)
+    [ turn_on_waveforms, turn_off_waveforms, ~, ~, ~, ~, ~ ]...
+    = splitWaveforms( loadVoltage, unExtractedWaveforms, settings);
 
+    if strcmp(switch_capture, 'turn_on')
+        % Extract Turn on
+        returnWaveforms = turn_on_waveforms;
+    else
+        % Extract turn off
+        returnWaveforms = turn_off_waveforms;
+    end
 end
