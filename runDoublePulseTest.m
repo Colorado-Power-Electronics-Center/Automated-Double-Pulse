@@ -1,5 +1,5 @@
 function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
-    loadCurrent, loadVoltage, settings )
+    loadCurrent, busVoltage, settings )
 %runDoublePulseTest Summary of this function goes here
 %   Detailed explanation goes here
     %%% Unpack Settings %%%
@@ -70,7 +70,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup CH1 Waveform
     % Calculate first pulse duration
-    pulse_first_pulse_t = loadInductor * (loadCurrent / loadVoltage);
+    pulse_first_pulse_t = loadInductor * (loadCurrent / busVoltage);
 
     % Generate Double Pulse
     [ch1_wave_points, total_time] = pulse_generator(sampleRate,... 
@@ -132,7 +132,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     end
 
     % Set Initial Vertical Axis
-    chInitialScale(VDS_Channel) = loadVoltage * 2 / (numVerticalDivisions - 1); 
+    chInitialScale(VDS_Channel) = busVoltage * 2 / (numVerticalDivisions - 1); 
     chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1); 
     chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * 2 / (numVerticalDivisions - 1); 
     for channel = 1:4

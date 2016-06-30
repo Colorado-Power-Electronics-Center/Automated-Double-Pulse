@@ -3,7 +3,7 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.loadVoltages = [100, 200, 300, 400];
+    dpt_settings.busVoltages = [100, 200, 300, 400];
     dpt_settings.loadCurrents = [30];
     dpt_settings.currentResistor = 100E-3;
     dpt_settings.loadInductor = 670E-6;
@@ -75,7 +75,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.percentBuffer = 10;
         
         % Deskew Settings
-        dpt_settings.deskewVoltage = min(dpt_settings.loadVoltages);
+        dpt_settings.deskewVoltage = min(dpt_settings.busVoltages);
         dpt_settings.deskewCurrent = max(dpt_settings.loadCurrents);
         dpt_settings.VGSDeskew = 4e-9;
         % VDS Vertical Settings
@@ -101,7 +101,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.triggerCoupling = 'DC';
         dpt_settings.triggerSlope = 'FALL';
         dpt_settings.triggerSource = dpt_settings.VDS_Channel;
-        dpt_settings.triggerLevel = min(dpt_settings.loadVoltages) / 2;
+        dpt_settings.triggerLevel = min(dpt_settings.busVoltages) / 2;
 
         % Aquisition
         dpt_settings.acquisitionMode = 'SAMple';

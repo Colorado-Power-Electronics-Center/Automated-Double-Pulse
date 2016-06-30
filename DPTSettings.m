@@ -9,7 +9,7 @@ classdef DPTSettings < matlab.mixin.Copyable
     properties
         % Double Pulse Test Settings
 		%% Test Specific Settings
-		loadVoltages
+		busVoltages
 		loadCurrents
 		currentResistor
 		loadInductor

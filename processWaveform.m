@@ -8,8 +8,8 @@ function [ current_delay ] = processWaveform(data, settings)
     end
     run(settings);
     
-    % Load Voltage
-    loadVoltage;
+    % Bus Voltage
+    busVoltage;
     
     % Load Current
     loadCurrent;
@@ -30,7 +30,7 @@ function [ current_delay ] = processWaveform(data, settings)
     % Extract Turn on waveform
     [ switching_idx, turn_off_idx, turn_on_idx, V_DS_on,...
     V_GS_on, I_D_on, turn_on_time, turn_on_offset ] = ...
-    extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
+    extract_turn_on_waveform( busVoltage, V_DS, V_GS, I_D, time );
     
     % Find Deskew
     current_delay = findDeskew(V_DS_on, I_D_on, turn_on_time);

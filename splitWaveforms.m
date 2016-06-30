@@ -1,9 +1,9 @@
 function [ turn_on_waveforms, turn_off_waveforms, turn_on_idx,...
     turn_off_idx, turn_on_offset, turn_off_offset, switching_idx ]...
-    = splitWaveforms( loadVoltage, fullWaveforms, time, settings )
+    = splitWaveforms( busVoltage, fullWaveforms, time, settings )
 %splitWaveforms Splits Full waveforms into turn off and turn on waveforms.
-%   Args: ( loadVoltage, fullWaveforms, settings )
-%   loadVoltage: Aproximate Bus voltage of measurements
+%   Args: ( busVoltage, fullWaveforms, settings )
+%   busVoltage: Aproximate Bus voltage of measurements
 %   fullWaveforms: Cell array of waveform vectors. Should contain 4
 %   elements.
 %   settings: measurement settings object
@@ -19,7 +19,7 @@ function [ turn_on_waveforms, turn_off_waveforms, turn_on_idx,...
 
     % Find switching indicies using V_DS curve
     % Round V_DS Curve to on or of
-    V_DS_Round = round(V_DS / loadVoltage) * loadVoltage;
+    V_DS_Round = round(V_DS / busVoltage) * busVoltage;
     
     % Find switching indicies
     V_DS_Round_Diff = diff(V_DS_Round);
