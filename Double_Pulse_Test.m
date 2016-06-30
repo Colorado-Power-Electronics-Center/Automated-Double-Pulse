@@ -192,7 +192,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     else
         second_pulse_off_t = settings.mini_2nd_pulse_off_time;
         [ch2_wave_points, ~] = pulse_generator(sampleRate,...
-            0, pulse_lead_dead_t + pulse_first_pulse_t + pulse_off_t + 20e-9,...
+            0, pulse_lead_dead_t + pulse_first_pulse_t + pulse_off_t + 17e-9,...
             second_pulse_off_t, pulse_second_pulse_t);
     end
 
@@ -320,7 +320,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     % Get all four waveforms
     WaveForms = cell(1, 4);
 
-    for idx = myScope.channelsOn
+    for idx = myScope.enabledChannels
         WaveForms{idx} = myScope.getWaveform(idx);
     end
     
@@ -353,6 +353,7 @@ function [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, numChann
     end
     
     % Set Samplerate and record Length
+    total_time = myFGen.numQuery('SOURce1:BURSt:INTernal:PERiod?');
     myScope.sampleRate = settings.scopeSampleRate;
     if settings.useAutoRecordLength
         myScope.recordLength = total_time * myScope.sampleRate...
@@ -438,14 +439,15 @@ function checkLoadInductor(myScope, myFGen, settings)
     % Get correct waveforms
     scalingWaveforms = extractWaveforms('turn_off', zoomedOutWaveforms, loadVoltage, curChkSettings);
 
-    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveforms, curChkSettings);
+    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, 4 , scalingWaveforms, curChkSettings);
     % Find Load Voltage
     % Split Waveforms
-    fullWaveforms = cell(1, 4);
+    fullWaveforms = cell(1, 5);
     fullWaveforms{curChkSettings.VDS_Channel} = V_DS;
     fullWaveforms{curChkSettings.VGS_Channel} = V_GS;
     fullWaveforms{curChkSettings.ID_Channel} = I_D;
     fullWaveforms{curChkSettings.IL_Channel} = settings.notRecorded;
+    fullWaveforms{waveformTimeIdx} = time;
     
     offWaveforms = extractWaveforms('turn_off', fullWaveforms, loadVoltage, curChkSettings);
     
@@ -469,4 +471,12 @@ end
 
 function timeIdx = waveformTimeIdx
     timeIdx = 5;
+end
+
+function [scale, position] = min2Scale(minValue, maxValue, numDivisions, percentBuffer)
+    data_range = maxValue - minValue;
+    scale = (data_range / numDivisions);
+    position = (minValue/scale) + (numDivisions / 2);
+    scale = scale * (1 + percentBuffer / 100);
+    position = position * (1 - percentBuffer / 100);
 end

@@ -161,7 +161,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             channelStates = tempChannelStates;
         end
         function onChannels = enabledChannels(self)
-            onChannels = find(self.channelStates);
+            onChannels = find(self.getChannelsState);
         end
         function setupTrigger(self, triggerType, coupling, slope, source, level)
             % setupTrigger sets up oscilloscope trigger currently only

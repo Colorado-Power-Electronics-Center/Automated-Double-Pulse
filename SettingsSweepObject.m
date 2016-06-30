@@ -4,9 +4,9 @@ function [ settings ] = SettingsSweepObject()
     % Double Pulse Test Settings
     %% Test Specific Settings
     dpt_settings.loadVoltages = [100, 200, 300, 400];
-    dpt_settings.loadCurrents = [10];
+    dpt_settings.loadCurrents = [30];
     dpt_settings.currentResistor = 100E-3;
-    dpt_settings.loadInductor = 700E-6;
+    dpt_settings.loadInductor = 670E-6;
     dpt_settings.minGateVoltage = -10;
     dpt_settings.maxGateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
@@ -44,7 +44,7 @@ function [ settings ] = SettingsSweepObject()
         
         % Mini Second Pulse
         dpt_settings.use_mini_2nd_pulse = true;
-        dpt_settings.mini_2nd_pulse_off_time = 30e-9;
+        dpt_settings.mini_2nd_pulse_off_time = 50e-9;
 
         % Burst Settings
         dpt_settings.burstMode = 'TRIGgered';
