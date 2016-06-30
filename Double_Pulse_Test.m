@@ -51,7 +51,7 @@ function Double_Pulse_Test(settings)
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( busVoltage, V_DS, V_GS, I_D, time );
     % Find Deskew
-    settings.currentDelay = -findDeskew(turn_on_voltage, turn_on_current, turn_on_time);   
+    settings.currentDelay = findDeskew(turn_on_voltage, turn_on_current, turn_on_time);   
 
     % Obtain Measurements
     for busVoltage = settings.busVoltages    
