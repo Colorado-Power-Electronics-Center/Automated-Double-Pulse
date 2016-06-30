@@ -77,6 +77,7 @@ function [ settings ] = SettingsSweepObject()
         % Deskew Settings
         dpt_settings.deskewVoltage = min(dpt_settings.loadVoltages);
         dpt_settings.deskewCurrent = max(dpt_settings.loadCurrents);
+        dpt_settings.VGSDeskew = 4e-9;
         % VDS Vertical Settings
         dpt_settings.chInitialScale(dpt_settings.VDS_Channel) = dpt_settings.deskewVoltage * 2 / (dpt_settings.numVerticalDivisions - 1);
         dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = -(dpt_settings.numVerticalDivisions / 2 - 1);

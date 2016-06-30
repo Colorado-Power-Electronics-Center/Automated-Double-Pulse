@@ -34,8 +34,7 @@ function Double_Pulse_Test(settings)
     loadCurrent = min(settings.loadCurrents);
     loadVoltage = min(settings.loadVoltages);
     
-    disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
-    pause;
+    setVoltageToLoad(myScope, loadVoltage, settings);
     
     % Swtich to triggering on V_GS for IV misalignment pulses
     deskew_settings = copy(settings);
@@ -52,16 +51,12 @@ function Double_Pulse_Test(settings)
     [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
         extract_turn_on_waveform( loadVoltage, V_DS, V_GS, I_D, time );
     % Find Deskew
-    current_delay = findDeskew(turn_on_voltage, turn_on_current, turn_on_time);
-
-    % Set Oscilloscope Deskew
-    myScope.setChDeskew(settings.ID_Channel, -current_delay);   
+    settings.currentDelay = -findDeskew(turn_on_voltage, turn_on_current, turn_on_time);   
 
     % Obtain Measurements
     for loadVoltage = settings.loadVoltages    
         % set Voltage (user or auto)
-        disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
-        pause;
+        setVoltageToLoad(myScope, loadVoltage, settings);
         for loadCurrent = settings.loadCurrents
             % Capture Zoomed Out Waveform
             % VDS Vertical Settings
@@ -253,6 +248,10 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     else
         % todo
     end
+
+    % Set Oscilloscope Deskew
+    myScope.setChDeskew(settings.ID_Channel, settings.currentDelay);
+    myScope.setChDeskew(settings.VGS_Channel, settings.VGSDeskew);
     
     % Set Scope Channel Termination
     myScope.setChTermination(settings.ID_Channel, 50);
@@ -321,7 +320,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     % Get all four waveforms
     WaveForms = cell(1, 4);
 
-    for idx = 1:4
+    for idx = myScope.channelsOn
         WaveForms{idx} = myScope.getWaveform(idx);
     end
     
@@ -353,8 +352,14 @@ function [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, numChann
         myScope.channelsOff([settings.IL_Channel settings.VGS_Channel]);
     end
     
-    % Set Samplerate
+    % Set Samplerate and record Length
     myScope.sampleRate = settings.scopeSampleRate;
+    if settings.useAutoRecordLength
+        myScope.recordLength = total_time * myScope.sampleRate...
+            * settings.autoRecordLengthBuffer;
+    else
+        myScope.recordLength = scopeRecordLength;
+    end
 
     % Rerun Capture
     myScope.acqState = 'RUN';
@@ -396,6 +401,70 @@ function [ returnWaveforms ] = extractWaveforms(switch_capture, unExtractedWavef
         % Extract turn off
         returnWaveforms = turn_off_waveforms;
     end
+end
+
+function setVoltageToLoad(myScope, loadVoltage, settings)
+    myScope.channelsOn(settings.VDS_Channel);
+    myScope.minMaxRescaleChannel(settings.VDS_Channel, 0, loadVoltage,...
+        settings.numVerticalDivisions, settings.percentBuffer);
+    myScope.acqState = 'ON';
+    disp(['Set voltage to ' num2str(loadVoltage) 'V and press any key...'])
+    pause;
+end
+
+function checkLoadInductor(myScope, myFGen, settings)
+    % Determine Load Voltage and Current
+    loadVoltage = min(settings.loadVoltages);
+    loadCurrent = min(settings.loadCurrents);
+    % Set Load Voltage
+    setVoltageToLoad(myScope, loadVoltage, settings);
+    
+    % Set Scaling Information
+    curChkSettings = copy(settings);
+    % VDS Vertical Settings
+    curChkSettings.chInitialScale(curChkSettings.VDS_Channel) = loadVoltage * 2 / (curChkSettings.numVerticalDivisions - 1);
+    curChkSettings.chInitialPosition(curChkSettings.VDS_Channel) = -(curChkSettings.numVerticalDivisions / 2 - 1);
+    % VGS Vertical Settings
+    [curChkSettings.chInitialScale(curChkSettings.VGS_Channel),...
+        curChkSettings.chInitialPosition(curChkSettings.VGS_Channel)] = min2Scale(...
+        curChkSettings.minGateVoltage, curChkSettings.maxGateVoltage,...
+        curChkSettings.numVerticalDivisions, 50);
+    % ID Vertical Settings
+    curChkSettings.chInitialScale(curChkSettings.ID_Channel) = loadCurrent * 2 / (curChkSettings.numVerticalDivisions / 2 - 1);
+    curChkSettings.chInitialPosition(curChkSettings.ID_Channel) = 0;
+    % Run Double Pulse
+    [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
+                loadCurrent, loadVoltage, curChkSettings );
+    % Get correct waveforms
+    scalingWaveforms = extractWaveforms('turn_off', zoomedOutWaveforms, loadVoltage, curChkSettings);
+
+    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveforms, curChkSettings);
+    % Find Load Voltage
+    % Split Waveforms
+    fullWaveforms = cell(1, 4);
+    fullWaveforms{curChkSettings.VDS_Channel} = V_DS;
+    fullWaveforms{curChkSettings.VGS_Channel} = V_GS;
+    fullWaveforms{curChkSettings.ID_Channel} = I_D;
+    fullWaveforms{curChkSettings.IL_Channel} = settings.notRecorded;
+    
+    offWaveforms = extractWaveforms('turn_off', fullWaveforms, loadVoltage, curChkSettings);
+    
+    % Find approximate switching idx
+    off_I_D = offWaveforms{curChkSettings.ID_Channel};
+    [~, switch_idx] = max(abs(diff(off_I_D)));
+    % Real load current is average of current 10ns before swtich to 5ns
+    % before swtich
+    time_step = time(2) - time(1);
+    numPoints_5ns = floor(5e-9 / time_step);
+    realLoadCurrent = mean(off_I_D(switch_idx - 2 * numPoints_5ns:switch_idx - numPoints_5ns));
+    % Calculate Error
+    percentError = (realLoadCurrent - loadCurrent) / loadCurrent * 100;
+    
+    disp(['Error = ' num2str(percentError) '%']);
+    
+    % Find Actual Inductior value
+    realInductor = settings.loadInductor * (1 + (percentError / 100));
+    disp(['Real Inductor value = ' num2str(realInductor) 'H']);
 end
 
 function timeIdx = waveformTimeIdx
