@@ -1,17 +1,17 @@
-function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
+function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     loadCurrent, busVoltage, settings )
 %runDoublePulseTest Summary of this function goes here
 %   Detailed explanation goes here
     %%% Unpack Settings %%%
     loadInductor = settings.loadInductor;
     currentResistor = settings.currentResistor;
-    gateVoltage = settings.gateVoltage;
     
     %% Channel Setup
     % Channel Numbers
     VDS_Channel = settings.VDS_Channel;
     VGS_Channel = settings.VGS_Channel;
     ID_Channel = settings.ID_Channel;
+    IL_Channel = settings.IL_Channel;
     
     %% Pulse Creation
     PeakValue = settings.PeakValue;
@@ -56,6 +56,7 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Aquisition
     acquisitionMode = settings.acquisitionMode;
+    acquisitionSamplingMode = settings.acquisitionSamplingMode;
     acquisitionStop = settings.acquisitionStop;
     
     % Reset to default state
@@ -88,10 +89,17 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup CH2 Waveform
     % Generate Single Pulse
-    [ch2_wave_points, total_time] = pulse_generator(sampleRate,...
-        pulse_lead_dead_t + pulse_first_pulse_t + .1 * pulse_off_t,...
-        .8 * pulse_off_t,...
-        .1 * pulse_off_t + pulse_second_pulse_t + pulse_end_dead_t);
+    if ~settings.use_mini_2nd_pulse
+        [ch2_wave_points, ~] = pulse_generator(sampleRate,...
+            pulse_lead_dead_t + pulse_first_pulse_t + .1 * pulse_off_t,...
+            .8 * pulse_off_t,...
+            .1 * pulse_off_t + pulse_second_pulse_t + pulse_end_dead_t);
+    else
+        second_pulse_off_t = settings.mini_2nd_pulse_off_time;
+        [ch2_wave_points, ~] = pulse_generator(sampleRate,...
+            0, pulse_lead_dead_t + pulse_first_pulse_t + pulse_off_t + 17e-9,...
+            second_pulse_off_t, pulse_second_pulse_t);
+    end
 
     % Load Waveform
     myFGen.loadArbWaveform(ch2_wave_points, sampleRate, PeakValue, 'single_pulse', 2);
@@ -105,14 +113,24 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
     %% Pulse Measurement
     % Ensure all Channels on
     myScope.allChannelsOn;
-
+    
+    % Set Channel Label Names
+    myScope.setChLabelName(VDS_Channel, 'V_DS');
+    myScope.setChLabelName(VGS_Channel, 'V_GS');
+    myScope.setChLabelName(ID_Channel, 'I_D');
+    myScope.setChLabelName(IL_Channel, 'I_L');
+    
     % Turn Off Headers
     myScope.removeHeaders;
 
-    % Set Scope Depended Properties
+    % Set Scope Dependent Properties
     if myScope.scopeSeries == SCPI_Oscilloscope.Series5000
         % Set Horizontal Axis to maunal mode
         myScope.horizontalMode = 'MANual';
+        
+        % Set Load Current Channel Attenuation
+        myScope.setChExtAtten(settings.ID_Channel, 1/settings.currentResistor);
+        myScope.setChExtAttenUnits(settings.ID_Channel, 'A'); 
     else
         % Set Data Resolution to Full
         myScope.dataResolution = 'FULL';
@@ -120,7 +138,12 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set scope sample rate and record length
     myScope.sampleRate = scopeSampleRate;
-    myScope.recordLength = scopeRecordLength;
+    if settings.useAutoRecordLength
+        myScope.recordLength = total_time * myScope.sampleRate...
+            * settings.autoRecordLengthBuffer;
+    else
+        myScope.recordLength = scopeRecordLength;
+    end
 
     % Setup Probe Gains of neccessary
     if myScope.scopeSeries == SCPI_Oscilloscope.Series4000
@@ -131,14 +154,42 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
         % todo
     end
 
-    % Set Initial Vertical Axis
-    chInitialScale(VDS_Channel) = busVoltage * 2 / (numVerticalDivisions - 1); 
-    chInitialScale(VGS_Channel) = gateVoltage * 2 / (numVerticalDivisions - 1); 
-    chInitialScale(ID_Channel) = (loadCurrent * currentResistor) * 2 / (numVerticalDivisions - 1); 
+    % Set Oscilloscope Deskew
+    myScope.setChDeskew(settings.ID_Channel, settings.currentDelay);
+    myScope.setChDeskew(settings.VGS_Channel, settings.VGSDeskew);
+    
+    % Set Scope Channel Termination
+    myScope.setChTermination(settings.ID_Channel, 50);
+    
+    % Set Initial Vertical Settings
     for channel = 1:4
         myScope.setChOffSet(channel, chInitialOffset(channel));
         myScope.setChScale(channel, chInitialScale(channel));
         myScope.setChPosition(channel, chInitialPosition(channel));
+    end
+    
+    % Set I_L Scaling to the same as I_D
+    if settings.IL_Channel > 0
+        myScope.setChScale(settings.IL_Channel, myScope.getChScale(settings.ID_Channel));
+        myScope.setChPosition(settings.IL_Channel, myScope.getChPosition(settings.ID_Channel));
+    end
+    
+    % Invert Current Channel
+    if settings.invertCurrent
+        if myScope.scopeSeries ~= SCPI_Oscilloscope.Series5000
+            myScope.setChInvert(ID_Channel, 'ON');
+        else
+            warning('5000 Series Scopes do not support inverting');
+            myScope.setChInvert(ID_Channel, 'OFF');
+        end
+    else
+        myScope.setChInvert(ID_Channel, 'OFF');
+    end
+    
+    % Set Current Probe Range
+    if IL_Channel > 0
+        myScope.setChProbeControl(IL_Channel, 'MANual');
+        myScope.setChProbeForcedRange(IL_Channel, 30);
     end
 
     % Set Initial Horizontal Axis
@@ -152,50 +203,35 @@ function [ V_DS, V_GS, I_D ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup Acquisition
     myScope.acqMode = acquisitionMode;
+    myScope.acqSamplingMode = acquisitionSamplingMode;
     myScope.acqStopAfter = acquisitionStop;
     myScope.acqState = 'RUN';
 
-    pause(1);
+    pause(2);
 
     % Trigger Waveform
-    myFGen.trigger;
+    myFGen.push2Trigger('pulse');
 
     % Setup binary data for the CURVE query
     myScope.setupWaveformTransfer(numBytes, encoding);
+    
+    pause(1);
 
+    % Check if trigger recieved
+    if myScope.acqState ~= 0
+        error('Trigger not detected');
+    end
+    
     % Get all four waveforms
     WaveForms = cell(1, 4);
 
-    for idx = 1:4
+    for idx = myScope.enabledChannels
         WaveForms{idx} = myScope.getWaveform(idx);
     end
-
-    % Rescale Oscilloscope
-    for idx = 1:4
-        myScope.rescaleChannel(idx, WaveForms{idx}, numVerticalDivisions);
-    end
-
-    % Rerun Capture
-    myScope.acqState = 'RUN';
-
-    pause(1);
-
-    % Trigger Waveform
-    myFGen.trigger;
-
-    pause(1);
-
-    % Get all four waveforms
-    WaveForms = cell(1, 4);
-
-    for idx = 1:4
-        WaveForms{idx} = myScope.getWaveform(idx);
-    end
-
-    % Save Waveforms
-    V_DS = WaveForms{VDS_Channel};
-    V_GS = WaveForms{VGS_Channel};
-    I_D = WaveForms{ID_Channel} / currentResistor;
-
+    
+    % Create time vector
+    WaveForms{waveformTimeIdx} = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    
+    % Return Waveforms
+    returnWaveforms = WaveForms;
 end
-
