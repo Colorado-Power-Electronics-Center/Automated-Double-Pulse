@@ -3,7 +3,15 @@ classdef DPTSettings < matlab.mixin.Copyable
     %   Detailed explanation goes here
     
     properties (Constant)
-        notRecorded = -102;
+        notRecorded = GeneralWaveform.NOT_RECORDED;
+    end
+    
+    properties (Dependent)
+        % Channel Numbers
+	    VDS_Channel
+	    VGS_Channel
+	    ID_Channel
+        IL_Channel
     end
     
     properties
@@ -35,11 +43,8 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    scopeByteOrder
 
 		%% Channel Setup
-	    % Channel Numbers
-	    VDS_Channel
-	    VGS_Channel
-	    ID_Channel
-        IL_Channel
+        % Channel Numbers
+        channel@channelMapper
 	    
 		%% Pulse Creation
 	    PeakValue
@@ -122,6 +127,20 @@ classdef DPTSettings < matlab.mixin.Copyable
     end
     
     methods
+        % Methods to allow for backwards compatibility with old channel
+        % storage functionality.
+        function out = get.VDS_Channel(self)
+            out = self.channel.VDS;
+        end
+        function out = get.VGS_Channel(self)
+            out = self.channel.VGS;
+        end
+        function out = get.ID_Channel(self)
+            out = self.channel.ID;
+        end
+        function out = get.IL_Channel(self)
+            out = self.channel.IL;
+        end
     end
     
 end

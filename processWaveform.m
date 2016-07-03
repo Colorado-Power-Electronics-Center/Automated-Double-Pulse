@@ -1,7 +1,7 @@
 %% processWaveform
 % Take saved waveform file and process the data. Output graphs and
 % characteristics. 
-function [ current_delay ] = processWaveform(data, settings)
+function processWaveform(data, settings)
     load(data);
     if nargin == 1
         settings = [pwd '\' fileparts(data) '\Measurement_Settings.m'];

@@ -30,10 +30,10 @@ function [ settings ] = SettingsSweepObject()
 
     %% Channel Setup
         % Channel Numbers
-        dpt_settings.VDS_Channel = 1;
-        dpt_settings.VGS_Channel = 2;
-        dpt_settings.ID_Channel = 4;
-        dpt_settings.IL_Channel = 3; % Set to -1 if not measuring load current
+        dpt_settings.channel.VDS = 1;
+        dpt_settings.channel.VGS = 2;
+        dpt_settings.channel.ID = 4;
+        dpt_settings.channel.IL = 3; % Set to -1 if not measuring load current
 
     %% Pulse Creation
         dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;

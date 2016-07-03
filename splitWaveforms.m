@@ -1,6 +1,5 @@
-function [ turn_on_waveforms, turn_off_waveforms, turn_on_idx,...
-    turn_off_idx, turn_on_offset, turn_off_offset, switching_idx ]...
-    = splitWaveforms( busVoltage, fullWaveforms, time, settings )
+function [ turn_on_waveforms, turn_off_waveforms ]...
+    = splitWaveforms( busVoltage, fullWaveforms, settings )
 %splitWaveforms Splits Full waveforms into turn off and turn on waveforms.
 %   Args: ( busVoltage, fullWaveforms, settings )
 %   busVoltage: Aproximate Bus voltage of measurements
@@ -16,6 +15,7 @@ function [ turn_on_waveforms, turn_off_waveforms, turn_on_idx,...
     else
         I_L = settings.notRecorded;
     end
+    time = fullWaveforms{waveformTimeIdx};
 
     % Find switching indicies using V_DS curve
     % Round V_DS Curve to on or of
