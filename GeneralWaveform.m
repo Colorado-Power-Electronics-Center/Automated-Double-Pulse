@@ -54,7 +54,20 @@ classdef GeneralWaveform < handle
         function chCell = get.channelOrderedCell(self)
             % Check if cell has been created
             if ~isempty(self.channelOrderedCell)
+                % Return if created
                 chCell = self.channelOrderedCell;
+            % Create if not already done
+            elseif ~self.channel.allUnset
+                chCell = cell(1, 5);
+                chCell(:) = {GeneralWaveform.NOT_RECORDED};
+                chCell{self.channel.VDS} = self.v_ds;
+                chCell{self.channel.ID} = self.i_d;
+                if self.channel.VGS ~= GeneralWaveform.NOT_RECORDED;
+                    chCell{self.channel.VGS} = self.v_gs;
+                end
+                if self.channel.IL ~= GeneralWaveform.NOT_RECORDED;
+                    chCell{self.channel.IL} = self.i_l;
+                end
             else
                 chCell = self.NOT_RECORDED;
             end

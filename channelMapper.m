@@ -19,6 +19,10 @@ classdef channelMapper < matlab.mixin.Copyable
                 self.IL = IL_Channel;
             end
         end
+        function out = allUnset(self)
+            Channels = [self.VDS, self.VGS, self.ID, self.IL];
+            out =  all(Channels == GeneralWaveform.NOT_RECORDED);
+        end
     end
     
 end

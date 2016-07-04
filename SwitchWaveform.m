@@ -9,6 +9,7 @@ classdef SwitchWaveform < GeneralWaveform & handle
     
     properties
         switchCapture
+        switchIdx
     end
     methods
         function self = SwitchWaveform(v_ds, v_gs, i_d, i_l, time,...
@@ -26,8 +27,5 @@ classdef SwitchWaveform < GeneralWaveform & handle
             end
         end
     end
-    
-    
-    
 end
 
