@@ -195,6 +195,24 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             ivMisalignment = idx_delay * min_skew;
         end
     end
+    methods (Access = public, Static)
+        function ivMisalignment = findIVMisalignment(fullWaveforms)
+            % Create DoublePulseResults Object from Full Waveform
+            DPResults = DoublePulseResults(fullWaveforms.turnOnWaveform,...
+                                           fullWaveforms.turnOffWaveform);
+                                       
+            % Find Bus Voltage and Load Current
+            DPResults.calcBusVoltage;
+            DPResults.calcLoadCurrent;
+            
+            % Find IV Misalignment
+            DPResults.ivMisalignment = DPResults.calcIVMisalignment;
+            
+            % Return
+            ivMisalignment = DPResults.ivMisalignment;
+            
+        end
+    end
     
     
 end

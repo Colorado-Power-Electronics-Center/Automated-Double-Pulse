@@ -26,6 +26,9 @@ classdef SwitchWaveform < GeneralWaveform & handle
                 self.switchCapture = switchCapture;
             end
         end
+        function out = isTurnOn(self)
+            out = strcmp(self.switchCapture, SwitchWaveform.TURN_ON);
+        end
     end
 end
 

@@ -1,4 +1,7 @@
-function [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, numChannels, waveforms, settings)
+function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, fullWaveforms, settings)
+    % Create Waveform Cell
+    waveforms = fullWaveforms.channelOrderedCell;
+    
     % Rescale Oscilloscope VDS, VGS, and ID Channels
     for channel = [settings.VDS_Channel settings.VGS_Channel settings.ID_Channel]
         myScope.rescaleChannel(channel, waveforms{channel},...
@@ -44,16 +47,19 @@ function [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, numChann
         error('Trigger not detected');
     end
 
-    % Get Desired waveforms
-    V_DS = myScope.getWaveform(settings.VDS_Channel);
-    I_D = myScope.getWaveform(settings.ID_Channel) * -1;
-    
-    if numChannels == 4
-        V_GS = myScope.getWaveform(settings.VGS_Channel);
-    else
-        V_GS = settings.notRecorded;
+    % Get all four waveforms
+    WaveForms = cell(1, 4);
+
+    for idx = myScope.enabledChannels
+        WaveForms{idx} = myScope.getWaveform(idx);
     end
     
     % Create time vector
-    time = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    
+    % Create Waveform result
+    fullWvFm = GeneralWaveform.fromChannelCell(FullWaveform, WaveForms, settings.channel);
+    
+    % Return Waveforms
+    returnWaveforms = fullWvFm;
 end

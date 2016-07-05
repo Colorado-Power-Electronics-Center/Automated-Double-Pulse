@@ -230,8 +230,11 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     end
     
     % Create time vector
-    WaveForms{waveformTimeIdx} = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
+    
+    % Create Waveform result
+    fullWvFm = GeneralWaveform.fromChannelCell(FullWaveform, WaveForms, settings.channel);
     
     % Return Waveforms
-    returnWaveforms = WaveForms;
+    returnWaveforms = fullWvFm;
 end

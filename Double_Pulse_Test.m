@@ -42,16 +42,13 @@ function Double_Pulse_Test(settings)
     deskew_settings.triggerLevel = deskew_settings.maxGateVoltage / 2;
     deskew_settings.triggerSlope = 'RISe';
     
-    [ waveForms ] = runDoublePulseTest(myScope, myFGen,...
+    [ fullWaveforms ] = runDoublePulseTest(myScope, myFGen,...
                 loadCurrent, busVoltage, deskew_settings);
-    [ turn_on_waveforms ] = extractWaveforms('turn_on',...
-        waveForms, busVoltage, settings);
-    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, 4, turn_on_waveforms, settings);
+    [ rescaledFullWaveform ] = rescaleAndRepulse(myScope, myFGen, 4, fullWaveforms, settings);
             
-    [ ~, ~, ~, turn_on_voltage, ~, turn_on_current, turn_on_time ] = ...
-        extract_turn_on_waveform( busVoltage, V_DS, V_GS, I_D, time );
     % Find Deskew
-    settings.currentDelay = findDeskew(turn_on_voltage, turn_on_current, turn_on_time);   
+    settings.currentDelay = DoublePulseResults.findIVMisalignment(rescaledFullWaveform);
+    disp(['IV Misalignment: ' num2str(settings.currentDelay)]);
 
     % Obtain Measurements
     for busVoltage = settings.busVoltages    
@@ -70,17 +67,30 @@ function Double_Pulse_Test(settings)
             [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
                 loadCurrent, busVoltage, settings );
             for testChannel = [4, 2]
-                for switch_capture = {'turn_on', 'turn_off'}
-                    % Get correct waveforms
-                    scalingWaveform = extractWaveforms(switch_capture{1}, zoomedOutWaveforms, busVoltage, settings);
+                onWaveform = [];
+                offWaveform = [];
+                for scalingWaveform = [zoomedOutWaveforms.turnOnWaveform,...
+                                       zoomedOutWaveforms.turnOffWaveform]
+                    % Repulse for turn on and turn off
+                    [ switchingWaveform ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveform, settings);
                     
-                    [ V_DS, I_D, V_GS, time ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveform, settings); %#ok<ASGLU>
-                    sampleRate = myScope.sampleRate; %#ok<NASGU>
-                    file_name = [settings.dataDirectory num2str(busVoltage)...
-                        'V_' num2str(loadCurrent) 'A_' switch_capture{1} '_' num2str(testChannel) 'CH.mat'];
-                    save(file_name, 'V_DS', 'V_GS', 'I_D', 'time', 'sampleRate',...
-                        'loadCurrent', 'busVoltage', 'switch_capture');
+                    % Process Results
+                    if scalingWaveform.isTurnOn
+                        onWaveform = switchingWaveform;
+                    else
+                        offWaveform = switchingWaveform;
+                    end
                 end
+                % Create Results Object
+                dpResults = DoublePulseResults(onWaveform, offWaveform);
+                
+                % Anoymous function to convert variable name to string
+                vname=@(x) inputname(1);
+                
+                % Save Result
+                file_name = [settings.dataDirectory num2str(busVoltage)...
+                    'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
+                save(file_name, vname(dpResults));
             end
         end
     end
