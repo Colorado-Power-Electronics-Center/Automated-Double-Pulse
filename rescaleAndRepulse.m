@@ -58,7 +58,8 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, f
     WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
     
     % Create Waveform result
-    fullWvFm = GeneralWaveform.fromChannelCell(FullWaveform, WaveForms, settings.channel);
+    fullWvFm = FullWaveform.fromChannelCell(WaveForms, settings.channel,...
+        fullWaveforms.aproxBusVoltage, settings.window);
     
     % Return Waveforms
     returnWaveforms = fullWvFm;

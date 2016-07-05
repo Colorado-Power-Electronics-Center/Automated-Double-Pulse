@@ -3,12 +3,12 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.busVoltages = [100, 200, 300, 400];
-    dpt_settings.loadCurrents = [30];
+    dpt_settings.busVoltages = [100];
+    dpt_settings.loadCurrents = [10];
     dpt_settings.currentResistor = 100E-3;
-    dpt_settings.loadInductor = 670E-6;
-    dpt_settings.minGateVoltage = -10;
-    dpt_settings.maxGateVoltage = 10;
+    dpt_settings.loadInductor = 720E-6;
+    dpt_settings.minGateVoltage = -6;
+    dpt_settings.maxGateVoltage = 9;
     dpt_settings.gateLogicVoltage = 5;
 
     %% Instrument Setup
@@ -113,20 +113,20 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.dataDirectory = 'Measurements\testing\';
     %% Data Processing
         % Turn on Window
-        dpt_settings.turn_on_prequel = 15e-9;
-        dpt_settings.turn_on_time = 80e-9;
-        dpt_settings.turn_on_prequel_idxs = ...
-            floor(dpt_settings.turn_on_prequel * dpt_settings.scopeSampleRate);
-        dpt_settings.turn_on_time_idxs = ...
-            floor(dpt_settings.turn_on_time * dpt_settings.scopeSampleRate);
+        dpt_settings.window.turn_on_prequel = 15e-9;
+        dpt_settings.window.turn_on_time = 80e-9;
+%         dpt_settings.turn_on_prequel_idxs = ...
+%             floor(dpt_settings.turn_on_prequel * dpt_settings.scopeSampleRate);
+%         dpt_settings.turn_on_time_idxs = ...
+%             floor(dpt_settings.turn_on_time * dpt_settings.scopeSampleRate);
         
         % Turn off Window
-        dpt_settings.turn_off_prequel = dpt_settings.turn_on_prequel;
-        dpt_settings.turn_off_time = dpt_settings.turn_on_time;
-        dpt_settings.turn_off_prequel_idxs = ...
-            floor(dpt_settings.turn_off_prequel * dpt_settings.scopeSampleRate);
-        dpt_settings.turn_off_time_idxs = ...
-            floor(dpt_settings.turn_off_time * dpt_settings.scopeSampleRate);
+        dpt_settings.window.turn_off_prequel = dpt_settings.window.turn_on_prequel;
+        dpt_settings.window.turn_off_time = dpt_settings.window.turn_on_time;
+%         dpt_settings.turn_off_prequel_idxs = ...
+%             floor(dpt_settings.turn_off_prequel * dpt_settings.scopeSampleRate);
+%         dpt_settings.turn_off_time_idxs = ...
+%             floor(dpt_settings.turn_off_time * dpt_settings.scopeSampleRate);
        
     settings = dpt_settings;
 end

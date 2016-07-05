@@ -112,21 +112,27 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    dataDirectory
         
         %% Data Processing
+        window@WindowSize
         % Turn on Window
-        turn_on_prequel
-        turn_on_time
-        turn_on_prequel_idxs
-        turn_on_time_idxs
+%         turn_on_prequel
+%         turn_on_time
+%         turn_on_prequel_idxs
+%         turn_on_time_idxs
         
         % Turn off Window
-        turn_off_prequel
-        turn_off_time
-        turn_off_prequel_idxs
-        turn_off_time_idxs
+%         turn_off_prequel
+%         turn_off_time
+%         turn_off_prequel_idxs
+%         turn_off_time_idxs
         
     end
     
     methods
+        % Constructor
+        function self = DPTSettings()
+            self.channel = channelMapper;
+            self.window = WindowSize;
+        end
         % Methods to allow for backwards compatibility with old channel
         % storage functionality.
         function out = get.VDS_Channel(self)

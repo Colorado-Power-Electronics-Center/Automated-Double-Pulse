@@ -233,7 +233,8 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
     
     % Create Waveform result
-    fullWvFm = GeneralWaveform.fromChannelCell(FullWaveform, WaveForms, settings.channel);
+    fullWvFm = FullWaveform.fromChannelCell(WaveForms, settings.channel,...
+        busVoltage, settings.window);
     
     % Return Waveforms
     returnWaveforms = fullWvFm;
