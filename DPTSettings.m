@@ -113,17 +113,6 @@ classdef DPTSettings < matlab.mixin.Copyable
         
         %% Data Processing
         window@WindowSize
-        % Turn on Window
-%         turn_on_prequel
-%         turn_on_time
-%         turn_on_prequel_idxs
-%         turn_on_time_idxs
-        
-        % Turn off Window
-%         turn_off_prequel
-%         turn_off_time
-%         turn_off_prequel_idxs
-%         turn_off_time_idxs
         
     end
     

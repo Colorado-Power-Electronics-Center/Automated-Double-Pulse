@@ -270,12 +270,10 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             %   percentBuffer: Integer percent buffer to increase scale by
             %   adds percentBuffer / 2 to top and bottom.
             curChannel = ['CH' int2str(channel)];
-            data_range = maxValue - minValue;
-            new_scale = (data_range / numDivisions);
-            new_scale = new_scale * (1 + percentBuffer / 100);
-            new_y_pos = -mean([minValue, maxValue]) / new_scale;
-            self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
-            self.sendCommand([curChannel ':POSition ' num2str(new_y_pos)]);
+            [scale, position] =...
+                min2Scale(minValue, maxValue, numDivisions, percentBuffer);
+            self.sendCommand([curChannel ':SCAle ' num2str(scale)]);
+            self.sendCommand([curChannel ':POSition ' num2str(position)]);
         end
         % Channel Probe Gain   
         function setChProbeGain(self, channel, chProbeGain)

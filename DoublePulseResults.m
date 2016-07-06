@@ -21,12 +21,15 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         currentRiseTime
         turnOnTime
         turnOnPeakDV_DT
+        pOn
         
         % Turn Off Properties
         turnOffEnergy
         turnOffDelay
         voltageRiseTime
+        turnOffTime
         turnOffPeakDV_DT
+        pOff
     end
     
     properties (Access = private)
@@ -37,6 +40,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         
         % Turn Off
         gateTurnOffIdx
+        currentTurnOffIdx
+        vDSatBus
     end
     
     methods
@@ -48,39 +53,59 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 
                 %% Calculate Values
                 % Nominal Values
-                self.busVoltage = self.calcBusVoltage;
-                self.loadCurrent = self.calcLoadCurrent;
-                self.gateVoltage = self.calcGateVoltage;
+                self.calcBusVoltage;
+                self.calcLoadCurrent;
+                self.calcGateVoltage;
                 
                 % IV Misalignment
-                self.ivMisalignment = calcIVMisalignment;
+                self.calcIVMisalignment;
                 if self.ivMisalignment > 500e-12
                     warning('IV Misalignment greater than 500 pS');
                 end
                 
                 % Turn On indicies
-                self.gateTurnOnIdx = self.calcGateTurnOnIdx;
-                self.currentTurnOnIdx = self.calcCurrentTurnOnIdx;
+                self.calcGateTurnOnIdx;
+                self.calcCurrentTurnOnIdx;
+                
+                % Turn Off indicies
+                self.calcGateTurnOffIdx;
+                self.calcCurrentTurnOffIdx;
                 
                 % Current Rise, Voltage Fall, and turn on times
-                self.currentRiseTime = calcCurrentRiseTime;
-                self.voltageFallTime = calcVoltageFallTime;
-                self.turnOnTime = calcTurnOnTime;
+                self.calcCurrentRiseTime;
+                self.calcVoltageFallTime;
+                self.calcTurnOnTime;
+                self.calcTurnOnDelay;
+                
+                % Voltage Rise, turn off times
+                self.calcVoltageRiseTime;
+                self.calcTurnOffTime;
+                self.calcTurnOffDelay;
+                
+                % Calculate Maximum DV/DT in turn off and turn on V_DS
+                self.calcTurnOnPeakDV_DT;
+                self.calcTurnOffPeakDV_DT;
+                
+                % Calculate Turn On Energy
+                self.calcTurnOnEnergy;
+                
+                % Calculate Turn Off Energy
+                self.calcTurnOffEnergy;
             end
         end
     end
     
     methods (Access = private)
-        function busVoltage = calcBusVoltage(self)
+        function calcBusVoltage(self)
             % Calculate the Bus Voltage by finding the average of V_DS from 
             % the start of the turn on waveform to 1/4 of the time until
             % turn on.
             stopIdx = floor(self.turnOnWaveform.switchIdx / 2);
             beforeSwitchVDS = self.turnOnWaveform.v_ds(1:stopIdx);
             
-            busVoltage = mean(beforeSwitchVDS);
+            self.busVoltage = mean(beforeSwitchVDS);
         end
-        function loadCurrent = calcLoadCurrent(self)
+        function calcLoadCurrent(self)
             % Calculate the load current by taking the mean of the
             % Drain Current from 25 ns before the turn off until 5 ns
             % before turn off. 
@@ -90,63 +115,180 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             endIdx = self.turnOffIdx - pointsInTime(5e-9);
             beforeSwitchID = self.turnOffWaveform.i_d(startIdx:endIdx);
             
-            loadCurrent = mean(beforeSwitchID);
+            self.loadCurrent = mean(beforeSwitchID);
         end
-        function gateVoltage = calcGateVoltage(self)
+        function calcGateVoltage(self)
             % Calculate the gate voltage by finding the average of the
             % values from the start of the turn off waveform to 1/4 of the
             % time until turn off.
             stopIdx = floor(self.gateTurnOffIdx / 2);
             beforeSwitchVGS = self.turnOffWaveform(1:stopIdx);
             
-            gateVoltage = mean(beforeSwitchVGS);
+            self.gateVoltage = mean(beforeSwitchVGS);
         end
-        function gateOnIdx = calcGateTurnOnIdx(self)
+        function calcGateTurnOnIdx(self)
             % Find Gate Turn on idx
-            % Point in V_GS turn on waveform where voltage starts to increase and 
-            % does not stop increasing
-            gateOnIdx = findOnIdx(self.turnOnWaveform.v_gs, self.gateVoltage);
+            % Point in V_GS turn on waveform where voltage starts to 
+            % increase and does not stop increasing.
+            self.gateTurnOnIdx = self.findOnIdx(self.turnOnWaveform.v_gs, self.gateVoltage);
         end
-        function currentOnIdx = calcCurrentTurnOnIdx(self)
+        function calcGateTurnOffIdx(self)
+            % Find Gate Turn off idx
+            % Point in V_GS turn off waveform where voltage starts to fall
+            % and does not stop decreasing.
+            self.gateTurnOffIdx = self.findOffIdx(self.turnOffWaveform.v_gs);
+        end
+        function calcCurrentTurnOnIdx(self)
             % Find Current Turn on idx
-            % Point in I_D turn on waveform where current starts to increase and
-            % does not stop increasing
-            currentOnIdx = findOnIdx(self.turnOnWaveform.i_d, self.loadCurrent);
+            % Point in I_D turn on waveform where current starts to 
+            % increase and does not stop increasing
+            self.currentTurnOnIdx = self.findOnIdx(self.turnOnWaveform.i_d, self.loadCurrent);
         end
-        function turnOnDelay = calcTurnOnDelay(self)
+        function calcCurrentTurnOffIdx(self)
+            % Find Current Turn Off idx
+            % Point in I_D turn off waveform where current starts to
+            % decrease and does not stop decreasing.
+            self.currentTurnOffIdx = self.findOffIdx(self.turnOffWaveform.i_d);
+        end
+        function calcTurnOnDelay(self)
             % Find turn on delay, td_on, the time from gate rise start to current
             % rise start.
             t_d_onIdx = self.currentTurnOnIdx - self.gateTurnOnIdx;
-            turnOnDelay = t_d_onIdx * self.turnOnWaveform.samplePeriod;
+            self.turnOnDelay = t_d_onIdx * self.turnOnWaveform.samplePeriod;
         end
-        function curRiseTime = calcCurrentRiseTime(self)
+        function calcTurnOffDelay(self)
+            % Find turn off delay, td_off, the time from the start of the
+            % gate fall to the start of the current fall.
+            tdOffIdx = self.currentTurnOffIdx - self.gateTurnOffIdx;
+            self.turnOffDelay = tdOffIdx * self.turnOffWaveform.samplePeriod;
+        end
+        function calcCurrentRiseTime(self)
             % Find Current Rise time, t_cr, the time for the current to rise from 0
             % to the load current.
             id_atLoadIdx = find(self.turnOnWaveform.i_d > self.loadCurrent, 1);
             t_cr_idx = id_atLoadIdx - self.currentTurnOnIdx;
-            curRiseTime = t_cr_idx * self.turnOnWaveform.samplePeriod;
+            self.currentRiseTime = t_cr_idx * self.turnOnWaveform.samplePeriod;
         end
-        function voltageFallTime = calcVoltageFallTime(self)
+        function calcVoltageFallTime(self)
             % Find Voltage Fall time, t_vf, the time it takes for the voltage to
             % reach zero after the voltage starts falling. We can say that the
             % voltage will start falling at the same time the current starts
             % rising.
             self.v_ds_at0Idx = find(self.turnOnWaveform.v_ds < 0, 1);
             t_vf_idx = self.v_ds_at0Idx - self.currentTurnOnIdx;
-            voltageFallTime = t_vf_idx * self.turnOnWaveform.samplePeriod;
+            self.voltageFallTime = t_vf_idx * self.turnOnWaveform.samplePeriod;
         end
-        function turnOnTime = calcTurnOnTime(self)
+        function calcVoltageRiseTime(self)
+            % Find Voltage Rise time, t_vr, the time it takes for the
+            % voltage to reach the bus after the voltage starts rising. We
+            % can say that the voltage will start rising at the same time
+            % the current starts falling.
+            self.vDSatBus = find(self.turnOffWaveform.v_ds > self.busVoltage);
+            tVRidx = self.vDSatBus - self.currentTurnOffIdx;
+            self.voltageRiseTime = tVRidx * self.turnOffWaveform.samplePeriod;
+        end
+        function calcTurnOnTime(self)
             % Calculate on time, t_on, the time from intial V_GS rise to final
             % V_DS fall. 
             t_on_idx = self.v_ds_at0Idx - self.gateTurnOnIdx;
-            turnOnTime = t_on_idx * self.turnOnWaveform.samplePeriod;
+            self.turnOnTime = t_on_idx * self.turnOnWaveform.samplePeriod;
+        end
+        function calcTurnOffTime(self)
+            % Calculate off time, t_off, the time from intial V_GS fall to
+            % V_DS reaching the Bus Voltage.
+            tOffIdx = self.vDSatBus - self.gateTurnOffIdx;
+            self.turnOffTime = tOffIdx * self.turnOffWaveform.samplePeriod;
+        end
+        function calcTurnOnPeakDV_DT(self)
+            % Calculate the peak DV/DT in V_DS during the turn on time
+            % period.
+            % Find V_DS turn on 10% and 90% on point
+            onWF = self.turnOnWaveform.v_ds;
+            % Device is 10% on when V_DS has dropped from the bus voltage
+            % to 90% of the Bus Voltage
+            on10Idx = find(onWF > .9 * self.busVoltage, 1, 'last');
+            % Device is 90% on when V_DS has dropped to 10% of the bus
+            % voltage.
+            on90Idx = find(onWF < .1 * self.busVoltage, 1);
+            
+            % Create vector from 10% on to 90% on
+            onEdge = onWF(on10Idx:on90Idx);
+            
+            % find DV/DT 
+            dv_dt = diff(onEdge) / self.turnOnWaveform.samplePeriod;
+            
+            % Max DV/DT 
+            self.turnOnPeakDV_DT = max(abs(dv_dt));
+        end
+        function calcTurnOffPeakDV_DT(self)
+            % Calculate the peak DV/DT in V_DS during the turn off time
+            % period.
+            % Find V_DS turn on 10% and 90% on point
+            offWF = self.turnOffWaveform.v_ds;
+            % Device is 10% off when V_DS has risen from 0 to 10% of the 
+            % Bus Voltage.
+            oFF10Idx = find(offWF > .1 * self.busVoltage, 1, 'last');
+            % Device is 90% on when V_DS has dropped to 10% of the bus
+            % voltage.
+            off90Idx = find(offWF < .9 * self.busVoltage, 1);
+            
+            % Create vector from 10% on to 90% on
+            offEdge = offWF(oFF10Idx:off90Idx);
+            
+            % find DV/DT 
+            dv_dt = diff(offEdge) / self.turnOffWaveform.samplePeriod;
+            
+            % Max DV/DT 
+            self.turnOnPeakDV_DT = max(abs(dv_dt));
+        end
+        function calcTurnOnEnergy(self)
+            % Calculate the energy loss during turn on.
+            % Find the power
+            self.pOn = self.turnOnWaveform.v_ds .* self.turnOffWaveform.i_d;
+            
+            % Find Energy loss during switching
+            eOn = cumtrapz(self.turnOnWaveform.time(...
+                self.currentTurnOnIdx:self.v_ds_at0Idx), self.pOn(...
+                self.currentTurnOnIdx:self.v_ds_at0Idx));
+            
+            % Set Loss
+            self.turnOnEnergy = eOn;            
+        end
+        function calcTurnOffEnergy(self)
+            % Calculate the energy loss during turn off
+            % Find the power
+            self.pOff = self.turnOffWaveform.v_ds .* self.turnOffWaveform.i_d;
+            
+            % find energy loss during switching
+            eOff = cumtrapz(self.turnOffWaveform.time(...
+                self.currentTurnOffIdx:self.vDSatBus),...
+                self.pOff(self.currentTurnOffIdx:self.vDSatBus));
+            
+            % Set loss
+            self.turnOffEnergy = eOff;
         end
         function [onIdx] = findOnIdx(onWaveform, peakValue)
             on_diff = diff(onWaveform);
             half_on_idx = find(onWaveform > peakValue / 2, 1);
             onIdx = find(on_diff(1:half_on_idx) < 0, 1, 'last') + 1;
         end
-        function ivMisalignment = calcIVMisalignment(self)
+        function [offIdx] = findOffIdx(offWaveform)
+            % Find point in offWaveform where value starts decreasing and
+            % does not stop decreasing.
+            offDiff = diff(offWaveform);
+            
+            % Half off value is aproximately the average of the entire
+            % waveform.
+            halfOffValue = mean(offWaveform);
+            
+            % Find half off idx
+            halfOffIdx = find(offWaveform < halfOffValue, 1);
+            
+            % offIdx is point before halfOffIdx where value starts to
+            % decrease and does not stop.
+            offIdx = find(offDiff(1:halfOffIdx) > 0, 1, 'last') + 1;
+        end
+        function calcIVMisalignment(self)
             % Use di/dt method to deskew voltage and current measurements.
             % Returns the delay in the curent signal, e.g. if the current lags the
             % voltage by 5ns the function will return +5ns.
@@ -192,7 +334,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             idx_delay = u_delay + (i_start - v_start);
 
             % Convert Delay to time
-            ivMisalignment = idx_delay * min_skew;
+            self.ivMisalignment = idx_delay * min_skew;
         end
     end
     methods (Access = public, Static)
@@ -206,7 +348,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             DPResults.calcLoadCurrent;
             
             % Find IV Misalignment
-            DPResults.ivMisalignment = DPResults.calcIVMisalignment;
+            DPResults.calcIVMisalignment;
             
             % Return
             ivMisalignment = DPResults.ivMisalignment;

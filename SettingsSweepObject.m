@@ -115,18 +115,10 @@ function [ settings ] = SettingsSweepObject()
         % Turn on Window
         dpt_settings.window.turn_on_prequel = 15e-9;
         dpt_settings.window.turn_on_time = 80e-9;
-%         dpt_settings.turn_on_prequel_idxs = ...
-%             floor(dpt_settings.turn_on_prequel * dpt_settings.scopeSampleRate);
-%         dpt_settings.turn_on_time_idxs = ...
-%             floor(dpt_settings.turn_on_time * dpt_settings.scopeSampleRate);
         
         % Turn off Window
         dpt_settings.window.turn_off_prequel = dpt_settings.window.turn_on_prequel;
         dpt_settings.window.turn_off_time = dpt_settings.window.turn_on_time;
-%         dpt_settings.turn_off_prequel_idxs = ...
-%             floor(dpt_settings.turn_off_prequel * dpt_settings.scopeSampleRate);
-%         dpt_settings.turn_off_time_idxs = ...
-%             floor(dpt_settings.turn_off_time * dpt_settings.scopeSampleRate);
        
     settings = dpt_settings;
 end
