@@ -85,7 +85,7 @@ classdef FullWaveform < GeneralWaveform & handle
             else
                 sectionedWF.i_l = self.i_l;
             end
-            sectionedWF.time = self.time(startIdx:stopIdx) - time(startIdx);
+            sectionedWF.time = self.time(startIdx:stopIdx) - self.time(startIdx);
         end
     end
     

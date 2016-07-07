@@ -57,6 +57,12 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, f
     % Create time vector
     WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
     
+    % Invert Series 5000 Scopes
+    if settings.invertCurrent && strcmp(myScope.scopeSeries, myScope.Series5000)
+        WaveForms{settings.channel.ID} = WaveForms{settings.channel.ID} * -1;
+        WaveForms{settings.channel.IL} = WaveForms{settings.channel.IL} * -1;
+    end
+    
     % Create Waveform result
     fullWvFm = FullWaveform.fromChannelCell(WaveForms, settings.channel,...
         fullWaveforms.aproxBusVoltage, settings.window);

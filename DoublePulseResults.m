@@ -57,12 +57,6 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.calcLoadCurrent;
                 self.calcGateVoltage;
                 
-                % IV Misalignment
-                self.calcIVMisalignment;
-                if self.ivMisalignment > 500e-12
-                    warning('IV Misalignment greater than 500 pS');
-                end
-                
                 % Turn On indicies
                 self.calcGateTurnOnIdx;
                 self.calcCurrentTurnOnIdx;
@@ -70,6 +64,14 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 % Turn Off indicies
                 self.calcGateTurnOffIdx;
                 self.calcCurrentTurnOffIdx;
+                
+                % IV Misalignment
+                self.calcIVMisalignment;
+                if self.ivMisalignment > 500e-12
+                    warning('IV Misalignment greater than 500 pS');
+                end
+                
+                
                 
                 % Current Rise, Voltage Fall, and turn on times
                 self.calcCurrentRiseTime;
@@ -107,12 +109,12 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         end
         function calcLoadCurrent(self)
             % Calculate the load current by taking the mean of the
-            % Drain Current from 25 ns before the turn off until 5 ns
+            % Drain Current from start of turn off window until 5 ns
             % before turn off. 
-            pointsInTime = @(t) self.turnOnWaveform.sampleRate * t;
+            pointsInTime = @(t) floor(self.turnOnWaveform.sampleRate * t);
             
-            startIdx = self.turnOffWaveform.switchIdx - pointsInTime(25e-9);
-            endIdx = self.turnOffIdx - pointsInTime(5e-9);
+            startIdx = 1;
+            endIdx = self.turnOffWaveform.switchIdx - pointsInTime(5e-9);
             beforeSwitchID = self.turnOffWaveform.i_d(startIdx:endIdx);
             
             self.loadCurrent = mean(beforeSwitchID);
@@ -121,8 +123,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Calculate the gate voltage by finding the average of the
             % values from the start of the turn off waveform to 1/4 of the
             % time until turn off.
-            stopIdx = floor(self.gateTurnOffIdx / 2);
-            beforeSwitchVGS = self.turnOffWaveform(1:stopIdx);
+            stopIdx = floor(self.turnOffWaveform.switchIdx / 2);
+            beforeSwitchVGS = self.turnOffWaveform.v_gs(1:stopIdx);
             
             self.gateVoltage = mean(beforeSwitchVGS);
         end
@@ -267,27 +269,6 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Set loss
             self.turnOffEnergy = eOff;
         end
-        function [onIdx] = findOnIdx(onWaveform, peakValue)
-            on_diff = diff(onWaveform);
-            half_on_idx = find(onWaveform > peakValue / 2, 1);
-            onIdx = find(on_diff(1:half_on_idx) < 0, 1, 'last') + 1;
-        end
-        function [offIdx] = findOffIdx(offWaveform)
-            % Find point in offWaveform where value starts decreasing and
-            % does not stop decreasing.
-            offDiff = diff(offWaveform);
-            
-            % Half off value is aproximately the average of the entire
-            % waveform.
-            halfOffValue = mean(offWaveform);
-            
-            % Find half off idx
-            halfOffIdx = find(offWaveform < halfOffValue, 1);
-            
-            % offIdx is point before halfOffIdx where value starts to
-            % decrease and does not stop.
-            offIdx = find(offDiff(1:halfOffIdx) > 0, 1, 'last') + 1;
-        end
         function calcIVMisalignment(self)
             % Use di/dt method to deskew voltage and current measurements.
             % Returns the delay in the curent signal, e.g. if the current lags the
@@ -311,7 +292,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             f_current = interp1(time, current, f_time, 'spline');
             
             % Find starting and stoping indexs for current
-            i_start = find(f_current - 0.1 * I_load < 0, 1, 'last');
+            i_pastHalf = find(f_current > .5 * I_load, 1);
+            i_start = find(f_current(1:i_pastHalf) - 0.1 * I_load < 0, 1, 'last');
             i_end = find(f_current - 0.9 * I_load > 0, 1);
             i_start = 2 * i_start - i_end;
 
@@ -353,6 +335,29 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Return
             ivMisalignment = DPResults.ivMisalignment;
             
+        end
+    end
+    methods (Access = protected, Static)
+        function [onIdx] = findOnIdx(onWaveform, peakValue)
+            on_diff = diff(onWaveform);
+            half_on_idx = find(onWaveform > peakValue / 2, 1);
+            onIdx = find(on_diff(1:half_on_idx) < 0, 1, 'last') + 1;
+        end
+        function [offIdx] = findOffIdx(offWaveform)
+            % Find point in offWaveform where value starts decreasing and
+            % does not stop decreasing.
+            offDiff = diff(offWaveform);
+            
+            % Half off value is aproximately the average of the entire
+            % waveform.
+            halfOffValue = mean(offWaveform);
+            
+            % Find half off idx
+            halfOffIdx = find(offWaveform < halfOffValue, 1);
+            
+            % offIdx is point before halfOffIdx where value starts to
+            % decrease and does not stop.
+            offIdx = find(offDiff(1:halfOffIdx) > 0, 1, 'last') + 1;
         end
     end
     

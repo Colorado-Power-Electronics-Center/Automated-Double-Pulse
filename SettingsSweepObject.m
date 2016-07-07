@@ -5,10 +5,10 @@ function [ settings ] = SettingsSweepObject()
     %% Test Specific Settings
     dpt_settings.busVoltages = [100];
     dpt_settings.loadCurrents = [10];
-    dpt_settings.currentResistor = 100E-3;
+    dpt_settings.currentResistor = 102E-3;
     dpt_settings.loadInductor = 720E-6;
-    dpt_settings.minGateVoltage = -6;
-    dpt_settings.maxGateVoltage = 9;
+    dpt_settings.minGateVoltage = -3;
+    dpt_settings.maxGateVoltage = 10;
     dpt_settings.gateLogicVoltage = 5;
 
     %% Instrument Setup
@@ -64,7 +64,7 @@ function [ settings ] = SettingsSweepObject()
 
         % Probe Gains
         dpt_settings.chProbeGain = [1, 1, 1, 1];
-        dpt_settings.invertCurrent = false;
+        dpt_settings.invertCurrent = true;
 
         % Initial Vertical Settings
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
@@ -113,7 +113,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.dataDirectory = 'Measurements\testing\';
     %% Data Processing
         % Turn on Window
-        dpt_settings.window.turn_on_prequel = 15e-9;
+        dpt_settings.window.turn_on_prequel = 30e-9;
         dpt_settings.window.turn_on_time = 80e-9;
         
         % Turn off Window
