@@ -95,6 +95,10 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.calcTurnOffEnergy;
             end
         end
+        
+        function pubCalcIvMis(self)
+            self.calcIVMisalignment;
+        end
     end
     
     methods (Access = private)
@@ -185,7 +189,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % voltage to reach the bus after the voltage starts rising. We
             % can say that the voltage will start rising at the same time
             % the current starts falling.
-            self.vDSatBus = find(self.turnOffWaveform.v_ds > self.busVoltage);
+            self.vDSatBus = find(self.turnOffWaveform.v_ds > self.busVoltage, 1);
             tVRidx = self.vDSatBus - self.currentTurnOffIdx;
             self.voltageRiseTime = tVRidx * self.turnOffWaveform.samplePeriod;
         end
@@ -249,10 +253,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             self.pOn = self.turnOnWaveform.v_ds .* self.turnOffWaveform.i_d;
             
             % Find Energy loss during switching
-            eOn = cumtrapz(self.turnOnWaveform.time(...
-                self.currentTurnOnIdx:self.v_ds_at0Idx), self.pOn(...
-                self.currentTurnOnIdx:self.v_ds_at0Idx));
+            eOnCum = cumtrapz(self.turnOnWaveform.time, self.pOn);
             
+            eOn = eOnCum(self.v_ds_at0Idx) - eOnCum(self.currentTurnOnIdx);
             % Set Loss
             self.turnOnEnergy = eOn;            
         end
@@ -262,9 +265,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             self.pOff = self.turnOffWaveform.v_ds .* self.turnOffWaveform.i_d;
             
             % find energy loss during switching
-            eOff = cumtrapz(self.turnOffWaveform.time(...
-                self.currentTurnOffIdx:self.vDSatBus),...
-                self.pOff(self.currentTurnOffIdx:self.vDSatBus));
+            eOffCum = cumtrapz(self.turnOffWaveform.time, self.pOff);
+            
+            eOff = eOffCum(self.vDSatBus) - eOffCum(self.currentTurnOffIdx);
             
             % Set loss
             self.turnOffEnergy = eOff;
