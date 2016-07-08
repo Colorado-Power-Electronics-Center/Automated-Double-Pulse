@@ -1,6 +1,6 @@
-function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, fullWaveforms, settings)
+function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, scalingWaveforms, settings)
     % Create Waveform Cell
-    waveforms = fullWaveforms.channelOrderedCell;
+    waveforms = scalingWaveforms.channelOrderedCell;
     
     % Rescale Oscilloscope VDS, VGS, and ID Channels
     for channel = [settings.VDS_Channel settings.VGS_Channel settings.ID_Channel]
@@ -65,7 +65,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, f
     
     % Create Waveform result
     fullWvFm = FullWaveform.fromChannelCell(WaveForms, settings.channel,...
-        fullWaveforms.aproxBusVoltage, settings.window);
+        scalingWaveforms.aproxBusVoltage, settings.window);
     
     % Return Waveforms
     returnWaveforms = fullWvFm;

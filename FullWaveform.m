@@ -3,8 +3,6 @@ classdef FullWaveform < GeneralWaveform & handle
     %   Detailed explanation goes here
     
     properties
-        aproxBusVoltage
-        
         turn_on_idx
         turn_off_idx
         
@@ -70,6 +68,7 @@ classdef FullWaveform < GeneralWaveform & handle
             sectionedWF = SwitchWaveform;
             sectionedWF.switchCapture = switchCapture;
             sectionedWF.channel = copy(self.channel);
+            sectionedWF.aproxBusVoltage = self.aproxBusVoltage;
             sectionedWF.switchIdx = prequelIdx;
             
             % Set Waveform Values

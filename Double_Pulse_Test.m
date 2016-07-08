@@ -76,9 +76,9 @@ function Double_Pulse_Test(settings)
                     
                     % Process Results
                     if scalingWaveform.isTurnOn
-                        onWaveform = switchingWaveform;
+                        onWaveform = switchingWaveform.turnOnWaveform;
                     else
-                        offWaveform = switchingWaveform;
+                        offWaveform = switchingWaveform.turnOffWaveform;
                     end
                 end
                 % Create Results Object
