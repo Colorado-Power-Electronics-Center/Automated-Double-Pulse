@@ -445,25 +445,29 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Minimum Desired Skew
             min_skew  = 10e-12;
             
-            k = 10;
-            f = 51;
-            filVolt = sgolayfilt(voltage,k,f);
-            filCur = sgolayfilt(current,k,f);
+
             
             % Interpolate waveform to find skew more precisely
             f_time = time(1) : min_skew : time(end);
-            f_voltage = interp1(time, filVolt, f_time, 'spline') - V_bus;
-            f_current = interp1(time, filCur, f_time, 'spline');
+            f_voltage = interp1(time, voltage, f_time, 'linear') - V_bus;
+            f_current = interp1(time, current, f_time, 'linear');
+            
+            k = 3;
+            f = 201;
+            f_voltage = sgolayfilt(f_voltage,k,f);
+            f_current = sgolayfilt(f_current,k,f);
             
             % Find starting and stoping indexs for current
             i_pastHalf = find(f_current > .5 * I_load, 1);
             i_start = find(f_current(1:i_pastHalf) - 0.1 * I_load < 0, 1, 'last');
-            i_end = find(f_current - 0.9 * I_load > 0, 1);
+            i_end = find(f_current - 0.5 * I_load > 0, 1);
             i_start = 3 * i_start - 2 * i_end;
 
             % Find starting and stopping indexs for voltage
             v_start = max(1, round(i_start - max_skew / min_skew));
             v_end = min(numel(f_voltage), round(i_end + max_skew / min_skew));
+            
+            i_start = i_end - (v_end - v_start);
             
             % Slice Current and Voltage Waveforms
             on_current = f_current(i_start:i_end);
