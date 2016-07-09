@@ -8,6 +8,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         turnOnWaveform@SwitchWaveform
         turnOffWaveform@SwitchWaveform
         
+        fullWaveform@FullWaveform
+        
         % Shared Properties
         busVoltage
         loadCurrent
@@ -47,6 +49,10 @@ classdef DoublePulseResults < matlab.mixin.Copyable
     methods
         % Constructor
         function self = DoublePulseResults(onWaveforms, offWaveforms)
+            self.turnOnWaveform = SwitchWaveform;
+            self.turnOffWaveform = SwitchWaveform;
+
+            self.fullWaveform = FullWaveform;
             if nargin > 0
                 self.turnOnWaveform = onWaveforms;
                 self.turnOffWaveform = offWaveforms;
@@ -98,6 +104,156 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         
         function pubCalcIvMis(self)
             self.calcIVMisalignment;
+        end
+        
+        function dispResults(self)
+            % Output results to the command window
+            disp('Turn-off waveform analysis:');
+            fprintf('\n V_dc         %4.0f V', self.busVoltage);
+            fprintf('\n I_L          %4.1f A', self.loadCurrent);
+            fprintf('\n Eoff         %4.1f uJ', self.turnOffEnergy * 1e6);
+            fprintf('\n td_off       %4.1f ns', self.turnOffTime * 1e9);
+            fprintf('\n tvr          %4.1f ns', self.voltageRiseTime * 1e9);
+            fprintf('\n Peak dv/dt   %4.1f V/ns \n\n', self.turnOffPeakDV_DT / 1e9);
+            disp('Turn-on waveform analysis:');
+            fprintf('\n V_dc         %4.0f V', self.busVoltage);
+            fprintf('\n I_L          %4.1f A', self.loadCurrent);
+            fprintf('\n Eon          %4.1f uJ', self.turnOnEnergy * 1e6);
+            fprintf('\n td_on        %4.1f ns', self.turnOnDelay * 1e9);
+            fprintf('\n tcr          %4.1f ns', self.currentRiseTime * 1e9);
+            fprintf('\n tvf          %4.1f ns', self.voltageFallTime * 1e9);
+            fprintf('\n Peak dv/dt   %4.1f V/ns \n', self.turnOnPeakDV_DT / 1e9);
+        end
+        
+        function plotResults(self)
+            % Plot Results in several figures
+            % Plot Turn On Waveform
+            self.plotWaveform(self.turnOnWaveform, 'Turn On Waveform', self.pOn)
+            
+            % Plot Turn Off Waveform
+            self.plotWaveform(self.turnOffWaveform, 'Turn Off Waveform', self.pOff)
+            
+            % Plot Overview Waveform
+            self.plotWaveform(self.fullWaveform, 'Overview Waveform')
+        end
+        
+        function plotWaveform(self, waveform, name, power)
+            % Set Colors
+            vdsColor = 'green';
+            vgsColor = 'blue';
+            idColor = 'red';
+%             ilColor = 'magenta';
+            powerColor = 'black';
+            
+            % Set other plot values
+            lineWidth = 2;
+            
+            % Check if Switch or full waveform
+            isSwitch = isa(waveform, 'SwitchWaveform');
+            
+            if isSwitch
+                % Find VGS Scaling Factor
+                vgsScaling = self.busVoltage / self.gateVoltage;
+
+                % Change time to nS
+                time = waveform.time * 1e9;
+                timeUnits = 'ns';
+            else
+                % Most common value function
+                mostCom = @(x) mode(round(x(x > mean(x))));
+                
+                % Find aproximate Bus and gate Voltage
+                aproxGateVoltage = mostCom(waveform.v_gs);
+                aproxBusVoltage = mostCom(waveform.v_ds);
+                % Find VGS Scaling Factor
+                vgsScaling = aproxBusVoltage / aproxGateVoltage;
+                
+                % Change time to uS
+                time = waveform.time * 1e6;
+                timeUnits = '\mus';
+            end
+            
+            % Round VGS Scaling to nearest 10
+            vgsScaling = floor(vgsScaling / 10) * 10;
+            if vgsScaling == 0, vgsScaling = 1; end
+            
+            % Plot Waveform
+            switchFigure = figure();
+            switchFigure.Name = name;
+            switchFigure.NumberTitle = 'off';
+            
+            % Setup Figure
+            
+            % Setup Power Subplot
+            if isSwitch
+                powerSubPlot = subplot(2, 1, 1);
+                powerSubPlot.XGrid = 'on';
+                powerSubPlot.YGrid = 'on';
+                powerSubPlot.Position = [0.1200, 1-.22, 0.7750, 0.2];
+                powerSubPlot.XAxis.Visible = 'off';
+
+                powerLine = line(powerSubPlot, time, power);
+                powerLine.Color  = powerColor;
+                powerLine.LineWidth = lineWidth;
+
+                powerYaxis = powerSubPlot.YAxis;
+                powerYaxis.Visible = 'off';
+                buffer = (max(power) - min(power)) * .05;
+                powerYaxis.Limits = [min(power) - buffer,...
+                                     max(power) + buffer];
+                                 
+                % Setup Measured subplot
+                measSubP = subplot(2, 1, 2);
+                measSubP.Position = [0.1200, 0.010, 0.7750, 0.76];
+            else
+                % Setup Measured subplot
+                measSubP = gca;
+                measSubP.Position = [0.1200, 0.010, 0.7750, .97];
+            end
+            
+            measSubP.XGrid = 'on';
+            measSubP.YGrid = 'on';
+            
+            xlabel(['Time (' timeUnits ')']);
+            
+            legendStrs = {};
+            
+            % V_DS
+            yyaxis left
+            ylabel('Voltage (V)')
+            measSubP.YColor = 'black';
+            vdsOnLine = line(time, waveform.v_ds);
+            vdsOnLine.Color = vdsColor;
+            vdsOnLine.LineWidth = lineWidth;
+            legendStrs{end + 1} = 'V_{DS}';
+            
+            % V_GS
+            yyaxis left
+            vgsOnLine = line(time, waveform.v_gs * vgsScaling);
+            vgsOnLine.Color = vgsColor;
+            vgsOnLine.LineWidth = lineWidth;
+            legendStrs{end + 1} = ['V_{GS} \times ' num2str(vgsScaling)];
+            
+            % I_D
+            yyaxis right
+            ylabel('Current (A)')
+            measSubP.YColor = 'black';
+            idOnLine = line(time, waveform.i_d);
+            idOnLine.Color = idColor;
+            idOnLine.LineWidth = lineWidth;
+            legendStrs{end + 1} = 'I_D';
+            
+%             % I_L
+%             yyaxis right
+%             ilOnLine = line(waveform.time, waveform.i_l);
+%             ilOnLine.Color = ilColor;
+%             ilOnLine.LineWidth = lineWidth;
+%             legendStrs{end + 1} = 'I_L';
+            
+            plotLegend = legend(legendStrs);
+            plotLegend.Orientation = 'horizontal';
+            plotLegend.Location = 'southoutside';
+%             plotLegend.Orientation = 'horizontal';
         end
     end
     

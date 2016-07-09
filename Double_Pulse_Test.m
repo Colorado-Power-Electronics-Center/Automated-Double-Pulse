@@ -70,7 +70,7 @@ function Double_Pulse_Test(settings)
                 onWaveform = [];
                 offWaveform = [];
                 for scalingWaveform = [zoomedOutWaveforms.turnOnWaveform,...
-                                       zoomedOutWaveforms.turnOffWaveform]
+                                       zoomedOutWaveforms.turnOffWaveform]                        
                     % Repulse for turn on and turn off
                     [ switchingWaveform ] = rescaleAndRepulse(myScope, myFGen, testChannel , scalingWaveform, settings);
                     
@@ -79,10 +79,16 @@ function Double_Pulse_Test(settings)
                         onWaveform = switchingWaveform.turnOnWaveform;
                     else
                         offWaveform = switchingWaveform.turnOffWaveform;
+                        
+                        % Set overview Waveform
+                        if testChannel == 4
+                            overviewWaveform = switchingWaveform;
+                        end
                     end
                 end
                 % Create Results Object
                 dpResults = DoublePulseResults(onWaveform, offWaveform);
+                dpResults.fullWaveform = overviewWaveform;
                 
                 % Anoymous function to convert variable name to string
                 vname=@(x) inputname(1);
