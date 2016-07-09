@@ -406,7 +406,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         function calcTurnOnEnergy(self)
             % Calculate the energy loss during turn on.
             % Find the power
-            self.pOn = self.turnOnWaveform.v_ds .* self.turnOffWaveform.i_d;
+            self.pOn = self.turnOnWaveform.v_ds .* self.turnOnWaveform.i_d;
             
             % Find Energy loss during switching
             eOnCum = cumtrapz(self.turnOnWaveform.time, self.pOn);
