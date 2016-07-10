@@ -475,6 +475,11 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
             % Take derivative of Current
             di_dt = diff(on_current) / min_skew;
+            
+            % Distribute voltage and di/dt around 0
+            dist0 = @(x) x - 0.5 * range(x);
+            on_voltage = dist0(-on_voltage);
+            di_dt = dist0(di_dt);
 
             % Find unadjusted delay
             u_delay = finddelay(on_voltage, di_dt);
