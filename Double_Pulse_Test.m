@@ -49,7 +49,10 @@ function Double_Pulse_Test(settings)
     % Find Deskew
     settings.currentDelay = DoublePulseResults.findIVMisalignment(rescaledFullWaveform);
     disp(['IV Misalignment: ' num2str(settings.currentDelay)]);
-
+    
+    % Create Sweep results Object
+    sweepResults = SweepResults;
+    
     % Obtain Measurements
     for busVoltage = settings.busVoltages    
         % set Voltage (user or auto)
@@ -90,6 +93,9 @@ function Double_Pulse_Test(settings)
                 dpResults = DoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
                 
+                % Save in SweepResults Object
+                sweepResults.addResult(testChannel, busVoltage, dpResults);
+                
                 % Anoymous function to convert variable name to string
                 vname=@(x) inputname(1);
                 
@@ -100,6 +106,9 @@ function Double_Pulse_Test(settings)
             end
         end
     end
+    
+    % Plot Sweep Results
+    sweepResults.plotEOn;
 
     % Disconnect from instruments
     myScope.disconnect;
