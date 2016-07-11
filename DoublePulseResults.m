@@ -467,7 +467,6 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             v_start = max(1, round(i_start - max_skew / min_skew));
             v_end = min(numel(f_voltage), round(i_end + max_skew / min_skew));
             
-            i_start = i_end - (v_end - v_start);
             
             % Slice Current and Voltage Waveforms
             on_current = f_current(i_start:i_end);
