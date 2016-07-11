@@ -107,6 +107,9 @@ function Double_Pulse_Test(settings)
         end
     end
     
+    % Save Sweep Results
+    save('sweep_results.mat', 'sweepResults');
+    
     % Plot Sweep Results
     sweepResults.plotEOn;
 

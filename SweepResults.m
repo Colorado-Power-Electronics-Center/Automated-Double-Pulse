@@ -28,10 +28,18 @@ classdef SweepResults < matlab.mixin.Copyable
         function addResult(self, numChannels, busVoltage, result)
             %
             if numChannels == 2
-                curValues = self.chan2ByVoltage(busVoltage);
+                if isKey(self.chan2ByVoltage, busVoltage)
+                    curValues = self.chan2ByVoltage(busVoltage);
+                else
+                    curValues = [];
+                end
                 self.chan2ByVoltage(busVoltage) = [curValues, result];
             else
-                curValues = self.chan4ByVoltage(busVoltage);
+                if isKey(self.chan4ByVoltage, busVoltage)
+                    curValues = self.chan4ByVoltage(busVoltage);
+                else
+                    curValues = [];
+                end
                 self.chan4ByVoltage(busVoltage) = [curValues, result];
             end
         end
@@ -54,15 +62,15 @@ classdef SweepResults < matlab.mixin.Copyable
             
             hold on;
             
-            for voltage = self.chan2ByVoltage.keys
+            for voltage = self.chan4ByVoltage.keys
                 % For Every Voltage stored in Map
-                self.voltageResults = self.chan2ByVoltage(voltage);
+                self.voltageResults = self.chan4ByVoltage(voltage{1});
                 currents = [self.voltageResults.loadCurrent];
-                turnOnEnergies = [self.voltageResults.turnOnEnergy];
+                turnOnEnergies = [self.voltageResults.turnOnEnergy] * 1e6;
                 plotObj = plot(currents, turnOnEnergies);
                 plotObj.Marker = markers{1};
                 markers = circshift(markers, [-1, 0]);
-                legendStrs{end+1} = voltage;
+                legendStrs{end+1} = [num2str(voltage{1}) ' V'];
             end
             
             hold off;
