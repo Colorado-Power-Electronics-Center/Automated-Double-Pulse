@@ -3,3 +3,6 @@
 
 # Measurements
 Measurements/*
+
+# PyCharm Files (For Spell Checking)
+.idea/*

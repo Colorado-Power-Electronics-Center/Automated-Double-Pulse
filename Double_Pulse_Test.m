@@ -36,7 +36,7 @@ function Double_Pulse_Test(settings)
     
     setVoltageToLoad(myScope, busVoltage, settings);
     
-    % Swtich to triggering on V_GS for IV misalignment pulses
+    % Switch to triggering on V_GS for IV misalignment pulses
     deskew_settings = copy(settings);
     deskew_settings.triggerSource = deskew_settings.VGS_Channel;
     deskew_settings.triggerLevel = deskew_settings.maxGateVoltage / 2;
@@ -96,13 +96,13 @@ function Double_Pulse_Test(settings)
                 % Save in SweepResults Object
                 sweepResults.addResult(testChannel, busVoltage, dpResults);
                 
-                % Anoymous function to convert variable name to string
-                vname=@(x) inputname(1);
+                % Anonymous function to convert variable name to string
+                vName=@(x) inputname(1);
                 
                 % Save Result
                 file_name = [settings.dataDirectory num2str(busVoltage)...
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
-                save(file_name, vname(dpResults));
+                save(file_name, vName(dpResults));
             end
         end
     end

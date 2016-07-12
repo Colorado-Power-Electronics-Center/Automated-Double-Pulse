@@ -14,26 +14,26 @@ classdef FullWaveform < GeneralWaveform & handle
     
     methods (Access = private)
         function extractSwitches(self)
-            %% Find switching indicies using V_DS curve
+            %% Find switching indices using V_DS curve
             % Round V_DS Curve to on or off
-            V_DS_Round = round(self.v_ds / self.aproxBusVoltage) * ...
-                self.aproxBusVoltage;
+            V_DS_Round = round(self.v_ds / self.approxBusVoltage) * ...
+                self.approxBusVoltage;
             
-            % Find switching indicies
+            % Find switching indices
             V_DS_Round_Diff = diff(V_DS_Round);
             switching_idx = find(V_DS_Round_Diff ~= 0);
             
-            %% Remove Switches that occour within 50 ns of the previous
+            %% Remove Switches that occur within 50 ns of the previous
             % Calculate Number of points in 50 ns
             num_points = floor(50e-9 * self.sampleRate);
-            % Find and remove switches that occour within num_points of the
+            % Find and remove switches that occur within num_points of the
             % previous.
             switching_idx_diff = diff(switching_idx);
             false_switch_idxs = logical([0 (switching_idx_diff < num_points)]);
             switching_idx(false_switch_idxs) = [];
             
             %% Check if first switch is on or off
-            % and define turn on and turn off indexs
+            % and define turn on and turn off indices
             if V_DS_Round_Diff(switching_idx(1)) > 0
                 % Turn off
                 self.turn_off_idx = switching_idx(1);
@@ -58,7 +58,7 @@ classdef FullWaveform < GeneralWaveform & handle
                 startIdx = self.turn_on_idx - prequelIdx;
                 stopIdx = startIdx + self.windowSize.turn_off_time_idxs;
             else
-                % Turn Off Wavefrom
+                % Turn Off Waveform
                 prequelIdx = self.windowSize.turn_off_prequel_idxs;
                 startIdx = self.turn_off_idx - prequelIdx;
                 stopIdx = startIdx + self.windowSize.turn_off_time_idxs;
@@ -68,7 +68,7 @@ classdef FullWaveform < GeneralWaveform & handle
             sectionedWF = SwitchWaveform;
             sectionedWF.switchCapture = switchCapture;
             sectionedWF.channel = copy(self.channel);
-            sectionedWF.aproxBusVoltage = self.aproxBusVoltage;
+            sectionedWF.approxBusVoltage = self.approxBusVoltage;
             sectionedWF.switchIdx = prequelIdx;
             
             % Set Waveform Values
@@ -100,7 +100,7 @@ classdef FullWaveform < GeneralWaveform & handle
             fullCapture.windowSize.sampleRate = fullCapture.sampleRate;
             
             % Assign Bus Voltage and extract Switches
-            fullCapture.aproxBusVoltage = busVoltage;
+            fullCapture.approxBusVoltage = busVoltage;
             fullCapture.extractSwitches;
             
             FW = fullCapture;

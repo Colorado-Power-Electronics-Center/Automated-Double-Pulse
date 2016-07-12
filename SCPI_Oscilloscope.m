@@ -87,7 +87,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     end
     
     methods
-        %% Super Overides
+        %% Super Overrides
         function self = SCPI_Oscilloscope(visaVendor, visaAddress)
             self@SCPI_Instrument(visaVendor, visaAddress);
         end
@@ -232,9 +232,9 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 else
                     precision = 'int16';
                 end
-                jvalue = self.binBlockQuery('CURVE?', precision);
+                jValue = self.binBlockQuery('CURVE?', precision);
 
-                value(start_pieces(j):stop_pieces(j)) = jvalue;
+                value(start_pieces(j):stop_pieces(j)) = jValue;
             end
 
             % Scale Data
@@ -381,7 +381,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 channel = self.U2Str(channel);
                 self.sendCommand(['CH' channel ':PROBEFunc:EXTAtten ' num2str(chExtAtten)]);
             else
-                warning('External Attentuation not supported for this scope');
+                warning('External Attenuation not supported for this scope');
             end
         end
         function chExtAtten = getChExtAtten(self, channel)
@@ -389,7 +389,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 channel = self.U2Str(channel);
                 chExtAtten = str2double(self.query(['CH' channel ':PROBEFunc:EXTAtten?']));
             else
-                warning('External Attentuation not supported for this scope');
+                warning('External Attenuation not supported for this scope');
             end
         end
         % Channel External Attenuation Units
@@ -398,7 +398,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 channel = self.U2Str(channel);
                 self.sendCommand(['CH' channel ':PROBEFunc:EXTUnits "' chExtAttenUnits '"']);
             else
-                warning('External Attentuation not supported for this scope');
+                warning('External Attenuation not supported for this scope');
             end
         end
         function chExtAttenUnits = getChExtAttenUnits(self, channel)
@@ -407,7 +407,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 chExtAttenUnitsQuoted = self.query(['CH' channel ':PROBEFunc:EXTUnits?']);
                 chExtAttenUnits = chExtAttenUnitsQuoted(2:end-1); % Strip Quotes
             else
-                warning('External Attentuation not supported for this scope');
+                warning('External Attenuation not supported for this scope');
             end
         end
         

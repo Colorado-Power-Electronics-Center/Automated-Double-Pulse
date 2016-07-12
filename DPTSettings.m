@@ -102,7 +102,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    triggerSource
 	    triggerLevel
 
-	    % Aquisition
+	    % Acquisition
 	    acquisitionMode
         acquisitionSamplingMode
 	    acquisitionStop
@@ -113,6 +113,10 @@ classdef DPTSettings < matlab.mixin.Copyable
         
         %% Data Processing
         window@WindowSize
+        
+        %% Automation Level Settings
+        push2pulse = false
+        autoBusControl = false
         
     end
     

@@ -2,7 +2,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
     %DoublePulseResults Stores the results of a double Pulse Test.
     %   Also contains methods for processing the results of a double pulse
     %   test. Can be included in a SweepResults object to allow for
-    %   contruction of a sweep result.
+    %   construction of a sweep result.
     
     properties
         turnOnWaveform@SwitchWaveform
@@ -63,11 +63,11 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.calcLoadCurrent;
                 self.calcGateVoltage;
                 
-                % Turn On indicies
+                % Turn On indices
                 self.calcGateTurnOnIdx;
                 self.calcCurrentTurnOnIdx;
                 
-                % Turn Off indicies
+                % Turn Off indices
                 self.calcGateTurnOffIdx;
                 self.calcCurrentTurnOffIdx;
                 
@@ -162,11 +162,11 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 % Most common value function
                 mostCom = @(x) mode(round(x(x > mean(x))));
                 
-                % Find aproximate Bus and gate Voltage
-                aproxGateVoltage = mostCom(waveform.v_gs);
-                aproxBusVoltage = mostCom(waveform.v_ds);
+                % Find approximate Bus and gate Voltage
+                approxGateVoltage = mostCom(waveform.v_gs);
+                approxBusVoltage = mostCom(waveform.v_ds);
                 % Find VGS Scaling Factor
-                vgsScaling = aproxBusVoltage / aproxGateVoltage;
+                vgsScaling = approxBusVoltage / approxGateVoltage;
                 
                 % Change time to uS
                 time = waveform.time * 1e6;
@@ -196,10 +196,10 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 powerLine.Color  = powerColor;
                 powerLine.LineWidth = lineWidth;
 
-                powerYaxis = powerSubPlot.YAxis;
-                powerYaxis.Visible = 'off';
+                powerYAxis = powerSubPlot.YAxis;
+                powerYAxis.Visible = 'off';
                 buffer = (max(power) - min(power)) * .05;
-                powerYaxis.Limits = [min(power) - buffer,...
+                powerYAxis.Limits = [min(power) - buffer,...
                                      max(power) + buffer];
                                  
                 % Setup Measured subplot
@@ -350,13 +350,13 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             self.voltageRiseTime = tVRidx * self.turnOffWaveform.samplePeriod;
         end
         function calcTurnOnTime(self)
-            % Calculate on time, t_on, the time from intial V_GS rise to final
+            % Calculate on time, t_on, the time from initial V_GS rise to final
             % V_DS fall. 
             t_on_idx = self.v_ds_at0Idx - self.gateTurnOnIdx;
             self.turnOnTime = t_on_idx * self.turnOnWaveform.samplePeriod;
         end
         function calcTurnOffTime(self)
-            % Calculate off time, t_off, the time from intial V_GS fall to
+            % Calculate off time, t_off, the time from initial V_GS fall to
             % V_DS reaching the Bus Voltage.
             tOffIdx = self.vDSatBus - self.gateTurnOffIdx;
             self.turnOffTime = tOffIdx * self.turnOffWaveform.samplePeriod;
@@ -430,7 +430,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         end
         function calcIVMisalignment(self)
             % Use di/dt method to deskew voltage and current measurements.
-            % Returns the delay in the curent signal, e.g. if the current lags the
+            % Returns the delay in the current signal, e.g. if the current lags the
             % voltage by 5ns the function will return +5ns.
             
             % Unpack Needed Variables
@@ -457,13 +457,13 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             f_voltage = sgolayfilt(f_voltage,k,f);
             f_current = sgolayfilt(f_current,k,f);
             
-            % Find starting and stoping indexs for current
+            % Find starting and stopping indices for current
             i_pastHalf = find(f_current > .5 * I_load, 1);
             i_start = find(f_current(1:i_pastHalf) - 0.1 * I_load < 0, 1, 'last');
             i_end = find(f_current - 0.5 * I_load > 0, 1);
             i_start = 3 * i_start - 2 * i_end;
 
-            % Find starting and stopping indexs for voltage
+            % Find starting and stopping indices for voltage
             v_start = max(1, round(i_start - max_skew / min_skew));
             v_end = min(numel(f_voltage), round(i_end + max_skew / min_skew));
             
@@ -520,7 +520,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % does not stop decreasing.
             offDiff = diff(offWaveform);
             
-            % Half off value is aproximately the average of the entire
+            % Half off value is approximately the average of the entire
             % waveform.
             halfOffValue = mean(offWaveform);
             

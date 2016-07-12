@@ -22,7 +22,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
         myScope.channelsOff([settings.IL_Channel settings.VGS_Channel]);
     end
     
-    % Set Samplerate and record Length
+    % Set Sample rate and record Length
     total_time = myFGen.numQuery('SOURce1:BURSt:INTernal:PERiod?');
     myScope.sampleRate = settings.scopeSampleRate;
     if settings.useAutoRecordLength
@@ -38,11 +38,11 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     pause(1);
 
     % Trigger Waveform
-    myFGen.push2Trigger('pulse');
+    myFGen.push2Trigger('pulse', settings.push2pulse);
 
     pause(2);
     
-    % Check if trigger recieved
+    % Check if trigger received
     if myScope.acqState ~= 0
         error('Trigger not detected');
     end
@@ -57,6 +57,20 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     % Create time vector
     WaveForms{end + 1} = (0:myScope.recordLength - 1) / myScope.sampleRate;
     
+    % If 2 Channel Interpolate vgs from scaling waveform and add to vgs
+    % Channel, This allows us to get approximate values for the waveform
+    % processing. This does not affect the energy calculations, but does
+    % effect all calculations that rely on the gate timing. The two channel
+    % waveform results should not be considered accurate for these
+    % measurements. 
+    if numChannels == 2
+        scaledVGS = waveforms{settings.channel.VGS};
+        scaledTime = waveforms{end};
+        upSampleTime = WaveForms{end};
+        upSampleVGS = interp1(scaledTime, scaledVGS, upSampleTime, 'spline');
+        WaveForms{settings.channel.VGS} = upSampleVGS;
+    end
+    
     % Invert Series 5000 Scopes
     if settings.invertCurrent && strcmp(myScope.scopeSeries, myScope.Series5000)
         WaveForms{settings.channel.ID} = WaveForms{settings.channel.ID} * -1;
@@ -65,7 +79,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     
     % Create Waveform result
     fullWvFm = FullWaveform.fromChannelCell(WaveForms, settings.channel,...
-        scalingWaveforms.aproxBusVoltage, settings.window);
+        scalingWaveforms.approxBusVoltage, settings.window);
     
     % Return Waveforms
     returnWaveforms = fullWvFm;

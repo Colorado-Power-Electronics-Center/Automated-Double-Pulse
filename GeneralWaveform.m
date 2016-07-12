@@ -7,7 +7,7 @@ classdef GeneralWaveform < handle
     end    
     
     properties
-        aproxBusVoltage
+        approxBusVoltage
         
         % Waveforms
         v_ds

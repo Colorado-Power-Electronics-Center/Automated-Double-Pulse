@@ -2,7 +2,7 @@ function [ turn_on_waveforms, turn_off_waveforms ]...
     = splitWaveforms( busVoltage, fullWaveforms, settings )
 %splitWaveforms Splits Full waveforms into turn off and turn on waveforms.
 %   Args: ( busVoltage, fullWaveforms, settings )
-%   busVoltage: Aproximate Bus voltage of measurements
+%   busVoltage: approximate Bus voltage of measurements
 %   fullWaveforms: Cell array of waveform vectors. Should contain 4
 %   elements.
 %   settings: measurement settings object
@@ -17,15 +17,15 @@ function [ turn_on_waveforms, turn_off_waveforms ]...
     end
     time = fullWaveforms{waveformTimeIdx};
 
-    % Find switching indicies using V_DS curve
+    % Find switching indices using V_DS curve
     % Round V_DS Curve to on or of
     V_DS_Round = round(V_DS / busVoltage) * busVoltage;
     
-    % Find switching indicies
+    % Find switching indices
     V_DS_Round_Diff = diff(V_DS_Round);
     switching_idx = find(V_DS_Round_Diff ~= 0);
     
-    % Remove Switches that occour within 50 ns of the previous
+    % Remove Switches that occur within 50 ns of the previous
     time_step = time(2) - time(1);
     num_points = floor(50e-9 / time_step);
     
@@ -34,7 +34,7 @@ function [ turn_on_waveforms, turn_off_waveforms ]...
     switching_idx(false_switch_idxs) = [];    
     
     % Check if first switch is on or off
-    % and define turn on and turn off indexs
+    % and define turn on and turn off indices
     if V_DS_Round_Diff(switching_idx(1)) > 0
         % Turn off
         turn_off_idx = switching_idx(1);
@@ -77,11 +77,11 @@ function [ turn_on_waveforms, turn_off_waveforms ]...
         turn_off_waveforms{cellfun(@isempty,turn_off_waveforms)} = settings.notRecorded;
     end
     
-    % Determine Turn on offset (i.e. how to recover orginal idx from turn
+    % Determine Turn on offset (i.e. how to recover original idx from turn
     % on waveform)
     turn_on_offset = turn_on_idx - buffer_idx - 1;
     
-    % Determine Turn off offset (i.e. how to recover orginal idx from turn
+    % Determine Turn off offset (i.e. how to recover original idx from turn
     % off waveform)
     turn_off_offset = turn_off_idx - buffer_idx - 1;
     
