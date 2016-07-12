@@ -86,7 +86,7 @@ function processWaveform(data, settings)
     t_vf_idx = v_ds_at_0_idx - id_on_idx;
     t_vf = t_vf_idx * time_step;
     
-    % Calculate on time, t_on, the time from intial V_GS rise to final
+    % Calculate on time, t_on, the time from initial V_GS rise to final
     % V_DS fall. 
     t_on_idx = v_ds_at_0_idx - vgs_on_idx;
     t_on = t_on_idx * time_step;

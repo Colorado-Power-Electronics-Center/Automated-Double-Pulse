@@ -103,7 +103,7 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.triggerSource = dpt_settings.VDS_Channel;
         dpt_settings.triggerLevel = min(dpt_settings.busVoltages) / 2;
 
-        % Aquisition
+        % Acquisition
         dpt_settings.acquisitionMode = 'SAMple';
         dpt_settings.acquisitionSamplingMode = 'RT';
         dpt_settings.acquisitionStop = 'SEQuence';

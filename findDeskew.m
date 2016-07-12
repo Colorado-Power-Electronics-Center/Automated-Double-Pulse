@@ -4,7 +4,7 @@
 % voltage by 5ns the function will return +5ns.
 function delay = findDeskew(voltage, current, time)
     % find real bus voltages
-    % find aproximate switching point
+    % find approximate switching point
     [~, switch_idx] = max(abs(diff(voltage)));
     
     % find real bus voltage

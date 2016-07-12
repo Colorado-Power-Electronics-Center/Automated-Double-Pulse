@@ -54,7 +54,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     triggerSource = settings.triggerSource;
     triggerLevel = settings.triggerLevel;
 
-    % Aquisition
+    % Acquisition
     acquisitionMode = settings.acquisitionMode;
     acquisitionSamplingMode = settings.acquisitionSamplingMode;
     acquisitionStop = settings.acquisitionStop;
@@ -125,7 +125,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set Scope Dependent Properties
     if myScope.scopeSeries == SCPI_Oscilloscope.Series5000
-        % Set Horizontal Axis to maunal mode
+        % Set Horizontal Axis to manual mode
         myScope.horizontalMode = 'MANual';
         
         % Set Load Current Channel Attenuation
@@ -145,7 +145,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         myScope.recordLength = scopeRecordLength;
     end
 
-    % Setup Probe Gains of neccessary
+    % Setup Probe Gains of necessary
     if myScope.scopeSeries == SCPI_Oscilloscope.Series4000
         for channel = 1:4
             myScope.setChProbeGain(channel, chProbeGain(channel));
@@ -179,7 +179,9 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         if myScope.scopeSeries ~= SCPI_Oscilloscope.Series5000
             myScope.setChInvert(ID_Channel, 'ON');
         else
-            warning('5000 Series Scopes do not support inverting');
+%             warning('5000 Series Scopes do not support inverting');
+%             5000 Series Scopes do not support inverting, but we will do
+%             it later manually.
             myScope.setChInvert(ID_Channel, 'OFF');
         end
     else
@@ -217,7 +219,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     
     pause(1);
 
-    % Check if trigger recieved
+    % Check if trigger received
     if myScope.acqState ~= 0
         error('Trigger not detected');
     end

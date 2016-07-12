@@ -102,7 +102,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    triggerSource
 	    triggerLevel
 
-	    % Aquisition
+	    % Acquisition
 	    acquisitionMode
         acquisitionSamplingMode
 	    acquisitionStop
