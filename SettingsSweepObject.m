@@ -3,8 +3,8 @@ function [ settings ] = SettingsSweepObject()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.busVoltages = [100];
-    dpt_settings.loadCurrents = [10];
+    dpt_settings.busVoltages = [100, 200, 300, 400];
+    dpt_settings.loadCurrents = [10, 20, 30];
     dpt_settings.currentResistor = 102E-3;
     dpt_settings.loadInductor = 720E-6;
     dpt_settings.minGateVoltage = -3;
@@ -110,7 +110,7 @@ function [ settings ] = SettingsSweepObject()
 
     %% Data Saving
         % Data Directory
-        dpt_settings.dataDirectory = 'Measurements\testing\';
+        dpt_settings.dataDirectory = 'Measurements\testing\full_sweep\';
     %% Data Processing
         % Turn on Window
         dpt_settings.window.turn_on_prequel = 30e-9;

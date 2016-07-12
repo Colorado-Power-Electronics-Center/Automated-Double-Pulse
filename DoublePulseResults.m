@@ -536,3 +536,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
     
 end
 
+function out = range(x)
+    out = max(x) - min(x);
+end
+
