@@ -38,7 +38,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     pause(1);
 
     % Trigger Waveform
-    myFGen.push2Trigger('pulse');
+    myFGen.push2Trigger('pulse', settings.push2pulse);
 
     pause(2);
     

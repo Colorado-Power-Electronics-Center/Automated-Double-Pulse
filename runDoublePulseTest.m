@@ -212,7 +212,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     pause(2);
 
     % Trigger Waveform
-    myFGen.push2Trigger('pulse');
+    myFGen.push2Trigger('pulse', settings.push2pulse);
 
     % Setup binary data for the CURVE query
     myScope.setupWaveformTransfer(numBytes, encoding);

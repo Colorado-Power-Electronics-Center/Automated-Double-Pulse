@@ -70,7 +70,6 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.chInitialOffset = [0, 0, 0, 0];
         dpt_settings.chInitialScale = [0, 0, 0, 0];
         dpt_settings.chInitialPosition = [0, 0, 0, 0];
-        dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = -(floor(dpt_settings.numVerticalDivisions / 2) - 1);
         dpt_settings.maxCurrentSpike = 100;
         dpt_settings.percentBuffer = 10;
         
@@ -79,16 +78,20 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.deskewCurrent = max(dpt_settings.loadCurrents);
         dpt_settings.VGSDeskew = 4e-9;
         % VDS Vertical Settings
-        dpt_settings.chInitialScale(dpt_settings.VDS_Channel) = dpt_settings.deskewVoltage * 2 / (dpt_settings.numVerticalDivisions - 1);
-        dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = -(dpt_settings.numVerticalDivisions / 2 - 1);
+        [vdsScale, vdsPos] = min2Scale(0, dpt_settings.deskewVoltage,...
+            dpt_settings.numVerticalDivisions, 100);
+        dpt_settings.chInitialScale(dpt_settings.VDS_Channel) = vdsScale;
+        dpt_settings.chInitialPosition(dpt_settings.VDS_Channel) = vdsPos;
         % VGS Vertical Settings
         [dpt_settings.chInitialScale(dpt_settings.VGS_Channel),...
             dpt_settings.chInitialPosition(dpt_settings.VGS_Channel)] = min2Scale(...
             dpt_settings.minGateVoltage, dpt_settings.maxGateVoltage,...
             dpt_settings.numVerticalDivisions, 50);
         % ID Vertical Settings
-        dpt_settings.chInitialScale(dpt_settings.ID_Channel) = dpt_settings.maxCurrentSpike * 2 / (dpt_settings.numVerticalDivisions / 2 - 1);
-        dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = 0;
+        [idScale, idPos] = min2Scale(0, dpt_settings.maxCurrentSpike,...
+            dpt_settings.numVerticalDivisions, 100);
+        dpt_settings.chInitialScale(dpt_settings.ID_Channel) = idScale;
+        dpt_settings.chInitialPosition(dpt_settings.ID_Channel) = idPos;
         
         
         % Initial Horizontal Settings

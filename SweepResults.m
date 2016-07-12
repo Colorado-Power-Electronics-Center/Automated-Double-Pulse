@@ -16,7 +16,7 @@ classdef SweepResults < matlab.mixin.Copyable
     
     properties (Access = private)
         % Used for storing intermediate voltage values
-        voltageResults@DoublePulseResults vector
+        plotIntResults@DoublePulseResults vector
     end
     
     methods
@@ -43,43 +43,65 @@ classdef SweepResults < matlab.mixin.Copyable
                 self.chan4ByVoltage(busVoltage) = [curValues, result];
             end
         end
-        function plotEOn(self)
+        function plotSweep(self, plotSettings)
             % Function to create plot for the turn on Energy Loss with 2
             % Channel Waveforms
-            eOnFigure = figure;
-            eOnFigure.Name = 'Turn On Energy Loss';
-            eOnFigure.NumberTitle = 'off';
+            plotFigure = figure;
+            plotFigure.Name = plotSettings.title;
+            plotFigure.NumberTitle = plotSettings.numberTitle;
             
             % Set Axis Labels
-            xlabel('Load Current (A)');
-            ylabel('E_{ON} (\muJ)');
+            xlabel(plotSettings.xLabel);
+            ylabel(plotSettings.yLabel);
             
             % Setup Legend
             legendStrs = {};
             
             % Setup Marker Order
-            markers = {'+','o','*','.','x','s','d','^','v','>','<','p','h'}.';
+            markers = plotSettings.markerOrder;
             
             hold on;
             
-            for voltage = self.chan4ByVoltage.keys
+            for plotLine = plotSettings.plotMap.keys
                 % For Every Voltage stored in Map
-                self.voltageResults = self.chan4ByVoltage(voltage{1});
-                currents = [self.voltageResults.loadCurrent];
-                turnOnEnergies = [self.voltageResults.turnOnEnergy] * 1e6;
-                plotObj = plot(currents, turnOnEnergies);
+                self.plotIntResults =  plotSettings.plotMap(plotLine{1});
+                xValues = [self.plotIntResults.(plotSettings.xValueName)] * plotSettings.xScale;
+                yValues = [self.plotIntResults.(plotSettings.yValueName)] * plotSettings.yScale;
+                plotObj = plot(xValues, yValues);
                 plotObj.Marker = markers{1};
                 markers = circshift(markers, [-1, 0]);
-                legendStrs{end+1} = [num2str(voltage{1}) ' V'];
+                legendStrs{end+1} = [num2str(plotLine{1}) ' ' plotSettings.legendSuffix];
             end
             
             hold off;
             
             plotLegend = legend(legendStrs);
-            plotLegend.Location = 'NorthWest';
+            plotLegend.Location = plotSettings.legendLocation;
+        end
+        function plotEOn(self)
+            plotSettings = SweepPlotSettings;
+            plotSettings.title = 'Turn On Energy Loss';
+            plotSettings.xLabel = 'Load Current (A)';
+            plotSettings.xValueName = 'loadCurrent';
+            plotSettings.yLabel = 'E_{ON} (\muJ)';
+            plotSettings.yValueName = 'turnOnEnergy';
+            plotSettings.yScale = 1e6;
             
+            plotSettings.plotMap = self.chan2ByVoltage;
+        end
+        function plotEOff(self)
+            plotSettings = SweepPlotSettings;
+            plotSettings.title = 'Turn Off Energy Loss';
+            plotSettings.xLabel = 'Load Current (A)';
+            plotSettings.xValueName = 'loadCurrent';
+            plotSettings.yLabel = 'E_{ON} (\muJ)';
+            plotSettings.yValueName = 'turnOffEnergy';
+            plotSettings.yScale = 1e6;
+            
+            plotSettings.plotMap = self.chan2ByVoltage;
         end
     end
     
 end
+
 

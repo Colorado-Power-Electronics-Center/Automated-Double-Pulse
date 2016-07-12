@@ -5,10 +5,15 @@ function setVoltageToLoad(myScope, busVoltage, settings)
     % Get Current acqStop After
     prevStopAfter = myScope.acqStopAfter;
     
-    myScope.acqStopAfter = 'RUNSTop';
-    myScope.acqState = 'ON';
-    disp(['Set voltage to ' num2str(busVoltage) 'V and press any key...'])
-    pause;
+    % Either aske user to do it or do it automatically per settings
+    if settings.autoBusControl
+        % todo
+    else
+        myScope.acqStopAfter = 'RUNSTop';
+        myScope.acqState = 'ON';
+        disp(['Set voltage to ' num2str(busVoltage) 'V and press any key...'])
+        pause;
+    end
     
     % Reset Scope to previous Stop After
     myScope.acqStopAfter = prevStopAfter;

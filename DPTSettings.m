@@ -114,6 +114,10 @@ classdef DPTSettings < matlab.mixin.Copyable
         %% Data Processing
         window@WindowSize
         
+        %% Automation Level Settings
+        push2pulse = false
+        autoBusControl = false
+        
     end
     
     methods
