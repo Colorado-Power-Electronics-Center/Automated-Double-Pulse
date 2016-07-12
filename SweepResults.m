@@ -56,6 +56,7 @@ classdef SweepResults < matlab.mixin.Copyable
             
             % Setup Legend
             legendStrs = {};
+            legendPlots = [];
             
             % Setup Marker Order
             markers = plotSettings.markerOrder;
@@ -70,12 +71,21 @@ classdef SweepResults < matlab.mixin.Copyable
                 plotObj = plot(xValues, yValues);
                 plotObj.Marker = markers{1};
                 markers = circshift(markers, [-1, 0]);
-                legendStrs{end+1} = [num2str(plotLine{1}) ' ' plotSettings.legendSuffix];
+                legendStrs{end+1} = [num2str(plotLine{1}) ' ' plotSettings.legendSuffix]; %#ok<AGROW>
+                legendPlots(end+1) = plotObj; %#ok<AGROW>
+                
+                % Extrapolate
+                p = polyfit(xValues, yValues, 2);
+                currents = 0:35;
+                curve_x = polyval(p, currents);
+                trendLine = line(currents, curve_x);
+                trendLine.Color = plotObj.Color;
+                trendLine.LineStyle = ':';
             end
             
             hold off;
             
-            plotLegend = legend(legendStrs);
+            plotLegend = legend(legendPlots, legendStrs);
             plotLegend.Location = plotSettings.legendLocation;
         end
         function plotEOn(self)
@@ -88,17 +98,21 @@ classdef SweepResults < matlab.mixin.Copyable
             plotSettings.yScale = 1e6;
             
             plotSettings.plotMap = self.chan2ByVoltage;
+            
+            self.plotSweep(plotSettings);
         end
         function plotEOff(self)
             plotSettings = SweepPlotSettings;
             plotSettings.title = 'Turn Off Energy Loss';
             plotSettings.xLabel = 'Load Current (A)';
             plotSettings.xValueName = 'loadCurrent';
-            plotSettings.yLabel = 'E_{ON} (\muJ)';
+            plotSettings.yLabel = 'E_{OFF} (\muJ)';
             plotSettings.yValueName = 'turnOffEnergy';
             plotSettings.yScale = 1e6;
             
             plotSettings.plotMap = self.chan2ByVoltage;
+            
+            self.plotSweep(plotSettings);
         end
     end
     

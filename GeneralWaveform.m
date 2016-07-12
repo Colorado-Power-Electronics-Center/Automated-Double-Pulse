@@ -70,6 +70,7 @@ classdef GeneralWaveform < handle
                 if self.channel.IL ~= GeneralWaveform.NOT_RECORDED;
                     chCell{self.channel.IL} = self.i_l;
                 end
+                chCell{end} = self.time;
             else
                 chCell = self.NOT_RECORDED;
             end
