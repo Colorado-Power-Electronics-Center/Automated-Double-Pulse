@@ -92,7 +92,7 @@ function Double_Pulse_Test(settings)
                 % Create Results Object
                 dpResults = DoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
-                dpResults.plotResults;
+%                 dpResults.plotResults;
                 
                 % Save in SweepResults Object
                 sweepResults.addResult(testChannel, busVoltage, dpResults);

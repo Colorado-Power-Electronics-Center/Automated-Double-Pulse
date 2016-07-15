@@ -75,7 +75,9 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     % Invert Series 5000 Scopes
     if settings.invertCurrent && strcmp(myScope.scopeSeries, myScope.Series5000)
         WaveForms{settings.channel.ID} = WaveForms{settings.channel.ID} * -1;
-        WaveForms{settings.channel.IL} = WaveForms{settings.channel.IL} * -1;
+        if WaveForms{settings.channel.IL} ~= GeneralWaveform.NOT_RECORDED
+            WaveForms{settings.channel.IL} = WaveForms{settings.channel.IL} * -1;
+        end
     end
     
     % Create Waveform result
