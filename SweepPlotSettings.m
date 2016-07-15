@@ -9,11 +9,14 @@ classdef SweepPlotSettings
         yLabel
         yValueName
         yScale = 1;
+        zLabel
+        zValueName
+        zScale = 1;
         
         legendSuffix = 'V';
         legendLocation = 'NorthWest';
         
-        markerOrder = {'+','o','*','.','x','s','d','^','v','>','<','p','h'}.';
+        markerOrder = {'*','x','s','d','^','v','>','<','p','h'}.';
         
         plotMap@containers.Map;
         

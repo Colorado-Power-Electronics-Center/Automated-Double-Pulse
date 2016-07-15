@@ -24,6 +24,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         turnOnTime
         turnOnPeakDV_DT
         pOn
+        turnOnPeakVDS
+        turnOnVDSInt
+        turnOnIDInt
         
         % Turn Off Properties
         turnOffEnergy
@@ -32,6 +35,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         turnOffTime
         turnOffPeakDV_DT
         pOff
+        turnOffPeakVDS
+        turnOffVDSInt
+        turnOffIDInt
     end
     
     properties (Access = private)
@@ -57,49 +63,66 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.turnOnWaveform = onWaveforms;
                 self.turnOffWaveform = offWaveforms;
                 
-                %% Calculate Values
-                % Nominal Values
-                self.calcBusVoltage;
-                self.calcLoadCurrent;
-                self.calcGateVoltage;
-                
-                % Turn On indices
-                self.calcGateTurnOnIdx;
-                self.calcCurrentTurnOnIdx;
-                
-                % Turn Off indices
-                self.calcGateTurnOffIdx;
-                self.calcCurrentTurnOffIdx;
-                
-                % IV Misalignment
-                self.calcIVMisalignment;
-                if self.ivMisalignment > 500e-12
-                    warning('IV Misalignment greater than 500 pS');
+                self.calcAllValues;
+            end
+        end
+        function calcAllValues(self)
+            % If self contains more than one DoublePulseResult handle run
+            % function one at a time.
+            if numel(self) > 1
+                for obj = self
+                obj.calcAllValues
                 end
                 
-                
-                
-                % Current Rise, Voltage Fall, and turn on times
-                self.calcCurrentRiseTime;
-                self.calcVoltageFallTime;
-                self.calcTurnOnTime;
-                self.calcTurnOnDelay;
-                
-                % Voltage Rise, turn off times
-                self.calcVoltageRiseTime;
-                self.calcTurnOffTime;
-                self.calcTurnOffDelay;
-                
-                % Calculate Maximum DV/DT in turn off and turn on V_DS
-                self.calcTurnOnPeakDV_DT;
-                self.calcTurnOffPeakDV_DT;
-                
-                % Calculate Turn On Energy
-                self.calcTurnOnEnergy;
-                
-                % Calculate Turn Off Energy
-                self.calcTurnOffEnergy;
+                return;
             end
+            % Run all calculation methods
+            % Nominal Values
+            self.calcBusVoltage;
+            self.calcLoadCurrent;
+            self.calcGateVoltage;
+
+            % Turn On indices
+            self.calcGateTurnOnIdx;
+            self.calcCurrentTurnOnIdx;
+
+            % Turn Off indices
+            self.calcGateTurnOffIdx;
+            self.calcCurrentTurnOffIdx;
+
+            % IV Misalignment
+            self.calcIVMisalignment;
+            if self.ivMisalignment > 500e-12
+                warning('IV Misalignment greater than 500 pS');
+            end
+            
+            % Current Rise, Voltage Fall, and turn on times
+            self.calcCurrentRiseTime;
+            self.calcVoltageFallTime;
+            self.calcTurnOnTime;
+            self.calcTurnOnDelay;
+
+            % Voltage Rise, turn off times
+            self.calcVoltageRiseTime;
+            self.calcTurnOffTime;
+            self.calcTurnOffDelay;
+
+            % Calculate Maximum DV/DT in turn off and turn on V_DS
+            self.calcTurnOnPeakDV_DT;
+            self.calcTurnOffPeakDV_DT;
+
+            % Calculate Turn On Energy
+            self.calcTurnOnEnergy;
+
+            % Calculate Turn Off Energy
+            self.calcTurnOffEnergy;
+
+            % Calculate Peak V_DS
+            self.calcPeakVDS;
+            
+            % Calculate Integrals
+            self.calcOnIntegrals;
+            self.calcOffIntegrals;
         end
         
         function pubCalcIvMis(self)
@@ -139,14 +162,15 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         
         function plotWaveform(self, waveform, name, power)
             % Set Colors
-            vdsColor = 'green';
-            vgsColor = 'blue';
-            idColor = 'red';
+            vdsColor = [0.9290    0.6940    0.1250];
+            vgsColor = [0    0.4470    0.7410];
+            idColor = [0.8500    0.3250    0.0980];
 %             ilColor = 'magenta';
             powerColor = 'black';
             
             % Set other plot values
-            lineWidth = 2;
+            lineWidth = 5;
+            fontSize = 30;
             
             % Check if Switch or full waveform
             isSwitch = isa(waveform, 'SwitchWaveform');
@@ -191,13 +215,17 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 powerSubPlot.YGrid = 'on';
                 powerSubPlot.Position = [0.1200, 1-.22, 0.7750, 0.2];
                 powerSubPlot.XAxis.Visible = 'off';
+                powerSubPlot.YAxis.Visible = 'off';
+                powerSubPlot.FontSize = fontSize;
 
                 powerLine = line(powerSubPlot, time, power);
                 powerLine.Color  = powerColor;
                 powerLine.LineWidth = lineWidth;
 
+                powerLegend = legend('Power');
+                powerLegend.Location = 'northwest';
+                
                 powerYAxis = powerSubPlot.YAxis;
-                powerYAxis.Visible = 'off';
                 buffer = (max(power) - min(power)) * .05;
                 powerYAxis.Limits = [min(power) - buffer,...
                                      max(power) + buffer];
@@ -213,6 +241,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
             measSubP.XGrid = 'on';
             measSubP.YGrid = 'on';
+            measSubP.FontSize = fontSize;
             
             xlabel(['Time (' timeUnits ')']);
             
@@ -253,7 +282,6 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             plotLegend = legend(legendStrs);
             plotLegend.Orientation = 'horizontal';
             plotLegend.Location = 'southoutside';
-%             plotLegend.Orientation = 'horizontal';
         end
     end
     
@@ -385,14 +413,14 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         function calcTurnOffPeakDV_DT(self)
             % Calculate the peak DV/DT in V_DS during the turn off time
             % period.
-            % Find V_DS turn on 10% and 90% on point
+            % Find V_DS turn off 10% and 90% off point
             offWF = self.turnOffWaveform.v_ds;
             % Device is 10% off when V_DS has risen from 0 to 10% of the 
             % Bus Voltage.
-            oFF10Idx = find(offWF > .1 * self.busVoltage, 1, 'last');
-            % Device is 90% on when V_DS has dropped to 10% of the bus
+            oFF10Idx = find(offWF > .1 * self.busVoltage, 1);
+            % Device is 90% off when V_DS has risen to 90% of the bus
             % voltage.
-            off90Idx = find(offWF < .9 * self.busVoltage, 1);
+            off90Idx = find(offWF < .9 * self.busVoltage, 1, 'last');
             
             % Create vector from 10% on to 90% on
             offEdge = offWF(oFF10Idx:off90Idx);
@@ -401,7 +429,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             dv_dt = diff(offEdge) / self.turnOffWaveform.samplePeriod;
             
             % Max DV/DT 
-            self.turnOnPeakDV_DT = max(abs(dv_dt));
+            self.turnOffPeakDV_DT = max(abs(dv_dt));
         end
         function calcTurnOnEnergy(self)
             % Calculate the energy loss during turn on.
@@ -427,6 +455,37 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
             % Set loss
             self.turnOffEnergy = eOff;
+        end
+        function calcPeakVDS(self)
+            % Calculate maximum V_DS during turn on and turn off waveform
+            self.turnOnPeakVDS = max(self.turnOnWaveform.v_ds);
+            self.turnOffPeakVDS = max(self.turnOffWaveform.v_ds);
+        end
+        function calcOnIntegrals(self)
+            % Calculate the turn on integral of VDS and ID
+            startI = self.currentTurnOnIdx;
+            stopI = self.v_ds_at0Idx;
+            
+            voltage = self.turnOnWaveform.v_ds(startI:stopI);
+            current = self.turnOnWaveform.i_d(startI:stopI);
+            time = self.turnOnWaveform.time(startI:stopI);
+            
+            self.turnOnVDSInt = trapz(time, voltage);
+            self.turnOnIDInt = trapz(time, current);
+            
+        end
+        function calcOffIntegrals(self)
+            % Calculate the turn off integral of VDS and ID
+            startI = self.currentTurnOffIdx;
+            stopI = self.vDSatBus;
+            
+            voltage = self.turnOffWaveform.v_ds(startI:stopI);
+            current = self.turnOffWaveform.i_d(startI:stopI);
+            time = self.turnOffWaveform.time(startI:stopI);
+            
+            self.turnOffVDSInt = trapz(time, voltage);
+            self.turnOffIDInt = trapz(time, current);
+            
         end
         function calcIVMisalignment(self)
             % Use di/dt method to deskew voltage and current measurements.

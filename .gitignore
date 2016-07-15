@@ -1,6 +1,11 @@
 # MATLAB Specific
 *.asv
 
+# Images
+*.png
+*.eps
+*.emf
+
 # Measurements
 Measurements/*
 
