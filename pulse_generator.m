@@ -2,7 +2,12 @@ function [ pulse_waveform, total_time ] = pulse_generator( sampleRate, varargin 
 %pulse_generator Summary of this function goes here
 %   Detailed explanation goes here
 
-times = cell2mat(varargin);
+if numel(varargin) > 1
+    times = cell2mat(varargin);
+else
+    times = varargin{1};
+end
+    
 
 zeros_next = true;
 wave_form = [];

@@ -1,7 +1,7 @@
 classdef SCPI_Instrument < handle
     %SCPI_Instrument Class to handle communication and commands for SCPI
     %Instruments
-    %   Designed to be used in conjuction with subclasses that further
+    %   Designed to be used in conjunction with subclasses that further
     %   expand the abilities for specific types of instruments and specific
     %   instruments. This particular class handles VISA connections,
     %   command sending and response reading. 
@@ -74,17 +74,46 @@ classdef SCPI_Instrument < handle
             self.sendCommand(query);
             out = binblockread(self.visaObj, precision);
         end
+        
         function reset(self)
             self.sendCommand('*RST');
         end
         function trigger(self)
             self.sendCommand('*TRG');
         end
+        function push2Trigger(self, triggerStr, push2pulse)
+            if nargin == 1
+                triggerStr = 'trigger';
+                push2pulse = true;
+            elseif nargin == 2
+                % Check if user included only push2pulse in args
+                if islogical(triggerStr)
+                    push2pulse = triggerStr;
+                    triggerStr = 'trigger';
+                end
+            end
+            if push2pulse
+                disp(['Push any button to ' triggerStr '...']);
+                pause;
+            end
+            self.trigger;
+        end
         function clearStatus(self)
             self.sendCommand('*CLS');
         end
         function out = identity(self)
             out = self.query('*IDN?');
+        end
+    end
+    methods (Static)
+        function out = U2Str(UStr)
+            % U2Str Takes unknown data type and converts 
+            % to string if numeric
+            if isnumeric(UStr)
+                out = num2str(UStr);
+            else
+                out = UStr;
+            end
         end
     end
     

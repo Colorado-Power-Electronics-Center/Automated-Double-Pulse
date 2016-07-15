@@ -1,1 +1,13 @@
+# MATLAB Specific
 *.asv
+
+# Images
+*.png
+*.eps
+*.emf
+
+# Measurements
+Measurements/*
+
+# PyCharm Files (For Spell Checking)
+.idea/*

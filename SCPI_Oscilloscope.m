@@ -1,5 +1,3 @@
-
-
 classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     %SCPI_Oscilloscope Oscilloscope Super Class for SCPI Controlled Scopes.
     %   The purpose of this super class is to allow code to be reused for
@@ -10,6 +8,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     %   works as is for Tektronix 2000, 4000, and 5000 series scopes.
     
     properties (Constant)
+        Series2000 = '2XXX'
         Series4000 = '4XXX'
         Series5000 = '5XXX'
     end
@@ -53,6 +52,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         acqMode
         acqStopAfter
         acqState
+        acqSamplingMode
         % Alias Command
         % Bus Command Group
         % Calibration and Diagnostic Command Group
@@ -79,18 +79,6 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % Status and Error Command
         % Trigger Command Group
         % Vertical Command
-        ch1ProbeGain
-        ch1OffSet
-        ch1Scale
-        ch2ProbeGain
-        ch2OffSet
-        ch2Scale
-        ch3ProbeGain
-        ch3OffSet
-        ch3Scale
-        ch4ProbeGain
-        ch4OffSet
-        ch4Scale
         % Waveform Transfer Command Group
         dataStart
         dataStop
@@ -99,7 +87,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
     end
     
     methods
-        %% Super Overides
+        %% Super Overrides
         function self = SCPI_Oscilloscope(visaVendor, visaAddress)
             self@SCPI_Instrument(visaVendor, visaAddress);
         end
@@ -122,8 +110,10 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             if strcmpi(vendor, 'TEKTRONIX')
                 if Model_Digit == '5'
                     self.scopeSeries = SCPI_Oscilloscope.Series5000;
-                else
+                elseif Model_Digit == '4'
                     self.scopeSeries = SCPI_Oscilloscope.Series4000;
+                else
+                    self.scopeSeries = SCPI_Oscilloscope.Series2000;
                 end
             end
             
@@ -141,10 +131,37 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             end
         end
         function allChannelsOn(self)
-            self.sendCommand('SELECT:CH1 ON');
-            self.sendCommand('SELECT:CH2 ON');
-            self.sendCommand('SELECT:CH3 ON');
-            self.sendCommand('SELECT:CH4 ON');
+            self.channelsOn([1, 2, 3, 4]);
+        end
+        function allChannelsOff(self)
+            self.channelsOff([1, 2, 3, 4]);
+        end
+        function channelsOn(self, channels)
+            for channel = channels
+                channelStr = self.U2Str(channel);
+                self.sendCommand(['SELECT:CH' channelStr ' ON']);
+            end
+        end
+        function channelsOff(self, channels)
+            for channel = channels
+                channelStr = self.U2Str(channel);
+                self.sendCommand(['SELECT:CH' channelStr ' OFF']);
+            end
+        end
+        function out = isChannelOn(self, channel)
+            channelStr = self.U2Str(channel);
+            out = logical(str2double(self.query(['SELECT:CH' channelStr '?'])));
+        end
+        function channelStates = getChannelsState(self)
+            tempChannelStates = [0, 0, 0, 0];
+            for i = 1:4
+                tempChannelStates(i) = self.isChannelOn(i);
+            end
+            
+            channelStates = tempChannelStates;
+        end
+        function onChannels = enabledChannels(self)
+            onChannels = find(self.getChannelsState);
         end
         function setupTrigger(self, triggerType, coupling, slope, source, level)
             % setupTrigger sets up oscilloscope trigger currently only
@@ -215,9 +232,9 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
                 else
                     precision = 'int16';
                 end
-                jvalue = self.binBlockQuery('CURVE?', precision);
+                jValue = self.binBlockQuery('CURVE?', precision);
 
-                value(start_pieces(j):stop_pieces(j)) = jvalue;
+                value(start_pieces(j):stop_pieces(j)) = jValue;
             end
 
             % Scale Data
@@ -229,25 +246,176 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             % Return
             waveform = value_in_units;
         end
-        function rescaleChannel(self, channel, waveform, numDivisions)
+        function rescaleChannel(self, channel, waveform, numDivisions, percentBuffer)
             % rescaleChannel Rescales channel to give full range of values.
+            % Based on supplied waveform.
             %   Args: (channel, waveform, numDivisions)
             %   channel: Channel to rescale
             %   waveform: Waveform vector containing channel's waveform
             %   numDivisions: Number of divisions on oscilloscope screen
+            %   percentBuffer: Integer percent buffer to increase scale by
+            %   adds percentBuffer / 2 to top and bottom.
             
+            self.minMaxRescaleChannel(channel, min(waveform),...
+                max(waveform), numDivisions, percentBuffer);
+        end 
+        function minMaxRescaleChannel(self, channel, minValue, maxValue, numDivisions, percentBuffer)
+            % minMaxRescaleChannel Rescales channel to give full range of
+            % values. Based on supplied minimum and maximum values.
+            %   Args: (channel, minValue, maxValue, waveform, numDivisions, percentBuffer)
+            %   channel: Channel to rescale
+            %   minValue: Minimum value to be displayed on Oscilloscope
+            %   maxValue: Maximum Value to be displayed on Oscilloscope
+            %   numDivisions: Number of divisions on oscilloscope screen
+            %   percentBuffer: Integer percent buffer to increase scale by
+            %   adds percentBuffer / 2 to top and bottom.
             curChannel = ['CH' int2str(channel)];
-            data_range = max(waveform) - min(waveform);
-            new_scale = data_range / numDivisions;
-            new_y_pos = (min(waveform)/new_scale) + (numDivisions / 2);
-            self.sendCommand([curChannel ':SCAle ' num2str(new_scale)]);
-            self.sendCommand([curChannel ':POSition -' num2str(new_y_pos)]);
-        end        
+            [scale, position] =...
+                min2Scale(minValue, maxValue, numDivisions, percentBuffer);
+            self.sendCommand([curChannel ':SCAle ' num2str(scale)]);
+            self.sendCommand([curChannel ':POSition ' num2str(position)]);
+        end
+        % Channel Probe Gain   
+        function setChProbeGain(self, channel, chProbeGain)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':PRObe:GAIN ' num2str(chProbeGain)]);
+        end
+        function chProbeGain = getChProbeGain(self, channel)
+            channel = self.U2Str(channel);
+            chProbeGain = str2double(self.query(['CH' channel ':PRObe:GAIN?']));
+        end
+        % Channel Offset
+        function setChOffSet(self, channel, chOffSet)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':OFFSet ' num2str(chOffSet)]);
+        end
+        function chOffSet = getChOffSet(self, channel)
+            channel = self.U2Str(channel);
+            chOffSet = str2double(self.query(['CH' channel ':OFFSet?']));
+        end
+        % Channel Scale
+        function setChScale(self, channel, chScale)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':SCAle ' num2str(chScale)]);
+        end
+        function chScale = getChScale(self, channel)
+            channel = self.U2Str(channel);
+            chScale = str2double(self.query(['CH' channel ':SCAle?']));
+        end
+        % Channel Position
+        function setChPosition(self, channel, chPosition)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':POSition ' num2str(chPosition)]);
+        end
+        function chPosition = getChPosition(self, channel)
+            channel = self.U2Str(channel);
+            chPosition = str2double(self.query(['CH' channel ':POSition?']));
+        end      
+        % Channel Deskew
+        function setChDeskew(self, channel, chDeskew)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':DESKew ' num2str(chDeskew)]);
+        end
+        function chDeskew = getChDeskew(self, channel)
+            channel = self.U2Str(channel);
+            chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
+        end    
+        % Channel Termination
+        function setChTermination(self, channel, chTermination)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':TERmination ' num2str(chTermination)]);
+        end
+        function chTermination = getChTermination(self, channel)
+            channel = self.U2Str(channel);
+            chTermination = str2double(self.query(['CH' channel ':TERmination?']));
+        end    
+        % Channel Degauss State
+        function chDeskew = getChDegaussState(self, channel)
+            channel = self.U2Str(channel);
+            chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
+        end   
+        % Channel Invert
+        % chInvert is 'ON' or 'OFF'
+        function setChInvert(self, channel, chInvert)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':INVert ' chInvert]);
+        end
+        function chInvert = getChInvert(self, channel)
+            channel = self.U2Str(channel);
+            chInvert = self.query(['CH' channel ':INVert?']);
+        end
+        % Channel Probe Forced Range
+        function setChProbeForcedRange(self, channel, chForcedRange)
+            channel = self.U2Str(channel);
+            chForcedRange = self.U2Str(chForcedRange);
+            self.sendCommand(['CH' channel ':PRObe:FORCEDRange ' chForcedRange]);
+        end
+        function chForcedRange = getProbeForcedRange(self, channel)
+            channel = self.U2Str(channel);
+            chForcedRange = str2double(self.query(['CH' channel ':PRObe:FORCEDRange?']));
+        end
+        % Channel Probe Control
+        % Acceptable values for probeControl {AUTO|MANual}
+        function setChProbeControl(self, channel, chProbeControl)
+            channel = self.U2Str(channel);
+            chProbeControl = self.U2Str(chProbeControl);
+            self.sendCommand(['CH' channel ':PROBECOntrol ' chProbeControl]);
+        end
+        function chProbeControl = getProbeForcedControl(self, channel)
+            channel = self.U2Str(channel);
+            chProbeControl = str2double(self.query(['CH' channel ':PROBECOntrol?']));
+        end
+        % Channel Label Name
+        function setChLabelName(self, channel, chLabel)
+            channel = self.U2Str(channel);
+            self.sendCommand(['CH' channel ':LABel:NAMe "' chLabel '"']);
+        end
+        function chLabel = getChLabelName(self, channel)
+            channel = self.U2Str(channel);
+            chLabelQuoted = self.query(['CH' channel ':LABel:NAMe?']);
+            chLabel = chLabelQuoted(2:end-1);
+        end
+        % Channel External Attenuation
+        function setChExtAtten(self, channel, chExtAtten)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                self.sendCommand(['CH' channel ':PROBEFunc:EXTAtten ' num2str(chExtAtten)]);
+            else
+                warning('External Attenuation not supported for this scope');
+            end
+        end
+        function chExtAtten = getChExtAtten(self, channel)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                chExtAtten = str2double(self.query(['CH' channel ':PROBEFunc:EXTAtten?']));
+            else
+                warning('External Attenuation not supported for this scope');
+            end
+        end
+        % Channel External Attenuation Units
+        function setChExtAttenUnits(self, channel, chExtAttenUnits)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                self.sendCommand(['CH' channel ':PROBEFunc:EXTUnits "' chExtAttenUnits '"']);
+            else
+                warning('External Attenuation not supported for this scope');
+            end
+        end
+        function chExtAttenUnits = getChExtAttenUnits(self, channel)
+            if strcmp(self.scopeSeries, SCPI_Oscilloscope.Series5000)
+                channel = self.U2Str(channel);
+                chExtAttenUnitsQuoted = self.query(['CH' channel ':PROBEFunc:EXTUnits?']);
+                chExtAttenUnits = chExtAttenUnitsQuoted(2:end-1); % Strip Quotes
+            else
+                warning('External Attenuation not supported for this scope');
+            end
+        end
         
-        %% Getter and Setter Commands
+        %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])
-%             self.sendCommand(['[command] ' num2str([property])]);
+%             [property] = self.U2Str([property]);
+%             self.sendCommand(['[command] ' [property]]);
 %         end
 %         function [property] = get.[property](self)
 %             [property] = str2double(self.query('[command]?'));
@@ -272,6 +440,13 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function acqState = get.acqState(self)
             acqState = str2double(self.query('ACQuire:STATE?'));
         end
+        function set.acqSamplingMode(self, acqSamplingMode)
+            % Acceptable acqSamplingMode values: {RT|ET|IT}
+            self.sendCommand(['ACQuire:SAMPlingmode ' acqSamplingMode]);
+        end
+        function acqSamplingMode = get.acqSamplingMode(self)
+            acqSamplingMode = self.query('ACQuire:SAMPlingmode?');
+        end        
         % Alias Command
         % Bus Command Group
         % Calibration and Diagnostic Command Group
@@ -330,95 +505,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % Search Command
         % Status and Error Command
         % Trigger Command Group
-        % Vertical Command Group
-        %   Channel1
-        %       Probe Gain
-        function set.ch1ProbeGain(self, ch1ProbeGain)
-            self.sendCommand(['CH1:PRObe:GAIN ' num2str(ch1ProbeGain)]);
-        end
-        function ch1ProbeGain = get.ch1ProbeGain(self)
-            ch1ProbeGain = str2double(self.query('CH1:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch1OffSet(self, ch1OffSet)
-            self.sendCommand(['CH1:OFFSet ' num2str(ch1OffSet)]);
-        end
-        function ch1OffSet = get.ch1OffSet(self)
-            ch1OffSet = str2double(self.query('CH1:OFFSet?'));
-        end
-        %       Scale
-        function set.ch1Scale(self, ch1Scale)
-            self.sendCommand(['CH1:SCAle ' num2str(ch1Scale)]);
-        end
-        function ch1Scale = get.ch1Scale(self)
-            ch1Scale = str2double(self.query('CH1:SCAle?'));
-        end
-        %   Channel2
-        %       Probe Gain
-        function set.ch2ProbeGain(self, ch2ProbeGain)
-            self.sendCommand(['CH2:PRObe:GAIN ' num2str(ch2ProbeGain)]);
-        end
-        function ch2ProbeGain = get.ch2ProbeGain(self)
-            ch2ProbeGain = str2double(self.query('CH2:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch2OffSet(self, ch2OffSet)
-            self.sendCommand(['CH2:OFFSet ' num2str(ch2OffSet)]);
-        end
-        function ch2OffSet = get.ch2OffSet(self)
-            ch2OffSet = str2double(self.query('CH2:OFFSet?'));
-        end
-        %       Scale
-        function set.ch2Scale(self, ch2Scale)
-            self.sendCommand(['CH2:SCAle ' num2str(ch2Scale)]);
-        end
-        function ch2Scale = get.ch2Scale(self)
-            ch2Scale = str2double(self.query('CH2:SCAle?'));
-        end
-        %   Channel3
-        %       Probe Gain
-        function set.ch3ProbeGain(self, ch3ProbeGain)
-            self.sendCommand(['CH3:PRObe:GAIN ' num2str(ch3ProbeGain)]);
-        end
-        function ch3ProbeGain = get.ch3ProbeGain(self)
-            ch3ProbeGain = str3double(self.query('CH3:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch3OffSet(self, ch3OffSet)
-            self.sendCommand(['CH3:OFFSet ' num2str(ch3OffSet)]);
-        end
-        function ch3OffSet = get.ch3OffSet(self)
-            ch3OffSet = str3double(self.query('CH3:OFFSet?'));
-        end
-        %       Scale
-        function set.ch3Scale(self, ch3Scale)
-            self.sendCommand(['CH3:SCAle ' num2str(ch3Scale)]);
-        end
-        function ch3Scale = get.ch3Scale(self)
-            ch3Scale = str3double(self.query('CH3:SCAle?'));
-        end
-        %   Channel4
-        %       Probe Gain
-        function set.ch4ProbeGain(self, ch4ProbeGain)
-            self.sendCommand(['CH4:PRObe:GAIN ' num2str(ch4ProbeGain)]);
-        end
-        function ch4ProbeGain = get.ch4ProbeGain(self)
-            ch4ProbeGain = str4double(self.query('CH4:PRObe:GAIN?'));
-        end
-        %       Offset
-        function set.ch4OffSet(self, ch4OffSet)
-            self.sendCommand(['CH4:OFFSet ' num2str(ch4OffSet)]);
-        end
-        function ch4OffSet = get.ch4OffSet(self)
-            ch4OffSet = str4double(self.query('CH4:OFFSet?'));
-        end
-        %       Scale
-        function set.ch4Scale(self, ch4Scale)
-            self.sendCommand(['CH4:SCAle ' num2str(ch4Scale)]);
-        end
-        function ch4Scale = get.ch4Scale(self)
-            ch4Scale = str4double(self.query('CH4:SCAle?'));
-        end
+        % Vertical Command Group       
         % Waveform Transfer Command Group
         function set.dataStart(self, start)
             self.sendCommand(['DATa:STARt ' int2str(start)]);
