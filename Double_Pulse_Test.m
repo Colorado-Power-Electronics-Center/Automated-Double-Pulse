@@ -31,8 +31,8 @@ function Double_Pulse_Test(settings)
     myFGen.clearStatus;
 
     % Find Deskew using lowest load settings
-    loadCurrent = min(settings.loadCurrents);
-    busVoltage = min(settings.busVoltages);
+    loadCurrent = settings.deskewCurrent;
+    busVoltage = settings.deskewVoltage;
     
     setVoltageToLoad(myScope, busVoltage, settings);
     
@@ -92,6 +92,7 @@ function Double_Pulse_Test(settings)
                 % Create Results Object
                 dpResults = DoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
+                dpResults.plotResults;
                 
                 % Save in SweepResults Object
                 sweepResults.addResult(testChannel, busVoltage, dpResults);
@@ -108,7 +109,7 @@ function Double_Pulse_Test(settings)
     end
     
     % Save Sweep Results
-    save('sweep_results.mat', 'sweepResults');
+    save([settings.dataDirectory 'sweep_results.mat'], 'sweepResults');
     
     % Plot Sweep Results
     sweepResults.plotEOn;

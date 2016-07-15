@@ -63,13 +63,13 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     % effect all calculations that rely on the gate timing. The two channel
     % waveform results should not be considered accurate for these
     % measurements. 
-    if numChannels == 2
-        scaledVGS = waveforms{settings.channel.VGS};
-        scaledTime = waveforms{end};
-        upSampleTime = WaveForms{end};
-        upSampleVGS = interp1(scaledTime, scaledVGS, upSampleTime, 'spline');
-        WaveForms{settings.channel.VGS} = upSampleVGS;
-    end
+%     if numChannels == 2
+%         scaledVGS = waveforms{settings.channel.VGS};
+%         scaledTime = waveforms{end};
+%         upSampleTime = WaveForms{end};
+%         upSampleVGS = interp1(scaledTime, scaledVGS, upSampleTime, 'spline');
+%         WaveForms{settings.channel.VGS} = upSampleVGS;
+%     end
     
     % Invert Series 5000 Scopes
     if settings.invertCurrent && strcmp(myScope.scopeSeries, myScope.Series5000)

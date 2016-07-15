@@ -4,7 +4,7 @@ function [ settings ] = SettingsSweepObject()
     % Double Pulse Test Settings
     %% Test Specific Settings
     dpt_settings.busVoltages = [100, 200, 300, 400];
-    dpt_settings.loadCurrents = [5, 10, 20, 30];
+    dpt_settings.loadCurrents = [3, 5, 10, 20, 30];
     dpt_settings.currentResistor = 102E-3;
     dpt_settings.loadInductor = 720E-6;
     dpt_settings.minGateVoltage = -3;
@@ -76,9 +76,9 @@ function [ settings ] = SettingsSweepObject()
         % Deskew Settings
 %         dpt_settings.deskewVoltage = min(dpt_settings.busVoltages);
 %         dpt_settings.deskewCurrent = max(dpt_settings.loadCurrents);
-        dpt_settings.deskewVoltage = 100;
-        dpt_settings.deskewCurrent = 10;
-        dpt_settings.VGSDeskew = 4e-9;
+        dpt_settings.deskewVoltage = 300;
+        dpt_settings.deskewCurrent = 15;
+        dpt_settings.VGSDeskew = 0;
         % VDS Vertical Settings
         [vdsScale, vdsPos] = min2Scale(0, dpt_settings.deskewVoltage,...
             dpt_settings.numVerticalDivisions, 100);
@@ -115,7 +115,7 @@ function [ settings ] = SettingsSweepObject()
 
     %% Data Saving
         % Data Directory
-        dpt_settings.dataDirectory = 'Measurements\testing\full_sweep\';
+        dpt_settings.dataDirectory = 'Measurements\testing\full_sweep2\';
     %% Data Processing
         % Turn on Window
         dpt_settings.window.turn_on_prequel = 30e-9;
