@@ -10,6 +10,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         
         fullWaveform@FullWaveform
         
+        numChannels
+        
         % Shared Properties
         busVoltage
         loadCurrent
@@ -63,6 +65,13 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.turnOnWaveform = onWaveforms;
                 self.turnOffWaveform = offWaveforms;
                 
+                % Determine Number of Channels
+                if self.turnOnWaveform.v_gs == GeneralWaveform.NOT_RECORDED;
+                    self.numChannels = 2;
+                else
+                    self.numChannels = 4;
+                end
+                
                 self.calcAllValues;
             end
         end
@@ -80,14 +89,20 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Nominal Values
             self.calcBusVoltage;
             self.calcLoadCurrent;
-            self.calcGateVoltage;
+            if self.numChannels == 4
+                self.calcGateVoltage;
+            end
 
             % Turn On indices
-            self.calcGateTurnOnIdx;
+            if self.numChannels == 4
+                self.calcGateTurnOnIdx;
+            end
             self.calcCurrentTurnOnIdx;
 
             % Turn Off indices
-            self.calcGateTurnOffIdx;
+            if self.numChannels == 4
+                self.calcGateTurnOffIdx;
+            end
             self.calcCurrentTurnOffIdx;
 
             % IV Misalignment
@@ -99,13 +114,17 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Current Rise, Voltage Fall, and turn on times
             self.calcCurrentRiseTime;
             self.calcVoltageFallTime;
-            self.calcTurnOnTime;
-            self.calcTurnOnDelay;
+            if self.numChannels == 4
+                self.calcTurnOnTime;
+                self.calcTurnOnDelay;
+            end
 
             % Voltage Rise, turn off times
             self.calcVoltageRiseTime;
-            self.calcTurnOffTime;
-            self.calcTurnOffDelay;
+            if self.numChannels == 4
+                self.calcTurnOffTime;
+                self.calcTurnOffDelay;
+            end
 
             % Calculate Maximum DV/DT in turn off and turn on V_DS
             self.calcTurnOnPeakDV_DT;
@@ -177,7 +196,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
             if isSwitch
                 % Find VGS Scaling Factor
-                vgsScaling = self.busVoltage / self.gateVoltage;
+                if self.numChannels == 4
+                    vgsScaling = self.busVoltage / self.gateVoltage;
+                end
 
                 % Change time to nS
                 time = waveform.time * 1e9;
@@ -187,10 +208,13 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 mostCom = @(x) mode(round(x(x > mean(x))));
                 
                 % Find approximate Bus and gate Voltage
-                approxGateVoltage = mostCom(waveform.v_gs);
-                approxBusVoltage = mostCom(waveform.v_ds);
-                % Find VGS Scaling Factor
-                vgsScaling = approxBusVoltage / approxGateVoltage;
+                if self.numChannels == 4
+                    approxGateVoltage = mostCom(waveform.v_gs);
+                
+                    approxBusVoltage = mostCom(waveform.v_ds);
+                    % Find VGS Scaling Factor
+                    vgsScaling = approxBusVoltage / approxGateVoltage;
+                end
                 
                 % Change time to uS
                 time = waveform.time * 1e6;
@@ -198,8 +222,10 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             end
             
             % Round VGS Scaling to nearest 10
-            vgsScaling = floor(vgsScaling / 10) * 10;
-            if vgsScaling == 0, vgsScaling = 1; end
+            if self.numChannels == 4
+                vgsScaling = floor(vgsScaling / 10) * 10;
+                if vgsScaling == 0, vgsScaling = 1; end
+            end
             
             % Plot Waveform
             switchFigure = figure();
@@ -257,11 +283,13 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             legendStrs{end + 1} = 'V_{DS}';
             
             % V_GS
-            yyaxis left
-            vgsOnLine = line(time, waveform.v_gs * vgsScaling);
-            vgsOnLine.Color = vgsColor;
-            vgsOnLine.LineWidth = lineWidth;
-            legendStrs{end + 1} = ['V_{GS} \times ' num2str(vgsScaling)];
+            if self.numChannels == 4
+                yyaxis left
+                vgsOnLine = line(time, waveform.v_gs * vgsScaling);
+                vgsOnLine.Color = vgsColor;
+                vgsOnLine.LineWidth = lineWidth;
+                legendStrs{end + 1} = ['V_{GS} \times ' num2str(vgsScaling)];
+            end
             
             % I_D
             yyaxis right

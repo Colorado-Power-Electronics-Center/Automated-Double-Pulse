@@ -49,6 +49,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
 
     % Get all four waveforms
     WaveForms = cell(1, 4);
+    [WaveForms{:}] = deal(GeneralWaveform.NOT_RECORDED);
 
     for idx = myScope.enabledChannels
         WaveForms{idx} = myScope.getWaveform(idx);
