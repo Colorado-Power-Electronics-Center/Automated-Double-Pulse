@@ -12,6 +12,7 @@ classdef SCPI_Instrument < handle
         visaObj
         connected
         typeStr
+        commandDelay = 0.05;
     end
     
     methods
@@ -50,7 +51,7 @@ classdef SCPI_Instrument < handle
         function sendCommand(self, command)
             if self.connected
                 fprintf(self.visaObj, command);
-                pause(.05);
+                pause(self.commandDelay);
             else
                 error([self.typeStr ' is not connected'])
             end
