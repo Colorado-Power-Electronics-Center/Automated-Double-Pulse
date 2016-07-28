@@ -188,8 +188,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             powerColor = 'black';
             
             % Set other plot values
-            lineWidth = 5;
-            fontSize = 30;
+            lineWidth = 3;
+            fontSize = 12;
             
             % Check if Switch or full waveform
             isSwitch = isa(waveform, 'SwitchWaveform');

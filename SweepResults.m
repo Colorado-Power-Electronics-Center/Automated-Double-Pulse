@@ -55,16 +55,19 @@ classdef SweepResults < matlab.mixin.Copyable
                 % Check if function has only one argument (self)
                 checkStr = [classStr '>' classStr '.' method{1}];
                 if nargin(checkStr) == 1
-                    if nargin > 1 && nargout(checkStr) == 3
-                        [surfFigure, surfObj, ax] = self.(method{1})();
+                    if nargin > 1
+                        [surfFigure] = self.(method{1})();
                         if imageType
                             data = surfFigure.UserData;
-                            saveDir = 'plotImages/';
+                            saveDir = ['plotImages/' imageType '/'];
                             saveLoc = [saveDir data.friendlyName];
                             if ~exist(saveDir, 'dir')
-                                mkdir('plotImages/');
+                                mkdir(saveDir);
                             end
-                            saveas(surfFigure, saveLoc, imageType);
+                            % Set renderer to painters for vector output
+                            surfFigure.Color = 'w';
+                            export_fig(surfFigure, saveLoc,...
+                                ['-' imageType], '-painters');
                         end
                     else
                         self.(method{1})();
@@ -87,16 +90,22 @@ classdef SweepResults < matlab.mixin.Copyable
                 self.chan2ByVoltage(key{1}) = tempDPR;
             end  
         end
-        function plotSweep(self, plotSettings)
+        function [plotFigure] = plotSweep(self, plotSettings)
             % Function to create plot for the turn on Energy Loss with 2
             % Channel Waveforms
             plotFigure = figure;
             plotFigure.Name = plotSettings.title;
             plotFigure.NumberTitle = plotSettings.numberTitle;
             curAxis = gca;
-            curAxis.FontSize = 30;
+            curAxis.FontSize = 12;
             
-            lineWidth = 6;
+            % Set Friendly Name
+            friendlyName = ['X_' plotSettings.xValueName...
+                           '_Y_' plotSettings.yValueName];
+            data = struct('friendlyName', friendlyName);
+            plotFigure.UserData = data;
+            
+            lineWidth = 2;
             
             % Set Axis Labels
             xlabel(plotSettings.xLabel);
@@ -118,7 +127,7 @@ classdef SweepResults < matlab.mixin.Copyable
                 yValues = [self.plotIntResults.(plotSettings.yValueName)] * plotSettings.yScale;
                 plotObj = plot(xValues, yValues);
                 plotObj.LineWidth = lineWidth;
-                plotObj.MarkerSize = 15;
+                plotObj.MarkerSize = 10;
                 plotObj.Marker = markers{1};
                 markers = circshift(markers, [-1, 0]);
                 legendStrs{end+1} = [' ' num2str(plotLine{1}) ' ' plotSettings.legendSuffix]; %#ok<AGROW>
@@ -130,7 +139,7 @@ classdef SweepResults < matlab.mixin.Copyable
                 curve_x = polyval(p, currents);
                 trendLine = line(currents, curve_x);
                 trendLine.Color = plotObj.Color;
-                trendLine.LineStyle = ':';
+                trendLine.LineStyle = '--';
                 trendLine.LineWidth = lineWidth;
             end
             
@@ -139,7 +148,7 @@ classdef SweepResults < matlab.mixin.Copyable
             plotLegend = legend(legendPlots, legendStrs);
             plotLegend.Location = plotSettings.legendLocation;
         end
-        function plotEOn(self)
+        function [plotFigure] = plotEOn(self)
             plotSettings = SweepPlotSettings;
             plotSettings.title = 'Turn On Energy Loss';
             plotSettings.xLabel = 'Load Current (A)';
@@ -150,9 +159,9 @@ classdef SweepResults < matlab.mixin.Copyable
             
             plotSettings.plotMap = self.chan2ByVoltage;
             
-            self.plotSweep(plotSettings);
+            [plotFigure] = self.plotSweep(plotSettings);
         end
-        function plotEOff(self)
+        function [plotFigure] = plotEOff(self)
             plotSettings = SweepPlotSettings;
             plotSettings.title = 'Turn Off Energy Loss';
             plotSettings.xLabel = 'Load Current (A)';
@@ -163,7 +172,7 @@ classdef SweepResults < matlab.mixin.Copyable
             
             plotSettings.plotMap = self.chan2ByVoltage;
             
-            self.plotSweep(plotSettings);
+            [plotFigure] = self.plotSweep(plotSettings);
         end
         function [surfFigure, surfObj, ax] = plotSurfacePlot(~, surfacePlotSettings)
             % Plot Surface

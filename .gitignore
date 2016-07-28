@@ -6,6 +6,9 @@
 *.eps
 *.emf
 
+# Plot outputs
+plotImages/*
+
 # Measurements
 Measurements/*
 
