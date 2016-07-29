@@ -27,85 +27,90 @@ classdef DPTSettings < matlab.mixin.Copyable
 
 		%% Instrument Setup
 	    % Buffer Sizes
-	    FGen_buffer_size
-	    Scope_Buffer_size
+	    FGen_buffer_size = 6000000;
+	    Scope_Buffer_size = 200000;
+        Bus_Supply_buffer_size = 200000;
 
 	    % VISA Resource Strings
 	    scopeVisaAddress
 	    FGenVisaAddress
+	    BusSupplyAddress
 
 	    % Set Vendor Strings
-	    scopeVendor
-	    FGenVendor
+	    scopeVendor = 'tek';
+	    FGenVendor = 'agilent';
+	    BusSupplyVendor = 'agilent';
 
 	    % Communication
-	    scopeTimeout
-	    scopeByteOrder
+	    scopeTimeout = 10;
+	    scopeByteOrder = 'littleEndian';
 
 		%% Channel Setup
         % Channel Numbers
         channel@channelMapper
 	    
 		%% Pulse Creation
-	    PeakValue
-	    pulse_lead_dead_t
-	    pulse_off_t
-	    pulse_second_pulse_t
-	    pulse_end_dead_t
+	    pulse_lead_dead_t = 1e-6;
+	    pulse_off_t = 5e-6;
+	    pulse_second_pulse_t = 5e-6;
+	    pulse_end_dead_t = 1e-6;
         
         % Mini Second Pulse (For Edwards Test Setup)
-        use_mini_2nd_pulse
-        mini_2nd_pulse_off_time
+        use_mini_2nd_pulse = true;
+        mini_2nd_pulse_off_time = 50e-9;
 
 	    % Burst Settings
-	    burstMode
-	    FGenTriggerSource
-	    burstCycles
+	    burstMode = 'TRIGgered';
+	    FGenTriggerSource = 'BUS';
+	    burstCycles = 1;
 	    
 	 	%% Pulse Measurement
-	    scopeSampleRate
-	    scopeRecordLength
-        useAutoRecordLength
-        autoRecordLengthBuffer
+	    scopeSampleRate = 10E9;
+	    scopeRecordLength = 2000000;
+        useAutoRecordLength = true;
+        autoRecordLengthBuffer = 1.5;
 	    
 	    % Waveform
-	    numBytes
-	    encoding
-	    numVerticalDivisions
+	    numBytes = 1;
+	    encoding = 'SRI';
+	    numVerticalDivisions = 10;
 
 	    % Probe Gains
-	    chProbeGain
-        invertCurrent
+	    chProbeGain = [1, 1, 1, 1];
+        invertCurrent = true;
 
 	    % Initial Vertical Settings
-	    chInitialOffset
-	    chInitialScale
-	    chInitialPosition
-        maxCurrentSpike
-        percentBuffer
+	    chInitialOffset = [0, 0, 0, 0];
+	    chInitialScale = [0, 0, 0, 0];
+	    chInitialPosition = [0, 0, 0, 0];
+        maxCurrentSpike = 100;
+        percentBuffer = 10;
         
         % Deskew Settings
-        deskewVoltage
-        deskewCurrent
+        deskewVoltage = NaN;
+        deskewCurrent = NaN;
         currentDelay
-        VGSDeskew
+        VGSDeskew = 0;
 
 	    % Initial Horizontal Settings
-	    horizontalScale
-	    delayMode
-	    horizontalPosition
+	    horizontalScale = 50e-6;
+	    delayMode = 'Off';
+	    horizontalPosition = 5;
 
 	    % Trigger 
-	    triggerType
-	    triggerCoupling
-	    triggerSlope
-	    triggerSource
-	    triggerLevel
+	    triggerType = 'EDGe';
+	    triggerCoupling = 'DC';
+	    triggerSlope = 'FALL';
+	    triggerSlopeDeskew = 'RISe'
+	    triggerSource = NaN;
+	    triggerSourceDeskew = NaN;
+	    triggerLevel = NaN;
+	    triggerLevelDeskew = NaN;
 
 	    % Acquisition
-	    acquisitionMode
-        acquisitionSamplingMode
-	    acquisitionStop
+	    acquisitionMode = 'SAMple';
+        acquisitionSamplingMode = 'RT';
+	    acquisitionStop = 'SEQuence';
 	    
 		%% Data Saving
 	    % Data Directory
@@ -117,6 +122,7 @@ classdef DPTSettings < matlab.mixin.Copyable
         %% Automation Level Settings
         push2pulse = false
         autoBusControl = false
+        busSlewRate = 100;
         
     end
     
@@ -126,6 +132,14 @@ classdef DPTSettings < matlab.mixin.Copyable
             self.channel = channelMapper;
             self.window = WindowSize;
         end
+
+        % Calculate Scale for channel
+        function calcScale(self, channel, minValue, maxValue, percentBuffer)
+        	[newScale, newPos] = min2Scale(minValue, maxValue,...
+            self.numVerticalDivisions, percentBuffer);
+	        self.chInitialScale(channel) = newScale;
+	        self.chInitialPosition(channel) = newPos;
+	    end
         % Methods to allow for backwards compatibility with old channel
         % storage functionality.
         function out = get.VDS_Channel(self)
@@ -140,6 +154,38 @@ classdef DPTSettings < matlab.mixin.Copyable
         function out = get.IL_Channel(self)
             out = self.channel.IL;
         end
+
+        % Functions for returning default values if values not assigned
+		function trigChan = get.triggerSource(self)
+        	trigChan = self.defaultIfNaN(self.triggerSource, self.channel.VDS);
+        end
+		function trigChan = get.triggerSourceDeskew(self)
+	    	trigChan = self.defaultIfNaN(self.triggerSourceDeskew, self.channel.VGS);
+	    end
+
+	    function trigLevel = get.triggerLevel(self)
+	    	trigLevel = self.defaultIfNaN(self.triggerLevel, min(dpt_settings.busVoltages) / 2);
+	    end
+	    function trigLevel = get.triggerLevelDeskew(self)
+	    	trigLevel = self.defaultIfNaN(self.triggerLevelDeskew, self.maxGateVoltage / 2);
+	    end
+
+	    function out = get.deskewVoltage(self)
+	    	out = self.defaultIfNaN(self.deskewVoltage, min(dpt_settings.busVoltages));
+	    end
+		function out = get.deskewCurrent(self)
+			out = self.defaultIfNaN(self.deskewCurrent, max(dpt_settings.loadCurrents));
+		end
+    end
+
+    methods (Access = private, Static)
+    	function out = defaultIfNaN(curVal, default)
+    		if isnan(curVal)
+    			out = default;
+    		else
+    			out = curVal;
+    		end
+    	end
     end
     
 end

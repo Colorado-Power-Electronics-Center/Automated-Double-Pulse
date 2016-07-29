@@ -1,4 +1,6 @@
 function checkLoadInductor(myScope, myFGen, settings)
+    error('checkLoadInductor is currently outdated and incompatible with the rest of the code.')
+
     % Determine Bus Voltage and Load Current
     busVoltage = min(settings.busVoltages);
     loadCurrent = min(settings.loadCurrents);

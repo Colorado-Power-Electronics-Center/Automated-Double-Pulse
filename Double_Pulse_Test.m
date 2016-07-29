@@ -19,28 +19,40 @@ function Double_Pulse_Test(settings)
     myFGen = SCPI_FunctionGenerator(settings.FGenVendor, settings.FGenVisaAddress);
     myFGen.visaObj.InputBufferSize = settings.FGen_buffer_size;
     myFGen.visaObj.OutputBufferSize = settings.FGen_buffer_size;
+    
+    % Setup Bus Voltage Supply
+    myBusSupply = SorensonVoltageSource(settings.BusSupplyVendor, settings.BusSupplyAddress);
+    myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
+    myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
+    
+    % Define Cleanup Function
+    finishup = onCleanup(@() cleanupDPT(myScope, myFGen, myBusSupply));
 
     % Connect to devices
     myScope.connect;
     myFGen.connect;
+    myBusSupply.connect;
 
     % Reset to default state
     myScope.reset;
     myScope.clearStatus;
     myFGen.reset;
     myFGen.clearStatus;
+    
+    % Initialize Bus Supply
+    myBusSupply.initSupply;
 
     % Find Deskew using lowest load settings
     loadCurrent = settings.deskewCurrent;
     busVoltage = settings.deskewVoltage;
     
-    setVoltageToLoad(myScope, busVoltage, settings);
+    setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
     
     % Switch to triggering on V_GS for IV misalignment pulses
     deskew_settings = copy(settings);
-    deskew_settings.triggerSource = deskew_settings.VGS_Channel;
-    deskew_settings.triggerLevel = deskew_settings.maxGateVoltage / 2;
-    deskew_settings.triggerSlope = 'RISe';
+    deskew_settings.triggerSource = deskew_settings.triggerSourceDeskew;
+    deskew_settings.triggerLevel = deskew_settings.triggerLevelDeskew;
+    deskew_settings.triggerSlope = deskew_settings.triggerSlopeDeskew;
     
     [ fullWaveforms ] = runDoublePulseTest(myScope, myFGen,...
                 loadCurrent, busVoltage, deskew_settings);
@@ -56,15 +68,11 @@ function Double_Pulse_Test(settings)
     % Obtain Measurements
     for busVoltage = settings.busVoltages    
         % set Voltage (user or auto)
-        setVoltageToLoad(myScope, busVoltage, settings);
+        setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
         for loadCurrent = settings.loadCurrents
             % Capture Zoomed Out Waveform
-            % VDS Vertical Settings
-            settings.chInitialScale(settings.VDS_Channel) = busVoltage * 2 / (settings.numVerticalDivisions - 1);
-            settings.chInitialPosition(settings.VDS_Channel) = -(settings.numVerticalDivisions / 2 - 1);
-            % ID Vertical Settings
-            settings.chInitialScale(settings.ID_Channel) = settings.maxCurrentSpike * 2 / (settings.numVerticalDivisions / 2 - 1);
-            settings.chInitialPosition(settings.ID_Channel) = 0;
+            % Change VDS Vertical Settings to account for new bus voltage
+            settings.calcScale(settings.VDS_Channel, 0, busVoltage, 100);
             
             % Run Zoomed out pulse
             [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
@@ -120,4 +128,14 @@ function Double_Pulse_Test(settings)
 
     % Process Measurements
     %% Find Deskew
+end
+
+function cleanupDPT(myScope, myFGen, myBusSupply)
+    % Turn off Bus Supply
+    myBusSupply.outputOffZero;
+
+    % Disconnect from instruments
+    myScope.disconnect;
+    myFGen.disconnect;
+    myBusSupply.disconnect;
 end

@@ -4,12 +4,12 @@ classdef WindowSize < matlab.mixin.Copyable
     
     properties
         % Turn on Window
-        turn_on_prequel
-        turn_on_time
+        turn_on_prequel = 30e-9;
+        turn_on_time = 80e-9;
         
         % Turn off Window
-        turn_off_prequel
-        turn_off_time
+        turn_off_prequel = 30e-9;
+        turn_off_time = 80e-9;
 
         % Window Sample Rate
         sampleRate

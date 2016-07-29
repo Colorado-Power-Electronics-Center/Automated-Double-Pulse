@@ -411,6 +411,49 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             end
         end
         
+        %% Measurement Commands
+        % Measurement Source
+        function setImmediateMeasurementSource(self, sourceChan)
+            % Sets the source of the Immediate measurement to the channnel
+            % specified by the sourceChan Paramter
+            sourceChan = self.U2Str(sourceChan);
+            
+            self.sendCommand(['MEASUrement:IMMed:SOUrce1 CH' sourceChan]);
+        end
+        
+        % Measurement State
+        function setMeasurementState(self, measNum, measState)
+            % Sets the state of the measNum measurement to measState
+            measNum = self.U2Str(measNum);
+            measState = self.U2Str(measState);
+            
+            self.sendCommand(['MEASUrement:MEAS' measNum ':STATE ' measState]);
+        end
+        
+        % Measuremnent Type
+        function setImmediateMeasurementType(self, measType)
+            % Sets the type of the measNum measurement to measType
+            % Acceptable values for measType: {AMPlitude|AREa|
+            % BURst|CARea|CMEan|CRMs|DELay|DISTDUty|
+            % EXTINCTDB|EXTINCTPCT|EXTINCTRATIO|EYEHeight|
+            % EYEWIdth|FALL|FREQuency|HIGH|HITs|LOW|
+            % MAXimum|MEAN|MEDian|MINImum|NCROss|NDUty|
+            % NOVershoot|NWIdth|PBASe|PCROss|PCTCROss|PDUty|
+            % PEAKHits|PERIod|PHAse|PK2Pk|PKPKJitter|
+            % PKPKNoise|POVershoot|PTOP|PWIdth|QFACtor|
+            % RISe|RMS|RMSJitter|RMSNoise|SIGMA1|SIGMA2|
+            % SIGMA3|SIXSigmajit|SNRatio|STDdev|UNDEFINED| WAVEFORMS}
+            
+            self.sendCommand(['MEASUrement:IMMed:TYPe ' measType]);
+        end
+        
+        % Measurement Value
+        function value = getImmediateMeasurementValue(self)
+            % Get value of immediate measurement
+            
+            value = self.numQuery('MEASUrement:IMMed:VALue?');
+        end
+        
         %% Property Getter and Setter Commands
         % Template
 %         function set.[property](self, [property])

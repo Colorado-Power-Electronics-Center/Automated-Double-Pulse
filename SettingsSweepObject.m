@@ -36,7 +36,6 @@ function [ settings ] = SettingsSweepObject()
         dpt_settings.channel.IL = 3; % Set to -1 if not measuring load current
 
     %% Pulse Creation
-        dpt_settings.PeakValue = dpt_settings.gateLogicVoltage;
         dpt_settings.pulse_lead_dead_t = 1e-6;
         dpt_settings.pulse_off_t = 5e-6;
         dpt_settings.pulse_second_pulse_t = 5e-6;

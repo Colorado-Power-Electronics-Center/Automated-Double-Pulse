@@ -14,7 +14,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     IL_Channel = settings.IL_Channel;
     
     %% Pulse Creation
-    PeakValue = settings.PeakValue;
+    gateLogicVoltage = settings.gateLogicVoltage;
     pulse_lead_dead_t = settings.pulse_lead_dead_t;
     pulse_off_t = settings.pulse_off_t;
     pulse_second_pulse_t = settings.pulse_second_pulse_t;
@@ -79,7 +79,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         pulse_second_pulse_t, pulse_end_dead_t);
 
     % Load Waveform
-    myFGen.loadArbWaveform(ch1_wave_points, sampleRate, PeakValue, 'double_pulse', 1);
+    myFGen.loadArbWaveform(ch1_wave_points, sampleRate, gateLogicVoltage, 'double_pulse', 1);
 
     % Setup Burst
     myFGen.setupBurst(burstMode, burstCycles, total_time, FGenTriggerSource, 1);
@@ -102,7 +102,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     end
 
     % Load Waveform
-    myFGen.loadArbWaveform(ch2_wave_points, sampleRate, PeakValue, 'single_pulse', 2);
+    myFGen.loadArbWaveform(ch2_wave_points, sampleRate, gateLogicVoltage, 'single_pulse', 2);
 
     % Setup Burst
     myFGen.setupBurst(burstMode, burstCycles, total_time, FGenTriggerSource, 2);
