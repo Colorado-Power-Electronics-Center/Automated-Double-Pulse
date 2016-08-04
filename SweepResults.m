@@ -194,6 +194,7 @@ classdef SweepResults < matlab.mixin.Copyable
             
             [xq, yq] = meshgrid(sx, sy);
             zq = F(xq, yq);
+            %vq = griddata(x, y, z, xq, yq, 'v4');
             
             surfFigure = figure;
             friendlyName = ['Z_' sps.zValueName...

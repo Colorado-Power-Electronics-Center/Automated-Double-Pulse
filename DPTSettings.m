@@ -21,7 +21,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 		loadCurrents
 		currentResistor
 		loadInductor
-		minGateVoltage
+		minGateVoltage = 0;
         maxGateVoltage
         gateLogicVoltage
 
@@ -114,7 +114,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    
 		%% Data Saving
 	    % Data Directory
-	    dataDirectory
+	    dataDirectory = 'Measurements\'
         
         %% Data Processing
         window@WindowSize
@@ -139,7 +139,22 @@ classdef DPTSettings < matlab.mixin.Copyable
             self.numVerticalDivisions, percentBuffer);
 	        self.chInitialScale(channel) = newScale;
 	        self.chInitialPosition(channel) = newPos;
-	    end
+        end
+        
+        function calcDefaultScales(self)
+            % VDS Vertical Settings (This value will only be used for the initial deskew pulse)
+            self.calcScale(self.VDS_Channel, 0, self.deskewVoltage, 100)
+            
+            % VGS Vertical Settings (This value will be used for all initial pulses)
+            self.calcScale(self.VGS_Channel, self.minGateVoltage,...
+                           self.maxGateVoltage, 50)
+                               
+            % ID Vertical Settings (This value will be used for all initial pulses)
+            self.calcScale(self.ID_Channel, -self.maxCurrentSpike,...
+                           max([self.maxCurrentSpike,...
+                           self.loadCurrents]), 100)
+        end                  
+        
         % Methods to allow for backwards compatibility with old channel
         % storage functionality.
         function out = get.VDS_Channel(self)

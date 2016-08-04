@@ -1,6 +1,9 @@
 # MATLAB Specific
 *.asv
 
+# Scratch
+scratch/*
+
 # Images
 *.png
 *.eps
