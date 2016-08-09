@@ -5,13 +5,13 @@ function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
     % Get Current acqStop After
     prevStopAfter = myScope.acqStopAfter;
     
-    % Either aske user to do it or do it automatically per settings
+    % Either ask user to do it or do it automatically per settings
     if settings.autoBusControl
         % Setup Measurement on oscilloscope
         myScope.setImmediateMeasurementSource(settings.channel.VDS);
         myScope.setImmediateMeasurementType('MEAN');
         
-        % Seperate voltage change into 10 sections        
+        % Separate voltage change into 10 sections        
         steps = linspace(myBusSupply.outVoltage, busVoltage, 10);
         
         % Skip first element as it is the current voltage

@@ -21,9 +21,10 @@ function Double_Pulse_Test(settings)
     myFGen.visaObj.OutputBufferSize = settings.FGen_buffer_size;
     
     % Setup Bus Voltage Supply
-    myBusSupply = SorensonVoltageSource(settings.BusSupplyVendor, settings.BusSupplyAddress);
+    myBusSupply = Keithley2260B(settings.BusSupplyVendor, settings.BusSupplyVisaAddress);
     myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
     myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
+    myBusSupply.Timeout = 10;
     
     % Define Cleanup Function
     finishup = onCleanup(@() cleanupDPT(myScope, myFGen, myBusSupply));

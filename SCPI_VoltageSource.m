@@ -9,12 +9,18 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
     properties
         outVoltageCmd
         outputStateCmd
+        outputModeCmd
+        voltageSlewRising
+        voltageSlewFalling
         initialized = false
     end
     
     properties (Dependent)
         outVoltage
         outputState
+        outputMode
+        voltageSlewRisingCmd
+        voltageSlewFallingCmd
     end
     
     methods (Access = private, Static)
@@ -77,5 +83,28 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
         function outputState = get.outputState(self)
             outputState = str2double(self.query([self.outputStateCmd '?']));
         end
+        
+        function set.outputMode(self, outputMode)
+            outputMode = self.U2Str(outputMode);
+            self.sendCommand([outputModeCmd ' ' outputMode]);
+        end
+        function outputMode = get.outputMode(self)
+            outputMode = self.query([outputModeCmd '?']);
+        end
+        function set.voltageSlewFalling(self, voltageSlewFalling)
+            voltageSlewFalling = self.U2Str(voltageSlewFalling);
+            self.sendCommand([voltageSlewFallingCmd ' ' voltageSlewFalling]);
+        end
+        function voltageSlewFalling = get.voltageSlewFalling(self)
+            voltageSlewFalling = self.query([voltageSlewFallingCmd '?']));
+        end
+        function set.voltageSlewRising(self, voltageSlewRising)
+            voltageSlewRising = self.U2Str(voltageSlewRising);
+            self.sendCommand([voltageSlewRisingCmd ' ' voltageSlewRising]);
+        end
+        function voltageSlewRising = get.voltageSlewRising(self)
+            voltageSlewRising = self.query([voltageSlewRising '?']));
+        end
+
     end
 end
