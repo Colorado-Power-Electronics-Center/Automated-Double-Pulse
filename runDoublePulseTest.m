@@ -138,6 +138,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set scope sample rate and record length
     myScope.sampleRate = scopeSampleRate;
+    myScope.acqSamplingMode = acquisitionSamplingMode;
     if settings.useAutoRecordLength
         myScope.recordLength = total_time * myScope.sampleRate...
             * settings.autoRecordLengthBuffer;
@@ -205,11 +206,10 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
 
     % Setup Acquisition
     myScope.acqMode = acquisitionMode;
-    myScope.acqSamplingMode = acquisitionSamplingMode;
     myScope.acqStopAfter = acquisitionStop;
     myScope.acqState = 'RUN';
 
-    pause(2);
+    pause(3);
 
     % Trigger Waveform
     myFGen.push2Trigger('pulse', settings.push2pulse);

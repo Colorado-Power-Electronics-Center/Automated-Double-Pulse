@@ -11,9 +11,10 @@ classdef Keithley2260B < SCPI_VoltageSource & handle
 		function self = Keithley2260B(visaVendor, visaAddress)
 			self@SCPI_VoltageSource(visaVendor, visaAddress);
 
-			self.outVoltageCmd = 'VOLTage'
-			self.outputStateCmd = 'OUTPut'
-			self.outputModeCmd = 'OUTPut:MODE'
+			self.outVoltageCmd = 'VOLTage';
+            self.outCurrentCmd = 'CURRent';
+			self.outputStateCmd = 'OUTPut';
+			self.outputModeCmd = 'OUTPut:MODE';
 			self.voltageSlewFallingCmd = 'VOLTage:SLEW:RISing';
 			self.voltageSlewRisingCmd = 'VOLTage:SLEW:FALLing';
 		end
@@ -21,9 +22,10 @@ classdef Keithley2260B < SCPI_VoltageSource & handle
 		%% Control Methods
 		function initSupply(self)
 			self.outputState = 'OFF';
-			self.outputVoltage = 0;
+			self.outVoltage = 0;
 			self.outputMode = 'CVLS';
 			self.outputState = 'ON';
+            self.outCurrent = 0.25;
 			self.initialized = true;
 		end
 		function setSlewedVoltage(self, outVoltage, slewRate)
@@ -34,14 +36,17 @@ classdef Keithley2260B < SCPI_VoltageSource & handle
             if self.initialized == false
                 error('Voltage Source not initialized.');
             end
+            
+            startVoltage = self.outVoltage;
+            time = abs(startVoltage - outVoltage) / slewRate;
 
-           self.voltageSlewRising = slewRate;
-           self.voltageSlewFalling = slewRate; 
+            self.voltageSlewRising = slewRate;
+            self.voltageSlewFalling = slewRate; 
 
-           self.outVoltage = outVoltage;
+            self.outVoltage = outVoltage;
 
-           self.operationComplete;
-       end
+            pause(time)
+        end
 
 	end
 end

@@ -8,19 +8,21 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
     
     properties
         outVoltageCmd
+        outCurrentCmd
         outputStateCmd
         outputModeCmd
-        voltageSlewRising
-        voltageSlewFalling
+        voltageSlewRisingCmd
+        voltageSlewFallingCmd
         initialized = false
     end
     
     properties (Dependent)
         outVoltage
+        outCurrent
         outputState
         outputMode
-        voltageSlewRisingCmd
-        voltageSlewFallingCmd
+        voltageSlewRising
+        voltageSlewFalling
     end
     
     methods (Access = private, Static)
@@ -76,6 +78,13 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
         function outVoltage = get.outVoltage(self)
             outVoltage = str2double(self.query([self.outVoltageCmd '?']));
         end
+        function set.outCurrent(self, outCurrent)
+            outCurrent = self.U2Str(outCurrent);
+            self.sendCommand([self.outCurrentCmd ' ' outCurrent]);
+        end
+        function outCurrent = get.outCurrent(self)
+            outCurrent = str2double(self.query([self.outCurrentCmd '?']));
+        end
         function set.outputState(self, outputState)
             outputState = self.U2Str(outputState);
             self.sendCommand([self.outputStateCmd ' ' outputState]);
@@ -86,24 +95,24 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
         
         function set.outputMode(self, outputMode)
             outputMode = self.U2Str(outputMode);
-            self.sendCommand([outputModeCmd ' ' outputMode]);
+            self.sendCommand([self.outputModeCmd ' ' outputMode]);
         end
         function outputMode = get.outputMode(self)
-            outputMode = self.query([outputModeCmd '?']);
+            outputMode = self.query([self.outputModeCmd '?']);
         end
         function set.voltageSlewFalling(self, voltageSlewFalling)
             voltageSlewFalling = self.U2Str(voltageSlewFalling);
-            self.sendCommand([voltageSlewFallingCmd ' ' voltageSlewFalling]);
+            self.sendCommand([self.voltageSlewFallingCmd ' ' voltageSlewFalling]);
         end
         function voltageSlewFalling = get.voltageSlewFalling(self)
-            voltageSlewFalling = self.query([voltageSlewFallingCmd '?']));
+            voltageSlewFalling = self.query([self.voltageSlewFallingCmd '?']);
         end
         function set.voltageSlewRising(self, voltageSlewRising)
             voltageSlewRising = self.U2Str(voltageSlewRising);
-            self.sendCommand([voltageSlewRisingCmd ' ' voltageSlewRising]);
+            self.sendCommand([self.voltageSlewRisingCmd ' ' voltageSlewRising]);
         end
         function voltageSlewRising = get.voltageSlewRising(self)
-            voltageSlewRising = self.query([voltageSlewRising '?']));
+            voltageSlewRising = self.query([self.voltageSlewRisingCmd '?']);
         end
 
     end

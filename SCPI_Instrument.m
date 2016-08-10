@@ -106,7 +106,8 @@ classdef SCPI_Instrument < handle
             out = self.query('*IDN?');
         end
         function out = operationComplete(self)
-            out = self.query('*OPC?')
+            out = self.query('*OPC?');
+        end
     end
     methods (Static)
         function out = U2Str(UStr)

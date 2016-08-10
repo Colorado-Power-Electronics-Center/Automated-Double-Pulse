@@ -34,7 +34,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    % VISA Resource Strings
 	    scopeVisaAddress
 	    FGenVisaAddress
-	    BusSupplyAddress
+	    BusSupplyVisaAddress
 
 	    % Set Vendor Strings
 	    scopeVendor = 'tek';
@@ -68,7 +68,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    scopeSampleRate = 10E9;
 	    scopeRecordLength = 2000000;
         useAutoRecordLength = true;
-        autoRecordLengthBuffer = 1.5;
+        autoRecordLengthBuffer = 1.1;
 	    
 	    % Waveform
 	    numBytes = 1;
@@ -179,17 +179,17 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    end
 
 	    function trigLevel = get.triggerLevel(self)
-	    	trigLevel = self.defaultIfNaN(self.triggerLevel, min(dpt_settings.busVoltages) / 2);
+	    	trigLevel = self.defaultIfNaN(self.triggerLevel, min(self.busVoltages) / 2);
 	    end
 	    function trigLevel = get.triggerLevelDeskew(self)
 	    	trigLevel = self.defaultIfNaN(self.triggerLevelDeskew, self.maxGateVoltage / 2);
 	    end
 
 	    function out = get.deskewVoltage(self)
-	    	out = self.defaultIfNaN(self.deskewVoltage, min(dpt_settings.busVoltages));
+	    	out = self.defaultIfNaN(self.deskewVoltage, min(self.busVoltages));
 	    end
 		function out = get.deskewCurrent(self)
-			out = self.defaultIfNaN(self.deskewCurrent, max(dpt_settings.loadCurrents));
+			out = self.defaultIfNaN(self.deskewCurrent, max(self.loadCurrents));
 		end
     end
 

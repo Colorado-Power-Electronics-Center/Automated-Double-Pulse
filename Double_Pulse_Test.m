@@ -24,7 +24,7 @@ function Double_Pulse_Test(settings)
     myBusSupply = Keithley2260B(settings.BusSupplyVendor, settings.BusSupplyVisaAddress);
     myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
     myBusSupply.visaObj.InputBufferSize = settings.Bus_Supply_buffer_size;
-    myBusSupply.Timeout = 10;
+    myBusSupply.visaObj.Timeout = settings.scopeTimeout; % Use same timeout as scope
     
     % Define Cleanup Function
     finishup = onCleanup(@() cleanupDPT(myScope, myFGen, myBusSupply));

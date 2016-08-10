@@ -1,9 +1,17 @@
 function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
+    curVoltage = myBusSupply.outVoltage;
+    
     myScope.channelsOn(settings.VDS_Channel);
-    myScope.minMaxRescaleChannel(settings.VDS_Channel, 0, busVoltage,...
+    myScope.minMaxRescaleChannel(settings.VDS_Channel, 0,...
+        max(busVoltage, curVoltage),...
         settings.numVerticalDivisions, settings.percentBuffer);
-    % Get Current acqStop After
+    % Get Current acqStop Settings
     prevStopAfter = myScope.acqStopAfter;
+    prevRecordLength = myScope.recordLength;
+    
+    myScope.acqStopAfter = 'RUNSTop';
+    myScope.acqState = 'ON';
+    myScope.recordLength = 1000;
     
     % Either ask user to do it or do it automatically per settings
     if settings.autoBusControl
@@ -12,7 +20,7 @@ function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
         myScope.setImmediateMeasurementType('MEAN');
         
         % Separate voltage change into 10 sections        
-        steps = linspace(myBusSupply.outVoltage, busVoltage, 10);
+        steps = linspace(curVoltage, busVoltage, 10);
         
         % Skip first element as it is the current voltage
         for step = steps(2:end)
@@ -28,12 +36,11 @@ function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
             end
         end
     else
-        myScope.acqStopAfter = 'RUNSTop';
-        myScope.acqState = 'ON';
         disp(['Set voltage to ' num2str(busVoltage) 'V and press any key...'])
         pause;
     end
     
-    % Reset Scope to previous Stop After
+    % Reset Scope to previous ACQ Settings
     myScope.acqStopAfter = prevStopAfter;
+    myScope.recordLength = prevRecordLength;
 end
