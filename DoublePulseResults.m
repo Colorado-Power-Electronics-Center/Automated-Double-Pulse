@@ -595,6 +595,27 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             ivMisalignment = DPResults.ivMisalignment;
             
         end
+        function nomValue = findNominalValue(waveform)
+            %% Ensure waveform is a comlumn vector
+            if isrow(waveform)
+                waveform = waveform';
+            end
+            
+            %% find approximate switching point
+            % Use mean value as an estimation for the halfway point
+            midValue = mean(waveform);
+            
+            % find halfway point idx
+            midIdx = dsearchn(waveform, midValue);
+            
+            %% Find initial and final average values
+            meanLength = floor(midIdx / 2); 
+            initValue = mean(waveform(1:midIdx - meanLength));
+            finalValue = mean(waveform(end-meanLength:end));
+            
+            %% Nominal value is the maximum of the final and initial values.
+            nomValue = max([initValue, finalValue]);
+        end
     end
     methods (Access = protected, Static)
         function [onIdx] = findOnIdx(onWaveform, peakValue)
@@ -603,20 +624,23 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             onIdx = find(on_diff(1:half_on_idx) < 0, 1, 'last') + 1;
         end
         function [offIdx] = findOffIdx(offWaveform)
-            % Find point in offWaveform where value starts decreasing and
-            % does not stop decreasing.
-            offDiff = diff(offWaveform);
+            % Find Nominal Value
+            nomValue = DoublePulseResults.findNominalValue(offWaveform);
             
-            % Half off value is approximately the average of the entire
-            % waveform.
-            halfOffValue = mean(offWaveform);
+            % Start searching at the 90% of nominal value
+            startValue = 0.9 * nomValue;
+            startIdx = find(offWaveform < startValue, 1);
             
-            % Find half off idx
-            halfOffIdx = find(offWaveform < halfOffValue, 1);
+            % offIdx is point before startIdx where value starts to
+            % decrease and does not stop. Use +- 5 sample moving average.
+            avgPts = 10;
+            filterW = ones(1, avgPts + 1) / avgPts + 1;
+            movingAvg = filter(filterW, 1, [offWaveform zeros(1, avgPts)]);
+            movingAvg = movingAvg(avgPts + 1:end);
             
-            % offIdx is point before halfOffIdx where value starts to
-            % decrease and does not stop.
-            offIdx = find(offDiff(1:halfOffIdx) > 0, 1, 'last') + 1;
+            offDiff = diff(movingAvg);
+            
+            offIdx = find(offDiff(1:startIdx) > 0, 1, 'last') + 1;
         end
     end
     
