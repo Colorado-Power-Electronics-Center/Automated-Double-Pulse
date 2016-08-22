@@ -16,7 +16,28 @@ classdef SweepResults < matlab.mixin.Copyable
         % Used for storing intermediate voltage values
         plotIntResults@DoublePulseResults vector
     end
-    
+    methods(Access = protected)
+       % Override copyElement method:
+      function cpObj = copyElement(self)
+         % Make a shallow copy of all properties
+         cpObj = copyElement@matlab.mixin.Copyable(self);
+         
+         % Reset Map objects
+         cpObj.chan4ByVoltage = containers.Map('KeyType','int32','ValueType','any');
+         cpObj.chan2ByVoltage = containers.Map('KeyType','int32','ValueType','any');
+         
+         % Make a deep copy of the chan4 and chan2ByVoltage Map objects
+         for key = self.chan2ByVoltage.keys
+            % Copy 2 Channel Measurements
+            tempDPR = copy(self.chan2ByVoltage(key{1}));
+            cpObj.chan2ByVoltage(key{1}) = tempDPR;
+
+            % Copy 4 Channel Measurements
+            tempDPR = copy(self.chan4ByVoltage(key{1}));
+            cpObj.chan4ByVoltage(key{1}) = tempDPR;
+         end  
+      end
+    end
     methods
         function self = SweepResults
             %
@@ -41,7 +62,7 @@ classdef SweepResults < matlab.mixin.Copyable
                 self.chan4ByVoltage(busVoltage) = [curValues, result];
             end
         end
-        function runAllPlots(self, imageType)
+        function runAllPlots(self, imageType, saveDirectory)
             % Run all methods that contain 'plot' and have one argument
             % Set Image Type to false to not save images.
             methodStrs = methods(self);
@@ -59,11 +80,22 @@ classdef SweepResults < matlab.mixin.Copyable
                         [surfFigure] = self.(method{1})();
                         if imageType
                             data = surfFigure.UserData;
-                            saveDir = ['plotImages/' imageType '/'];
+
+                            % Set Save Directory
+                            if nargin > 2
+                                saveDir = saveDirectory;
+                            else
+                                saveDir = ['plotImages/' imageType '/'];
+                            end
+
+                            % SaveLoc is directory + filename
                             saveLoc = [saveDir data.friendlyName];
+
+                            % Make directory if it does not exist
                             if ~exist(saveDir, 'dir')
                                 mkdir(saveDir);
                             end
+
                             % Set renderer to painters for vector output
                             surfFigure.Color = 'w';
                             export_fig(surfFigure, saveLoc,...
@@ -76,7 +108,7 @@ classdef SweepResults < matlab.mixin.Copyable
             end
         end
         function reCalcResults(self)
-            % Re run the calulation funciton for all results
+            % Re run the calculation function for all results
             for key = self.chan2ByVoltage.keys
                 %
                 tempDPR = self.chan2ByVoltage(key{1});
@@ -90,11 +122,36 @@ classdef SweepResults < matlab.mixin.Copyable
                 self.chan2ByVoltage(key{1}) = tempDPR;
             end  
         end
+        %% shiftAllCurrents: Shift all currents by nanoSec ns.
+        function shiftAllCurrents(self, nanoSec)
+            % Re run the calculation function for all results
+            for key = self.chan2ByVoltage.keys
+                %
+                tempDPR = self.chan2ByVoltage(key{1});
+                tempDPR.shiftCurrent(nanoSec);
+                self.chan2ByVoltage(key{1}) = tempDPR;
+            end  
+            for key = self.chan4ByVoltage.keys
+                %
+                tempDPR = self.chan4ByVoltage(key{1});
+                tempDPR.shiftCurrent(nanoSec);
+                self.chan2ByVoltage(key{1}) = tempDPR;
+            end
+            
+            % Ensure Values are calculated
+            self.reCalcResults;
+            
+            self.plotEOn
+            a = gca;
+            if nanoSec >= 0, opStr = '+'; else opStr = ''; end
+            title([a.Title.String ' ' opStr ' ' num2str(nanoSec) ' ns']);
+        end
         function [plotFigure] = plotSweep(self, plotSettings)
             % Function to create plot for the turn on Energy Loss with 2
             % Channel Waveforms
             plotFigure = figure;
             plotFigure.Name = plotSettings.title;
+            title(plotSettings.title);
             plotFigure.NumberTitle = plotSettings.numberTitle;
             curAxis = gca;
             curAxis.FontSize = 12;
@@ -194,7 +251,7 @@ classdef SweepResults < matlab.mixin.Copyable
             
             [xq, yq] = meshgrid(sx, sy);
             zq = F(xq, yq);
-            %vq = griddata(x, y, z, xq, yq, 'v4');
+            % zq = griddata(x, y, z, xq, yq, 'natural');
             
             surfFigure = figure;
             friendlyName = ['Z_' sps.zValueName...
@@ -238,10 +295,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zScale = 1e6;
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotEOffSurface(self)
@@ -258,10 +312,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zScale = 1e6;
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotPeakOnVSurface(self)
@@ -277,10 +328,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOnPeakVDS';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotPeakOffVSurface(self)
@@ -296,10 +344,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOffPeakVDS';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotVdsOnIntSurface(self)
@@ -315,10 +360,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOnVDSInt';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotVdsOffIntSurface(self)
@@ -334,10 +376,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOffVDSInt';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotIdOnIntSurface(self)
@@ -353,10 +392,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOnIDInt';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotIdOffIntSurface(self)
@@ -372,10 +408,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zValueName = 'turnOffIDInt';
             
             sps.plotMap = self.chan2ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
         function [surfFigure, surfObj, ax] = plotTVRSurface(self)
@@ -392,10 +425,7 @@ classdef SweepResults < matlab.mixin.Copyable
             sps.zScale = 1e9;
             
             sps.plotMap = self.chan4ByVoltage;
-            
-            sps.xSamples = 75:400;
-            sps.ySamples = 5:.1:40;
-            
+
             [surfFigure, surfObj, ax] = self.plotSurfacePlot(sps);
         end
     end

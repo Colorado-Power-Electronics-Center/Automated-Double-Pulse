@@ -70,11 +70,12 @@ function Double_Pulse_Test(settings)
     for busVoltage = settings.busVoltages    
         % set Voltage (user or auto)
         setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
+        
+        % Change VDS Vertical Settings to account for new bus voltage
+        settings.calcScale(settings.VDS_Channel, 0, busVoltage, 100);
+            
         for loadCurrent = settings.loadCurrents
             % Capture Zoomed Out Waveform
-            % Change VDS Vertical Settings to account for new bus voltage
-            settings.calcScale(settings.VDS_Channel, 0, busVoltage, 100);
-            
             % Run Zoomed out pulse
             [ zoomedOutWaveforms ] = runDoublePulseTest( myScope, myFGen,...
                 loadCurrent, busVoltage, settings );

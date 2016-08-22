@@ -62,6 +62,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % File System Command
         % FilterVu Command Group
         % Hard Copy Command
+        exportFilename
         % Horizontal Command Group
         recordLength
         sampleRate
@@ -499,6 +500,13 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         % File System Command
         % FilterVu Command Group
         % Hard Copy Command
+        function set.exportFilename(self, exportFilename)
+            exportFilename = self.U2Str(exportFilename);
+            self.sendCommand(['EXPort:FILEName ' exportFilename]);
+        end
+        function exportFilename = get.exportFilename(self)
+            exportFilename = self.query('EXPort:FILEName?');
+        end
         % Horizontal Command Group
         function set.recordLength(self, length)
             self.sendCommand([self.recordLengthCommand ' ' int2str(length)]);

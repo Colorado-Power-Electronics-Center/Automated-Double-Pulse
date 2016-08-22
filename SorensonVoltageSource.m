@@ -7,7 +7,7 @@ classdef SorensonVoltageSource < SCPI_VoltageSource & handle
     end
     
     methods
-        % Super Overides
+        % Super Overrides
         function self = SorensonVoltageSource(visaVendor, visaAddress)
             self@SCPI_VoltageSource(visaVendor, visaAddress);
             
@@ -41,7 +41,7 @@ classdef SorensonVoltageSource < SCPI_VoltageSource & handle
             deltaV = outVoltage - curVoltage;
             deltaT = deltaV / slewRate;
             
-            % Calclate total number of steps, rounding up
+            % Calculate total number of steps, rounding up
             numSteps = ceil(samplePerS * deltaT);
             
             % Calculate Steps

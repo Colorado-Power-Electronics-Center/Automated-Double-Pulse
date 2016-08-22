@@ -75,6 +75,44 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 self.calcAllValues;
             end
         end
+        %% shiftCurrent: Shift Current By nanoSec ns. A positive value 
+        % will shift to the right and a negative value will shift to the left.
+        function shiftCurrent(self, nanoSec)
+            % if self contains more than one DoublePulseResult handle run
+            % function one at a time.
+            if numel(self) > 1
+                for obj = self
+                    obj.shiftCurrent(nanoSec)
+                end
+
+                return;
+            end
+
+            % Determine number of indices to shift current
+            numIdx = round(abs(nanoSec * 1E-9) * self.turnOnWaveform.sampleRate);
+
+            % Create array of ones to shift current
+            shiftPoints = ones(1, numIdx);
+
+            % Add array to beginning or end of current array depending on
+            % sign of nanoSec.
+            if nanoSec > 0 % Add to beginning (shift right)
+                turnOnShift = shiftPoints * self.turnOnWaveform.i_d(1);
+                turnOffShift = shiftPoints * self.turnOffWaveform.i_d(1);
+
+                self.turnOnWaveform.i_d = [turnOnShift self.turnOnWaveform.i_d(1:end - numIdx)];
+                self.turnOffWaveform.i_d = [turnOffShift self.turnOffWaveform.i_d(1:end - numIdx)];
+            else % Add to end (shift left)
+                turnOnShift = shiftPoints * self.turnOnWaveform.i_d(end);
+                turnOffShift = shiftPoints * self.turnOffWaveform.i_d(end);
+
+                self.turnOnWaveform.i_d = [self.turnOnWaveform.i_d(1 + numIdx:end) turnOnShift];
+                self.turnOffWaveform.i_d = [self.turnOffWaveform.i_d(1 + numIdx:end) turnOffShift];
+            end
+
+            % Recalculate Values
+            self.calcAllValues;
+        end
         function calcAllValues(self)
             % If self contains more than one DoublePulseResult handle run
             % function one at a time.
@@ -90,7 +128,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             self.calcBusVoltage;
             self.calcLoadCurrent;
             if self.numChannels == 4
-                self.calcGateVoltage;
+                self.calcGateVoltage;       
             end
 
             % Turn On indices
@@ -168,6 +206,16 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         end
         
         function plotResults(self)
+            % If self contains more than one DoublePulseResult handle run
+            % function one at a time.
+            if numel(self) > 1
+                for obj = self
+                obj.plotResults
+                end
+                
+                return;
+            end
+            
             % Plot Results in several figures
             % Plot Turn On Waveform
             self.plotWaveform(self.turnOnWaveform, 'Turn On Waveform', self.pOn)
@@ -348,7 +396,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Find Gate Turn on idx
             % Point in V_GS turn on waveform where voltage starts to 
             % increase and does not stop increasing.
-            self.gateTurnOnIdx = self.findOnIdx(self.turnOnWaveform.v_gs, self.gateVoltage);
+            self.gateTurnOnIdx = self.findOnIdx(self.turnOnWaveform.v_gs);
         end
         function calcGateTurnOffIdx(self)
             % Find Gate Turn off idx
@@ -360,7 +408,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Find Current Turn on idx
             % Point in I_D turn on waveform where current starts to 
             % increase and does not stop increasing
-            self.currentTurnOnIdx = self.findOnIdx(self.turnOnWaveform.i_d, self.loadCurrent);
+            self.currentTurnOnIdx = self.findOnIdx(self.turnOnWaveform.i_d);
         end
         function calcCurrentTurnOffIdx(self)
             % Find Current Turn Off idx
@@ -518,7 +566,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
         function calcIVMisalignment(self)
             % Use di/dt method to deskew voltage and current measurements.
             % Returns the delay in the current signal, e.g. if the current lags the
-            % voltage by 5ns the function will return +5ns.
+            % voltage by 5 ns the function will return +5 ns.
             
             % Unpack Needed Variables
             V_bus = self.busVoltage;
@@ -596,7 +644,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
         end
         function nomValue = findNominalValue(waveform)
-            %% Ensure waveform is a comlumn vector
+            %% Ensure waveform is a column vector
             if isrow(waveform)
                 waveform = waveform';
             end
@@ -616,12 +664,42 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             %% Nominal value is the maximum of the final and initial values.
             nomValue = max([initValue, finalValue]);
         end
+        %% movingAvg: Takes a moving average of the input
+        function [movingAvg] = movingAvg(avgPts, waveform)
+            % Set filter weights to be equal + 1 includes current point
+            filterW = ones(1, avgPts + 1) / (avgPts + 1);
+            
+            % Setup pads to prevent moving filter from shifting to zero
+            startPad = ones(1, avgPts) * waveform(1);
+            stopPad = ones(1, avgPts) * waveform(end);
+            
+            % Pad waveform
+            waveform = [startPad waveform stopPad];
+            movingAvg = filter(filterW, 1, waveform);
+            movingAvg = movingAvg(avgPts + 1:end - (avgPts));
+        end
     end
     methods (Access = protected, Static)
-        function [onIdx] = findOnIdx(onWaveform, peakValue)
-            on_diff = diff(onWaveform);
-            half_on_idx = find(onWaveform > peakValue / 2, 1);
-            onIdx = find(on_diff(1:half_on_idx) < 0, 1, 'last') + 1;
+        function [onIdx] = findOnIdx(onWaveform)
+            % Find nominal value
+            nomValue = DoublePulseResults.findNominalValue(onWaveform);
+
+            % Start searching at 10% of the nominal value
+            startValue = 0.5 * nomValue;
+            
+            % We must first check to ensure that the signal is not
+            % excessively "ringy." We will do this by ensuring the the 
+            
+            
+            startIdx = find(onWaveform > startValue, 1);
+
+            % offIdx is point before startIdx where value starts to
+            % decrease and does not stop. Use +- 5 sample moving average.
+            movingAvg = DoublePulseResults.movingAvg(10, onWaveform);
+
+            onDiff = diff(movingAvg);
+
+            onIdx = find(onDiff(1:startIdx) < 0, 1, 'last') + 1;
         end
         function [offIdx] = findOffIdx(offWaveform)
             % Find Nominal Value
@@ -633,10 +711,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
             % offIdx is point before startIdx where value starts to
             % decrease and does not stop. Use +- 5 sample moving average.
-            avgPts = 10;
-            filterW = ones(1, avgPts + 1) / avgPts + 1;
-            movingAvg = filter(filterW, 1, [offWaveform zeros(1, avgPts)]);
-            movingAvg = movingAvg(avgPts + 1:end);
+            movingAvg = DoublePulseResults.movingAvg(10, offWaveform);
             
             offDiff = diff(movingAvg);
             

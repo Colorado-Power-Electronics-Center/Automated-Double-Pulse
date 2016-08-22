@@ -1,14 +1,14 @@
 classdef channelMapper < matlab.mixin.Copyable
     %channelMapper Summary of this class goes here
     %   Detailed explanation goes here
-    
+
     properties
         VDS = GeneralWaveform.NOT_RECORDED;
         VGS = GeneralWaveform.NOT_RECORDED;
         ID = GeneralWaveform.NOT_RECORDED;
         IL = GeneralWaveform.NOT_RECORDED;
     end
-    
+
     methods
         function self = channelMapper(VDS_Channel, VGS_Channel,...
                                       ID_Channel, IL_Channel)
@@ -26,4 +26,3 @@ classdef channelMapper < matlab.mixin.Copyable
     end
     
 end
-

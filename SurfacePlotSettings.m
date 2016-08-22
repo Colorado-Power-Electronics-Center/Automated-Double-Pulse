@@ -3,8 +3,8 @@ classdef SurfacePlotSettings < SweepPlotSettings
     %   Detailed explanation goes here
     
     properties
-        xSamples
-        ySamples
+        xSamples = 100:5:400;
+        ySamples = 3:.5:30;
     end
     
     methods

@@ -179,10 +179,12 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     if settings.invertCurrent
         if myScope.scopeSeries ~= SCPI_Oscilloscope.Series5000
             myScope.setChInvert(ID_Channel, 'ON');
+            if IL_Channel ~= GeneralWaveform.NOT_RECORDED
+                myScope.setChInvert(IL_Channel, 'ON');
+            end
         else
-%             warning('5000 Series Scopes do not support inverting');
-%             5000 Series Scopes do not support inverting, but we will do
-%             it later manually.
+            % 5000 Series Scopes do not support inverting, but we will do
+            % it later manually.
             myScope.setChInvert(ID_Channel, 'OFF');
         end
     else

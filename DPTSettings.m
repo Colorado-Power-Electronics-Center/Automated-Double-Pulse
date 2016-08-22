@@ -94,7 +94,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 
 	    % Initial Horizontal Settings
 	    horizontalScale = 50e-6;
-	    delayMode = 'Off';
+	    delayMode = 'OFF';
 	    horizontalPosition = 5;
 
 	    % Trigger 
