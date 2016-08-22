@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding="utf-8"?>
+<toc version="2.0">
+
+    <tocitem target="Double_Pulse_Test.html">Automated Double Pulse Test
+<!--         <tocitem target="Double_Pulse_Test.html#Requirements">Requirements 
+            <tocitem target="Double_Pulse_Test.html#Software Requirements">Software Requirements</tocitem>
+        </tocitem>
+        <tocitem target="simpleEx.html">Simple Example
+        </tocitem>
+ -->    </tocitem>
+
+    <tocitem target="DPTSettings.html">DPT Settings
+    </tocitem>
+
+</toc>

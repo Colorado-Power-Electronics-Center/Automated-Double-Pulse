@@ -1,0 +1,2985 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPTSettings.md</title>
+<link rel="stylesheet" href="themes/base.css" />
+<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="dptsettings">DPTSettings</h1>
+
+<p>The DPTSettings class stores the settings that control the operation of the double pulse test. It contains a number of settings, many of which have default values, that can be altered to customize the operation of the toolbox. </p>
+
+
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<p><div class="toc"><div class="toc">
+<ul>
+<li><a href="#dptsettings">DPTSettings</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#default-values">Default Values</a><ul>
+<li><a href="#test-specific-settings">Test Specific Settings</a></li>
+<li><a href="#instrument-setup">Instrument Setup</a></li>
+<li><a href="#pulse-creation">Pulse Creation</a></li>
+<li><a href="#pulse-measurement">Pulse Measurement</a></li>
+<li><a href="#data-saving">Data Saving</a></li>
+<li><a href="#windows-size">Windows Size</a></li>
+<li><a href="#automation-level">Automation Level</a></li>
+</ul>
+</li>
+<li><a href="#settings">Settings</a><ul>
+<li><a href="#test-specific-settings-1">Test Specific Settings</a><ul>
+<li><a href="#busvoltages">busVoltages</a></li>
+<li><a href="#loadcurrents">loadCurrents</a></li>
+<li><a href="#currentresistor">currentResistor</a></li>
+<li><a href="#loadinductor">loadInductor</a></li>
+<li><a href="#mingatevoltage">minGateVoltage</a></li>
+<li><a href="#maxgatevoltage">maxGateVoltage</a></li>
+<li><a href="#gatelogicvoltage">gateLogicVoltage</a></li>
+<li><a href="#channelvds">channel.VDS</a></li>
+<li><a href="#channelvgs">channel.VGS</a></li>
+<li><a href="#channelid">channel.ID</a></li>
+<li><a href="#channelil">channel.IL</a></li>
+</ul>
+</li>
+<li><a href="#instrument-setup-1">Instrument Setup</a><ul>
+<li><a href="#fgenbuffersize">FGen_buffer_size</a></li>
+<li><a href="#scopebuffersize">Scope_Buffer_size</a></li>
+<li><a href="#bussupplybuffersize">Bus_Supply_buffer_size</a></li>
+<li><a href="#scopevisaaddress">scopeVisaAddress</a></li>
+<li><a href="#fgenvisaaddress">FGenVisaAddress</a></li>
+<li><a href="#bussupplyvisaaddress">BusSupplyVisaAddress</a></li>
+<li><a href="#scopevendor">scopeVendor</a></li>
+<li><a href="#fgenvendor">FGenVendor</a></li>
+<li><a href="#bussupplyvendor">BusSupplyVendor</a></li>
+<li><a href="#scopetimeout">scopeTimeout</a></li>
+<li><a href="#scopebyteorder">scopeByteOrder</a></li>
+</ul>
+</li>
+<li><a href="#pulse-creation-1">Pulse Creation</a><ul>
+<li><a href="#pulseleaddeadt">pulse_lead_dead_t</a></li>
+<li><a href="#pulseofft">pulse_off_t</a></li>
+<li><a href="#pulsesecondpulset">pulse_second_pulse_t</a></li>
+<li><a href="#pulseenddeadt">pulse_end_dead_t</a></li>
+<li><a href="#usemini2ndpulse">use_mini_2nd_pulse</a></li>
+<li><a href="#mini2ndpulseofftime">mini_2nd_pulse_off_time</a></li>
+<li><a href="#burstmode">burstMode</a></li>
+<li><a href="#fgentriggersource">FGenTriggerSource</a></li>
+<li><a href="#burstcycles">burstCycles</a></li>
+</ul>
+</li>
+<li><a href="#pulse-measurement-1">Pulse Measurement</a><ul>
+<li><a href="#scopesamplerate">scopeSampleRate</a></li>
+<li><a href="#scoperecordlength">scopeRecordLength</a></li>
+<li><a href="#useautorecordlength">useAutoRecordLength</a></li>
+<li><a href="#autorecordlengthbuffer">autoRecordLengthBuffer</a></li>
+<li><a href="#numbytes">numBytes</a></li>
+<li><a href="#encoding">encoding</a></li>
+<li><a href="#numverticaldivisions">numVerticalDivisions</a></li>
+<li><a href="#chprobegain">chProbeGain</a></li>
+<li><a href="#invertcurrent">invertCurrent</a></li>
+<li><a href="#chinitialoffset">chInitialOffset</a></li>
+<li><a href="#chinitialscale">chInitialScale</a></li>
+<li><a href="#chinitialposition">chInitialPosition</a></li>
+<li><a href="#maxcurrentspike">maxCurrentSpike</a></li>
+<li><a href="#percentbuffer">percentBuffer</a></li>
+<li><a href="#deskewvoltage">deskewVoltage</a></li>
+<li><a href="#deskewcurrent">deskewCurrent</a></li>
+<li><a href="#currentdelay">currentDelay</a></li>
+<li><a href="#vgsdeskew">VGSDeskew</a></li>
+<li><a href="#horizontalscale">horizontalScale</a></li>
+<li><a href="#delaymode">delayMode</a></li>
+<li><a href="#horizontalposition">horizontalPosition</a></li>
+<li><a href="#triggertype">triggerType</a></li>
+<li><a href="#triggercoupling">triggerCoupling</a></li>
+<li><a href="#triggerslope">triggerSlope</a></li>
+<li><a href="#triggerslopedeskew">triggerSlopeDeskew</a></li>
+<li><a href="#triggersource">triggerSource</a></li>
+<li><a href="#triggersourcedeskew">triggerSourceDeskew</a></li>
+<li><a href="#triggerlevel">triggerLevel</a></li>
+<li><a href="#triggerleveldeskew">triggerLevelDeskew</a></li>
+<li><a href="#acquisitionmode">acquisitionMode</a></li>
+<li><a href="#acquisitionsamplingmode">acquisitionSamplingMode</a></li>
+<li><a href="#acquisitionstop">acquisitionStop</a></li>
+</ul>
+</li>
+<li><a href="#data-saving-1">Data Saving</a><ul>
+<li><a href="#datadirectory">dataDirectory</a></li>
+</ul>
+</li>
+<li><a href="#windows-size-1">Windows Size</a><ul>
+<li><a href="#windowturnonprequel">window.turn_on_prequel</a></li>
+<li><a href="#windowturnontime">window.turn_on_time</a></li>
+<li><a href="#windowturnoffprequel">window.turn_off_prequel</a></li>
+<li><a href="#windowturnofftime">window.turn_off_time</a></li>
+</ul>
+</li>
+<li><a href="#automation-level-1">Automation Level</a><ul>
+<li><a href="#push2pulse">push2pulse</a></li>
+<li><a href="#autobuscontrol">autoBusControl</a></li>
+<li><a href="#busslewrate">busSlewRate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</p>
+
+
+
+<h2 id="default-values">Default Values</h2>
+
+
+
+<h3 id="test-specific-settings">Test Specific Settings</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#busvoltages"><code>busVoltages</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#loadcurrents"><code>loadCurrents</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#currentresistor"><code>currentResistor</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#loadinductor"><code>loadInductor</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#mingatevoltage"><code>minGateVoltage</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">0</span></code></td>
+</tr>
+<tr>
+  <td><a href="#maxgatevoltage"><code>maxGateVoltage</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#gatelogicvoltage"><code>gateLogicVoltage</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#channelvds"><code>channel.VDS</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#channelvgs"><code>channel.VGS</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#channelid"><code>channel.ID</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#channelil"><code>channel.IL</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="instrument-setup">Instrument Setup</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#fgenbuffersize"><code>FGen_buffer_size</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">6000000</span></code></td>
+</tr>
+<tr>
+  <td><a href="#scopebuffersize"><code>Scope_Buffer_size</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">200000</span></code></td>
+</tr>
+<tr>
+  <td><a href="#bussupplybuffer_size"><code>Bus_Supply_buffer_size</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">200000</span></code></td>
+</tr>
+<tr>
+  <td><a href="#scopevisaaddress"><code>scopeVisaAddress</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#fgenvisaaddress"><code>FGenVisaAddress</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#bussupplyvisaaddress"><code>BusSupplyVisaAddress</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#scopevendor"><code>scopeVendor</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'tek'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#fgenvendor"><code>FGenVendor</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'agilent'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#bussupplyvendor"><code>BusSupplyVendor</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'agilent'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#scopetimeout"><code>scopeTimeout</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span></code></td>
+</tr>
+<tr>
+  <td><a href="#scopebyteorder"><code>scopeByteOrder</code></a></td>
+  <td align="right"><code class="prettyprint lang-matlab prettyprinted"><span class="str">'littleEndian'</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="pulse-creation">Pulse Creation</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#pulseleaddeadt"><code>pulse_lead_dead_t</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1e-6</span></code></td>
+</tr>
+<tr>
+  <td><a href="#pulseofft"><code>pulse_off_t</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5e-6</span></code></td>
+</tr>
+<tr>
+  <td><a href="#pulsesecondpulset"><code>pulse_second_pulse_t</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5e-6</span></code></td>
+</tr>
+<tr>
+  <td><a href="#pulseenddeadt"><code>pulse_end_dead_t</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1e-6</span></code></td>
+</tr>
+<tr>
+  <td><a href="#usemini2ndpulse"><code>use_mini_2nd_pulse</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td><a href="#mini2ndpulseofftime"><code>mini_2nd_pulse_off_time</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">50e-9</span></code></td>
+</tr>
+<tr>
+  <td><a href="#burstmode"><code>burstMode</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'TRIGgered'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#fgentriggersource"><code>FGenTriggerSource</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'BUS'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#burstcycles"><code>burstCycles</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="pulse-measurement">Pulse Measurement</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#scopesamplerate"><code>scopeSampleRate</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10E9</span></code></td>
+</tr>
+<tr>
+  <td><a href="#scoperecordlength"><code>scopeRecordLength</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">2000000</span></code></td>
+</tr>
+<tr>
+  <td><a href="#useautorecordlength"><code>useAutoRecordLength</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code></td>
+</tr>
+<tr>
+  <td><a href="#autorecordlengthbuffer"><code>autoRecordLengthBuffer</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1.5</span></code></td>
+</tr>
+<tr>
+  <td><a href="#numbytes"><code>numBytes</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1</span></code></td>
+</tr>
+<tr>
+  <td><a href="#encoding"><code>encoding</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SRI'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#numverticaldivisions"><code>numVerticalDivisions</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span></code></td>
+</tr>
+<tr>
+  <td><a href="#chprobegain"><code>chProbeGain</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td><a href="#invertcurrent"><code>invertCurrent</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code></td>
+</tr>
+<tr>
+  <td><a href="#chinitialoffset"><code>chInitialOffset</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td><a href="#chinitialscale"><code>chInitialScale</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td><a href="#chinitialposition"><code>chInitialPosition</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td><a href="#maxcurrentspike"><code>maxCurrentSpike</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">100</span></code></td>
+</tr>
+<tr>
+  <td><a href="#percentbuffer"><code>percentBuffer</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span></code></td>
+</tr>
+<tr>
+  <td><a href="#deskewvoltage"><code>deskewVoltage</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">min</span><span class="pun">(</span><span class="pln">busVoltages</span><span class="pun">)</span></code></td>
+</tr>
+<tr>
+  <td><a href="#deskewcurrent"><code>deskewCurrent</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">max</span><span class="pun">(</span><span class="pln">loadCurrents</span><span class="pun">)</span></code></td>
+</tr>
+<tr>
+  <td><a href="#currentdelay"><code>currentDelay</code></a></td>
+  <td align="right"></td>
+</tr>
+<tr>
+  <td><a href="#vgsdeskew"><code>VGSDeskew</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">0</span></code></td>
+</tr>
+<tr>
+  <td><a href="#horizontalscale"><code>horizontalScale</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">50e-6</span></code></td>
+</tr>
+<tr>
+  <td><a href="#delaymode"><code>delayMode</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'Off'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#horizontalposition"><code>horizontalPosition</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5</span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggertype"><code>triggerType</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EDGe'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggercoupling"><code>triggerCoupling</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DC'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggerslope"><code>triggerSlope</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'FALL'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggerslopedeskew"><code>triggerSlopeDeskew</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RISe'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggersource"><code>triggerSource</code></a></td>
+  <td align="right"><script type="math/tex" id="MathJax-Element-57">V_{DS}</script></td>
+</tr>
+<tr>
+  <td><a href="#triggersourcedeskew"><code>triggerSourceDeskew</code></a></td>
+  <td align="right"><script type="math/tex" id="MathJax-Element-58">V_{GS}</script></td>
+</tr>
+<tr>
+  <td><a href="#triggerlevel"><code>triggerLevel</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">min</span><span class="pun">(</span><span class="pln">busVoltages</span><span class="pun">)</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> </span><span class="lit">2</span></code></td>
+</tr>
+<tr>
+  <td><a href="#triggerleveldeskew"><code>triggerLevelDeskew</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">maxGateVoltage </span><span class="pun">/</span><span class="pln"> </span><span class="lit">2</span></code></td>
+</tr>
+<tr>
+  <td><a href="#acquisitionmode"><code>acquisitionMode</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SAMple'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#acquisitionsamplingmode"><code>acquisitionSamplingMode</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RT'</span></code></td>
+</tr>
+<tr>
+  <td><a href="#acquisitionstop"><code>acquisitionStop</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SEQuence'</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="data-saving">Data Saving</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#datadirectory"><code>dataDirectory</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'Measurements\' </span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="windows-size">Windows Size</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#windowturnonprequel"><code>window.turn_on_prequel</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">30e-9</span></code></td>
+</tr>
+<tr>
+  <td><a href="#windowturnontime"><code>window.turn_on_time</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">80e-9</span></code></td>
+</tr>
+<tr>
+  <td><a href="#windowturnoffprequel"><code>window.turn_off_prequel</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">30e-9</span></code></td>
+</tr>
+<tr>
+  <td><a href="#windowturnofftime"><code>window.turn_off_time</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">80e-9</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="automation-level">Automation Level</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Setting</th>
+  <th align="right">Default Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#push2pulse"><code>push2pulse</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td><a href="#autobuscontrol"><code>autoBusControl</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td><a href="#busslewrate"><code>busSlewRate</code></a></td>
+  <td align="right"><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">100</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="right"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h2 id="settings">Settings</h2>
+
+
+
+<h3 id="test-specific-settings-1">Test Specific Settings</h3>
+
+
+
+<h4 id="busvoltages">busVoltages</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any integer or array of integers</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Must be set by the user for the program to run. Determines the Bus Voltages that will be tested.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="loadcurrents">loadCurrents</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any integer or array of integers</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Amps</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Must be set by the user for the program to run. Determines the Load Currents that will be tested.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="currentresistor">currentResistor</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Ohms</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Must be set by the user for the program to run. Controls the scaling of the drain current channel on the oscilloscope. It should be set to the value of the resistance for the current sensing resistor.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="loadinductor">loadInductor</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Henrys</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Must be set by the user for the program to run. Used to calculate the charging time for the various load currents. It is very important that this value is set correctly. Failure to do so will result in an unpredictable amount of current flowing through the test device. It should be set to the value of the load inductor.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="mingatevoltage">minGateVoltage</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">0</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float, must be less than maxGateVoltage</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Used to calculate the scaling for the gate voltage channel in the oscilloscope. It should be set to the minimum expected value of the gate driver’s output.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="maxgatevoltage">maxGateVoltage</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float, must be greater than minGateVoltage</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Used to calculate the scaling for the gate voltage channel in the oscilloscope. It should be set to the maximum expected value of the gate driver’s output.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="gatelogicvoltage">gateLogicVoltage</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the output of the function generator. It should be set to the input voltage of the gate driver.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="channelvds">channel.VDS</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer [1-4]</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Channel that the probe measuring <script type="math/tex" id="MathJax-Element-37">V_{DS}</script> is connected to.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="channelvgs">channel.VGS</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer [1-4]</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Channel that the probe measuring <script type="math/tex" id="MathJax-Element-38">V_{GS}</script> is connected to.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="channelid">channel.ID</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer [1-4]</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Channel that the probe measuring <script type="math/tex" id="MathJax-Element-39">I_{D}</script> is connected to.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="channelil">channel.IL</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer [1-4]</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Channel that the probe measuring <script type="math/tex" id="MathJax-Element-40">I_{L}</script> is connected to. Should not be set if the load current is not being measured.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="instrument-setup-1">Instrument Setup</h3>
+
+
+
+<h4 id="fgenbuffersize">FGen_buffer_size</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">6000000</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer less than the maximum buffer size of computer and instrument</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the buffer size of the Function Generator. Should not be set to large or it will cause the program to fail, small values are taken into account for most data transfers that have the potential to be large. Change only if necessary.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scopebuffersize">Scope_Buffer_size</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">200000</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer less than the maximum buffer size of computer and instrument</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the buffer size of the Oscilloscope. Should not be set to large or it will cause the program to fail, small values are taken into account for most data transfers that have the potential to be large. Change only if necessary.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="bussupplybuffersize">Bus_Supply_buffer_size</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">200000</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Integer less than the maximum buffer size of computer and instrument</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the buffer size of the blah. Should not be set to large or it will cause the program to fail, small values are taken into account for most data transfers that have the potential to be large. Change only if necessary.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scopevisaaddress">scopeVisaAddress</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any VISA Address Ex: (<code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'USB0::0x0699::0x0502::C051196::0::INSTR'</span></code>)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>VISA Address of the oscilloscope.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="fgenvisaaddress">FGenVisaAddress</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any VISA Address Ex: (<code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'USB0::0x0699::0x0502::C051196::0::INSTR'</span></code>)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>VISA Address of the Function Generator.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="bussupplyvisaaddress">BusSupplyVisaAddress</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any VISA Address Ex: (<code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'USB0::0x0699::0x0502::C051196::0::INSTR'</span></code>)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>VISA Address of the Bus Voltage Supply.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scopevendor">scopeVendor</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'tek'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'tek'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'agilent'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ni'</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Vendor for the oscilloscope. Determines which VISA library is used.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="fgenvendor">FGenVendor</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'agilent'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'tek'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'agilent'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ni'</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Vendor for the Function Generator. Determines which VISA library is used.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="bussupplyvendor">BusSupplyVendor</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'agilent'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'tek'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'agilent'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ni'</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Vendor for the Bus Voltage Supply. Determines which VISA library is used.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scopetimeout">scopeTimeout</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Time before VISA commands to the oscilloscope will time out.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scopebyteorder">scopeByteOrder</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'littleEndian'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'littleEndian'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'bigEndian'</span><span class="pun">}</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the byte order for communication with the oscilloscope.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="pulse-creation-1">Pulse Creation</h3>
+
+
+
+<h4 id="pulseleaddeadt">pulse_lead_dead_t</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1e-6</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>The Double Pulse pulse is separated into five segments. The first segment is the initial off, the second segment is the first pulse, the third is the dead period between the two pulses, the fourth is the second pulse, and the fifth and final segment is the final off. This setting controls the time of the first segment, the initial dead time.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="pulseofft">pulse_off_t</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5e-6</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>The Double Pulse pulse is separated into five segments. The first segment is the initial off, the second segment is the first pulse, the third is the dead period between the two pulses, the fourth is the second pulse, and the fifth and final segment is the final off. This setting controls the time of the third segment, the dead period between pulses.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="pulsesecondpulset">pulse_second_pulse_t</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5e-6</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>The Double Pulse pulse is separated into five segments. The first segment is the initial off, the second segment is the first pulse, the third is the dead period between the two pulses, the fourth is the second pulse, and the fifth and final segment is the final off. This setting controls the time of the fourth segment, the second pulse.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="pulseenddeadt">pulse_end_dead_t</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1e-6</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>The Double Pulse pulse is separated into five segments. The first segment is the initial off, the second segment is the first pulse, the third is the dead period between the two pulses, the fourth is the second pulse, and the fifth and final segment is the final off. This setting controls the time of the fifth segment, the final off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="usemini2ndpulse">use_mini_2nd_pulse</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Switch for turning the four level gate driver on. The four level gate driver uses channel 1 on the function generator in the same way as the two level gate driver; however, channel 2 is always high except for a very short pulse at the beginning of the turn on pulse.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="mini2ndpulseofftime">mini_2nd_pulse_off_time</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">50e-9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>The time that the mini pulse is off. Currently the mini pulse starts 17 ns after the turn on starts. This is hard coded, but can be changed in the future.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="burstmode">burstMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'TRIGgered'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Function Generator Dependent</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the burst mode for the function generator. Changing this setting is not recommended.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="fgentriggersource">FGenTriggerSource</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'BUS'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Function Generator Dependent</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger source for the Function Generator. The default value allows the computer to trigger the function generator. Changing this setting is not recommended.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="burstcycles">burstCycles</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Function Generator Dependent</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the number of burst cycles per trigger event. Changing this setting is not recommended.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="pulse-measurement-1">Pulse Measurement</h3>
+
+
+
+<h4 id="scopesamplerate">scopeSampleRate</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10E9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Integer (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Samples / Second</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the desired Sample Rate of the Oscilloscope. The 5000 series supports an arbitrary number of samples; however, some oscilloscopes will require certain discrete values.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="scoperecordlength">scopeRecordLength</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">2000000</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Integer (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Samples</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the default number of samples to record for each capture. This setting will be ignored if <a href="#useautorecordlength">useAutoRecordLength</a>’s value is true (default).</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="useautorecordlength">useAutoRecordLength</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets record length behavior. With a value of <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code> the program will automatically choose the record length. With a value of <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code> the program will use the value of <a href="#scoperecordlength">scopeRecordLength</a> for the record length.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="autorecordlengthbuffer">autoRecordLengthBuffer</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1.5</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Multiplier for the use with the <a href="#useautorecordlength">useAutoRecordLength</a> setting. The oscilloscope will capture data for the length of the pulse <script type="math/tex" id="MathJax-Element-41">\times</script> autoRecordLengthBuffer.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="numbytes">numBytes</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">1</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the number of bytes used to represent each sample point. Currently only one byte is supported as the oscilloscopes we use can only use 8 bits at their maximum sample rates. Support for high resolution modes with two bytes per sample point is planned, but is not yet implemented.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="encoding">encoding</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SRI'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>‘SRI’</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Controls the encoding of the bytes used to transmit data to and from the scope. There are other values that can be used for this variable; however, their behavior is not tested, and changing this value is not recommended.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="numverticaldivisions">numVerticalDivisions</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Divisions</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Designates the number of vertical divisions contained in the oscilloscope. This value is currently controlled by the user, but in the future it may be determined automatically.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="chprobegain">chProbeGain</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">,</span><span class="pln"> </span><span class="lit">1</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any array of four integer values</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the gain for each channel’s probe. Currently only has an affect on 4000 series scopes, will be updated in the future. Integer values must be positive and may only accept certain values. See your oscilloscopes documentation. Uses the <code>CH&lt;x&gt;:PRObe:GAIN1</code> command.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="invertcurrent">invertCurrent</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Determines whether or not the current should be inverted. This is often desirable as the measurement conditions require that the drain current be measured as a negative voltage. Affects both the <script type="math/tex" id="MathJax-Element-42">I_{D}</script> and <script type="math/tex" id="MathJax-Element-43">I_{L}</script> channels. On scopes that do not support inverting this may be done by the MATAB script and not by the oscilloscope itself.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="chinitialoffset">chInitialOffset</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any array of four float values</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Base unit of channel (V, A)</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the initial offset of the oscilloscope channels. This value will apply to all measurements.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="chinitialscale">chInitialScale</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any array of floats</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Base unit of channel (V, A) / division</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the initial scale of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-44">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-45">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="chinitialposition">chInitialPosition</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">,</span><span class="pln"> </span><span class="lit">0</span><span class="pun">]</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any array of floats</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Number of divisions above center division</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the initial position of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-46">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-47">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="maxcurrentspike">maxCurrentSpike</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">100</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>any float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Amps</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the maximum current spike seen during turn on or turn off, used with the <a href="#calcdefaultscales">calcDefaultScales</a> method. The <a href="#calcdefaultscales">calcDefaultScales</a> assumes that the current spike is the same in the positive and negative direction.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="percentbuffer">percentBuffer</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">10</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>%</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Percentage buffer to use with the oscilloscope display. Will add a buffer of percentBuffer / 2 percent to the top and bottom of the signal. The higher this value is the less resolution the waveform will have; however, a high value decreases the chance that the oscilloscope chops the signal.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="deskewvoltage">deskewVoltage</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">min</span><span class="pun">(</span><span class="pln">busVoltages</span><span class="pun">)</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any float or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the voltage used for the deskew pulse. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> the value is set to the min of <a href="#busvoltages">busVoltages</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="deskewcurrent">deskewCurrent</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">max</span><span class="pun">(</span><span class="pln">loadCurrents</span><span class="pun">)</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any float or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Amps</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the current used for the deskew pulse. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> the value is set to the max of <a href="#loadcurrents">loadCurrents</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="currentdelay">currentDelay</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the delay in the current signal; however, this setting is overwritten during the program’s operation and user values will be ignored.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="vgsdeskew">VGSDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">0</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the delay in the <script type="math/tex" id="MathJax-Element-59">V_{GS}</script> signal. Uses the <code>CH&lt;x&gt;:DESKew</code> command with VGSDeskew as the value.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="horizontalscale">horizontalScale</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">50e-6</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>todo: figure out what this really does…</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="delaymode">delayMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'OFF'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'ON'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'OFF'</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the delay mode of the oscilloscope. Changing this setting is not recommended.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="horizontalposition">horizontalPosition</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">5</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>{0-99}</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>%</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the position of the trigger point of the oscilloscope on the oscilloscope screen in percent from the left. 0% is right at the left side 50% is right in the middle, and 99% is all the way to the right. NOTE: The upper limit of the waveform position is slightly limited by a value that is determined from the record length (upper limit = 100 - 1/record length).</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggertype">triggerType</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EDGe'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'EDGE'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'LOGIc'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'PULse'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'VIDeo'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'I2C'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'CAN'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'SPI'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'COMMunication'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'SERIAL'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'RS232'</span><span class="pln"> </span><span class="pun">}</span></code>  (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger type for the oscilloscope. Changing this value is not recommended for the double pulse test.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggercoupling">triggerCoupling</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DC'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'AC'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'DC'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'HFRej'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'LFRej'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'NOISErej'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ATRIGger'</span><span class="pln"> </span><span class="pun">}</span></code> (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger coupling for the oscilloscope.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggerslope">triggerSlope</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'FALL'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RISe'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'FALL'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger slope for all measurements. The deskew trigger slope is set in the <a href="#triggerslopedeskew">triggerSlopeDeskew</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggerslopedeskew">triggerSlopeDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RISe'</span><span class="pln"> </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RISe'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'FALL'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger slope for the deskew pulse. The trigger slope for all other measurements is set in the <a href="#triggerslope">triggerSlope</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggersource">triggerSource</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><script type="math/tex" id="MathJax-Element-49">V_{DS}</script> Channel</td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>{1-4} or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the channel that the trigger for all measurements will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-50">V_{DS}</script> is assigned to. The deskew trigger source is set in the <a href="#triggersourcedeskew">triggerSourceDeskew</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggersourcedeskew">triggerSourceDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><script type="math/tex" id="MathJax-Element-51">V_{GS}</script> Channel</td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>{1-4} or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the channel that the trigger for the deskew will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-52">V_{GS}</script> is assigned to. The trigger source for all other measurements is set in the <a href="#triggersource">triggerSource</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggerlevel">triggerLevel</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">min</span><span class="pun">(</span><span class="pln">busVoltages</span><span class="pun">)</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> </span><span class="lit">2</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger level for all measurements except the deskew measurement. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to half of the minimum of <a href="#busvoltages">busVoltages</a>. The trigger level for the deskew pulse is set by the <a href="#triggerleveldeskew">triggerLevelDeskew</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="triggerleveldeskew">triggerLevelDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">maxGateVoltage </span><span class="pun">/</span><span class="pln"> </span><span class="lit">2</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float or <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the trigger level for the deskew measurement. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to half of <a href="#maxgatevoltage">maxGateVoltage</a>. The trigger level for all other measurements is set by the <a href="#triggerlevel">triggerLevel</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="acquisitionmode">acquisitionMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SAMple'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'SAMple'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'HIRes'</span><span class="pln"> </span><span class="pun">}</span></code> (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the acquisition mode of the oscilloscope. If <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HIRes'</span></code> is used it will likely be desirable to change the number of Bytes send with the <a href="#numbytes">numBytes</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="acquisitionsamplingmode">acquisitionSamplingMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RT'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RT'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ET'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'IT'</span><span class="pln"> </span><span class="pun">}</span></code> (Scope Dependent)</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the sampling mode of the oscilloscope. See oscilloscope user manual for more details.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="acquisitionstop">acquisitionStop</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SEQuence'</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RUNSTop'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'SEQuence'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the stop after setting of the oscilloscope for all measurements. It is very unlikely that <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RUNSTop'</span></code> will produce desirable results.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="data-saving-1">Data Saving</h3>
+
+
+
+<h4 id="datadirectory">dataDirectory</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'Measurements\' </span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Directory</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the directory that will be used for saving the results of the double pulse test. May be a relative or an absolute path.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="windows-size-1">Windows Size</h3>
+
+
+
+<h4 id="windowturnonprequel">window.turn_on_prequel</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">30e-9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the time to show in plots before the turn on.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="windowturnontime">window.turn_on_time</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">80e-9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the time to show in plots after the turn on.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="windowturnoffprequel">window.turn_off_prequel</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">30e-9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the time to show in plots before the turn off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="windowturnofftime">window.turn_off_time</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">80e-9</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td>Seconds</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the time to show in plots after the turn off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="automation-level-1">Automation Level</h3>
+
+
+
+<h4 id="push2pulse">push2pulse</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>If set to true this setting will cause the program to ask the user to confirm before every pulse.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="autobuscontrol">autoBusControl</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>If set to true this setting will allow the program to automatically control the Bus Supply. If set to false the user will be asked to adjust the voltage by hand. The voltage changes will be slewed with a slew rate set by the <a href="#busslewrate">busSlewRate</a> setting.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="busslewrate">busSlewRate</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td><code class="prettyprint lang-MATLAB prettyprinted"><span class="lit">100</span></code></td>
+</tr>
+<tr>
+  <td>Acceptable Values</td>
+  <td>Any Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td><script type="math/tex" id="MathJax-Element-36">\frac{\text{Volts}}{\text{Second}}</script></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td>Sets the slew rate for changing the voltage of bus supplies with the program.</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+</tr>
+</tbody></table></div></body>
+</html>
