@@ -115,7 +115,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Test Specific Settings
 #### busVoltages
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value |  |
 | Acceptable Values | Any integer or array of integers |
 | Units | Volts |
@@ -125,7 +125,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### loadCurrents
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value |  |
 | Acceptable Values | Any integer or array of integers |
 | Units | Amps |
@@ -135,7 +135,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### currentResistor
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any float |
 | Units | Ohms |
@@ -145,7 +145,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### loadInductor
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any float |
 | Units | Henrys |
@@ -155,7 +155,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### minGateVoltage
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">0 </code> |
 | Acceptable Values | Any Float, must be less than maxGateVoltage |
 | Units | Volts |
@@ -165,7 +165,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### maxGateVoltage
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any Float, must be greater than minGateVoltage |
 | Units | Volts |
@@ -175,7 +175,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### gateLogicVoltage
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any Float |
 | Units | Volts |
@@ -185,7 +185,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### channel.VDS
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Integer [1-4]|
 | Units | |
@@ -194,7 +194,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### channel.VGS
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Integer [1-4] |
 | Units | |
@@ -203,7 +203,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### channel.ID
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Integer [1-4] |
 | Units | |
@@ -212,7 +212,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### channel.IL
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Integer [1-4] |
 | Units | |
@@ -223,7 +223,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Instrument Setup
 #### FGen_buffer_size
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">6000000 </code> |
 | Acceptable Values | Integer less than the maximum buffer size of computer and instrument|
 | Units | |
@@ -233,7 +233,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### Scope_Buffer_size
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">200000 </code> |
 | Acceptable Values | Integer less than the maximum buffer size of computer and instrument |
 | Units | |
@@ -243,7 +243,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### Bus_Supply_buffer_size
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">200000 </code> |
 | Acceptable Values | Integer less than the maximum buffer size of computer and instrument |
 | Units | |
@@ -253,7 +253,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### scopeVisaAddress
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any VISA Address Ex: (<code class="prettyprint lang-MATLAB">'USB0::0x0699::0x0502::C051196::0::INSTR'</code>) |
 | Units | |
@@ -263,7 +263,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### FGenVisaAddress
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any VISA Address Ex: (<code class="prettyprint lang-MATLAB">'USB0::0x0699::0x0502::C051196::0::INSTR'</code>) |
 | Units | |
@@ -273,7 +273,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### BusSupplyVisaAddress
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any VISA Address Ex: (<code class="prettyprint lang-MATLAB">'USB0::0x0699::0x0502::C051196::0::INSTR'</code>) |
 | Units | |
@@ -283,7 +283,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### scopeVendor
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'tek' </code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{'tek' \| 'agilent' \| 'ni'}</code>|
 | Units | |
@@ -293,7 +293,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### FGenVendor
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'agilent' </code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{'tek' \| 'agilent' \| 'ni'}</code>|
 | Units | |
@@ -303,7 +303,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### BusSupplyVendor
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'agilent' </code> |
 | Acceptable Values |<code class="prettyprint lang-MATLAB">{'tek' \| 'agilent' \| 'ni'}</code> |
 | Units | |
@@ -313,7 +313,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### scopeTimeout
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">10 </code> |
 | Acceptable Values | Any Integer |
 | Units | Seconds |
@@ -323,7 +323,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### scopeByteOrder
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'littleEndian' </code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{'littleEndian' \| 'bigEndian'} </code>|
 | Units | |
@@ -336,7 +336,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Pulse Creation
 #### pulse_lead_dead_t
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">1e-6</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -346,7 +346,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### pulse_off_t
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">5e-6</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds  |
@@ -356,7 +356,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### pulse_second_pulse_t
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">5e-6</code> |
 | Acceptable Values | Any Float  |
 | Units | Seconds  |
@@ -366,7 +366,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### pulse_end_dead_t
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">1e-6</code> |
 | Acceptable Values | Any Float  |
 | Units | Seconds  |
@@ -376,7 +376,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### use_mini_2nd_pulse
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">false</code> |
 | Acceptable Values | Boolean |
 | Units | |
@@ -386,7 +386,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### mini_2nd_pulse_off_time
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">50e-9</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -396,7 +396,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### burstMode
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'TRIGgered'</code> |
 | Acceptable Values | Function Generator Dependent |
 | Units | |
@@ -406,7 +406,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### FGenTriggerSource
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'BUS'</code> |
 | Acceptable Values | Function Generator Dependent |
 | Units | |
@@ -416,7 +416,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### burstCycles
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">1</code> |
 | Acceptable Values | Function Generator Dependent |
 | Units | |
@@ -428,7 +428,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Pulse Measurement
 #### scopeSampleRate
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">10E9</code> |
 | Acceptable Values | Any Integer (Scope Dependent) |
 | Units | Samples / Second|
@@ -438,7 +438,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### scopeRecordLength
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">2000000</code> |
 | Acceptable Values | Any Integer (Scope Dependent)|
 | Units | Samples |
@@ -448,7 +448,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### useAutoRecordLength
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">true</code> |
 | Acceptable Values | Boolean |
 | Units | |
@@ -458,7 +458,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### autoRecordLengthBuffer
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">1.5</code> |
 | Acceptable Values | Any Float |
 | Units | |
@@ -468,7 +468,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### numBytes
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">1</code> |
 | Acceptable Values | 1 |
 | Units | |
@@ -478,9 +478,9 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### encoding
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'SRI'</code> |
-| Acceptable Values | 'SRI' |
+| Acceptable Values | <code class="prettyprint lang-MATLAB">'SRI'</code> |
 | Units | |
 | Description | Controls the encoding of the bytes used to transmit data to and from the scope. There are other values that can be used for this variable; however, their behavior is not tested, and changing this value is not recommended. |
 |||
@@ -488,7 +488,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### numVerticalDivisions
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">10</code> |
 | Acceptable Values | Any Integer |
 | Units | Divisions |
@@ -498,17 +498,17 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### chProbeGain
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">[1, 1, 1, 1]</code> |
 | Acceptable Values | Any array of four integer values |
 | Units | |
-| Description | Sets the gain for each channel's probe. Currently only has an affect on 4000 series scopes, will be updated in the future. Integer values must be positive and may only accept certain values. See your oscilloscopes documentation. Uses the `CH<x>:PRObe:GAIN1` command. |
+| Description | Sets the gain for each channel's probe. Currently only has an affect on 4000 series scopes, will be updated in the future. Integer values must be positive and may only accept certain values. See your oscilloscopes documentation. Uses the `CH<x>:PRObe:GAIN` command. |
 |||
 
 
 #### invertCurrent
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">true</code> |
 | Acceptable Values | Any Boolean |
 | Units |  |
@@ -518,7 +518,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### chInitialOffset
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">[0, 0, 0, 0]</code> |
 | Acceptable Values |Any array of four float values  |
 | Units | Base unit of channel (V, A) |
@@ -528,7 +528,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### chInitialScale
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">[0, 0, 0, 0]</code> |
 | Acceptable Values | Any array of floats |
 | Units | Base unit of channel (V, A) / division |
@@ -538,7 +538,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### chInitialPosition
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">[0, 0, 0, 0]</code> |
 | Acceptable Values | Any array of floats |
 | Units | Number of divisions above center division |
@@ -548,7 +548,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### maxCurrentSpike
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">100</code> |
 | Acceptable Values | any float |
 | Units | Amps |
@@ -558,7 +558,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### percentBuffer
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">10</code> |
 | Acceptable Values | Any float |
 | Units | % |
@@ -568,7 +568,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### deskewVoltage
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">min(busVoltages)</code> |
 | Acceptable Values | Any float or <code class="prettyprint lang-MATLAB">NaN</code> |
 | Units | Volts |
@@ -578,7 +578,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### deskewCurrent
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">max(loadCurrents)</code> |
 | Acceptable Values |Any float or <code class="prettyprint lang-MATLAB">NaN</code>  |
 | Units | Amps |
@@ -588,7 +588,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### currentDelay
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -598,7 +598,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### VGSDeskew
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">0</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -608,7 +608,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### horizontalScale
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">50e-6</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -618,7 +618,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### delayMode
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'OFF'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{'ON' \| 'OFF'}</code> |
 | Units | |
@@ -628,7 +628,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### horizontalPosition
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">5</code> |
 | Acceptable Values | {0-99} |
 | Units | % |
@@ -638,9 +638,9 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerType
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'EDGe'</code> |
-| Acceptable Values |  <code class="prettyprint lang-MATLAB">{'EDGE' \| 'LOGIc' \| 'PULse' \| 'VIDeo' \| 'I2C' \| 'CAN' \| 'SPI' \| 'COMMunication' \| 'SERIAL' \| 'RS232' }</code>  (Scope Dependent) |
+| Acceptable Values |  <code class="prettyprint lang-MATLAB">{ 'EDGE' \| 'LOGIc' \| 'PULse' \| 'VIDeo' \| 'I2C' \| 'CAN' \| 'SPI' \| 'COMMunication' \| 'SERIAL' \| 'RS232' }</code>  (Scope Dependent) |
 | Units | |
 | Description | Sets the trigger type for the oscilloscope. Changing this value is not recommended for the double pulse test. |
 |||
@@ -648,7 +648,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerCoupling
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'DC'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'AC' \| 'DC' \| 'HFRej' \| 'LFRej' \| 'NOISErej' \| 'ATRIGger' }</code> (Scope Dependent) |
 | Units | |
@@ -658,7 +658,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerSlope
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'FALL'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'RISe' \| 'FALL' }</code> |
 | Units | |
@@ -668,7 +668,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerSlopeDeskew
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'RISe' </code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'RISe' \| 'FALL' }</code> |
 | Units | |
@@ -678,7 +678,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerSource
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | $V_{DS}$ Channel |
 | Acceptable Values | {1-4} or <code class="prettyprint lang-MATLAB">NaN</code> |
 | Units | |
@@ -688,7 +688,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerSourceDeskew
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | $V_{GS}$ Channel |
 | Acceptable Values | {1-4} or <code class="prettyprint lang-MATLAB">NaN</code> |
 | Units | |
@@ -698,7 +698,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerLevel
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">min(busVoltages) / 2</code>|
 | Acceptable Values | Any Float or <code class="prettyprint lang-MATLAB">NaN</code> |
 | Units | Volts |
@@ -708,7 +708,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### triggerLevelDeskew
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">maxGateVoltage / 2</code> |
 | Acceptable Values | Any Float or <code class="prettyprint lang-MATLAB">NaN</code> |
 | Units | Volts |
@@ -718,7 +718,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### acquisitionMode
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'SAMple'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'SAMple' \| 'HIRes' }</code> (Scope Dependent) |
 | Units | |
@@ -728,7 +728,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### acquisitionSamplingMode
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'RT'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'RT' \| 'ET' \| 'IT' }</code> (Scope Dependent) |
 | Units | |
@@ -738,7 +738,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### acquisitionStop
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'SEQuence'</code> |
 | Acceptable Values | <code class="prettyprint lang-MATLAB">{ 'RUNSTop' \| 'SEQuence' }</code> |
 | Units | |
@@ -750,7 +750,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Data Saving
 #### dataDirectory
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">'Measurements\' </code> |
 | Acceptable Values | Any Directory |
 | Units | |
@@ -762,7 +762,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Windows Size
 #### window.turn_on_prequel
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">30e-9</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -770,7 +770,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 |||
 #### window.turn_on_time
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">80e-9</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -778,7 +778,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 |||
 #### window.turn_off_prequel
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">30e-9</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -786,7 +786,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 |||
 #### window.turn_off_time
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">80e-9</code> |
 | Acceptable Values | Any Float |
 | Units | Seconds |
@@ -796,7 +796,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Automation Level
 #### push2pulse
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">false</code> |
 | Acceptable Values | Any Boolean |
 | Units | |
@@ -805,7 +805,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### autoBusControl
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">false</code> |
 | Acceptable Values | Any Boolean |
 | Units | |
@@ -814,7 +814,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 
 #### busSlewRate
 | Properties | |
-|---------|-|
+|---------|:--|
 | Default Value | <code class="prettyprint lang-MATLAB">100</code> |
 | Acceptable Values | Any Float |
 | Units | $\frac{\text{Volts}}{\text{Second}}$ |
