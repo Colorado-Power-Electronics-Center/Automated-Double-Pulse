@@ -16,7 +16,7 @@
 
 <h2 id="table-of-contents">Table of Contents</h2>
 
-<p><div class="toc"><div class="toc">
+<p><div class="toc">
 <ul>
 <li><a href="#dptsettings">DPTSettings</a><ul>
 <li><a href="#table-of-contents">Table of Contents</a></li>
@@ -125,10 +125,23 @@
 </li>
 </ul>
 </li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#calcscale">calcScale</a><ul>
+<li><a href="#arguments">Arguments</a></li>
+<li><a href="#description">Description</a></li>
+</ul>
+</li>
+<li><a href="#calcdefaultscales">calcDefaultScales</a></li>
+</ul>
+</li>
+<li><a href="#legacy-code">Legacy Code</a><ul>
+<li><a href="#channels">Channels</a></li>
 </ul>
 </li>
 </ul>
-</div>
+</li>
+</ul>
 </div>
 </p>
 
@@ -427,11 +440,11 @@
 </tr>
 <tr>
   <td><a href="#triggersource"><code>triggerSource</code></a></td>
-  <td align="right"><script type="math/tex" id="MathJax-Element-57">V_{DS}</script></td>
+  <td align="right"><script type="math/tex" id="MathJax-Element-23">V_{DS}</script></td>
 </tr>
 <tr>
   <td><a href="#triggersourcedeskew"><code>triggerSourceDeskew</code></a></td>
-  <td align="right"><script type="math/tex" id="MathJax-Element-58">V_{GS}</script></td>
+  <td align="right"><script type="math/tex" id="MathJax-Element-24">V_{GS}</script></td>
 </tr>
 <tr>
   <td><a href="#triggerlevel"><code>triggerLevel</code></a></td>
@@ -458,6 +471,8 @@
   <td align="right"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="data-saving">Data Saving</h3>
@@ -512,6 +527,8 @@
   <td align="right"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="automation-level">Automation Level</h3>
@@ -813,7 +830,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-60">V_{DS}</script> is connected to.</td>
+  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-25">V_{DS}</script> is connected to.</td>
 </tr>
 <tr>
   <td></td>
@@ -847,7 +864,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-61">V_{GS}</script> is connected to.</td>
+  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-26">V_{GS}</script> is connected to.</td>
 </tr>
 <tr>
   <td></td>
@@ -881,7 +898,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-62">I_{D}</script> is connected to.</td>
+  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-27">I_{D}</script> is connected to.</td>
 </tr>
 <tr>
   <td></td>
@@ -915,7 +932,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-63">I_{L}</script> is connected to. Should not be set if the load current is not being measured.</td>
+  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-28">I_{L}</script> is connected to. Should not be set if the load current is not being measured.</td>
 </tr>
 <tr>
   <td></td>
@@ -1743,7 +1760,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Multiplier for the use with the <a href="#useautorecordlength">useAutoRecordLength</a> setting. The oscilloscope will capture data for the length of the pulse <script type="math/tex" id="MathJax-Element-64">\times</script> autoRecordLengthBuffer.</td>
+  <td align="left">Multiplier for the use with the <a href="#useautorecordlength">useAutoRecordLength</a> setting. The oscilloscope will capture data for the length of the pulse <script type="math/tex" id="MathJax-Element-29">\times</script> autoRecordLengthBuffer.</td>
 </tr>
 <tr>
   <td></td>
@@ -1913,7 +1930,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Determines whether or not the current should be inverted. This is often desirable as the measurement conditions require that the drain current be measured as a negative voltage. Affects both the <script type="math/tex" id="MathJax-Element-65">I_{D}</script> and <script type="math/tex" id="MathJax-Element-66">I_{L}</script> channels. On scopes that do not support inverting this may be done by the MATAB script and not by the oscilloscope itself.</td>
+  <td align="left">Determines whether or not the current should be inverted. This is often desirable as the measurement conditions require that the drain current be measured as a negative voltage. Affects both the <script type="math/tex" id="MathJax-Element-30">I_{D}</script> and <script type="math/tex" id="MathJax-Element-31">I_{L}</script> channels. On scopes that do not support inverting this may be done by the MATAB script and not by the oscilloscope itself.</td>
 </tr>
 <tr>
   <td></td>
@@ -1981,7 +1998,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Sets the initial scale of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-67">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-68">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
+  <td align="left">Sets the initial scale of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-32">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-33">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
 </tr>
 <tr>
   <td></td>
@@ -2015,7 +2032,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Sets the initial position of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-69">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-70">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
+  <td align="left">Sets the initial position of the oscilloscope channels. This value will apply to only the deskew pulse for the <script type="math/tex" id="MathJax-Element-34">V_{DS}</script> channel. The value for the <script type="math/tex" id="MathJax-Element-35">V_{GS}</script> channel will apply to the initial pulse of all measurements. The value for the current channels will also apply to the deskew pulse and the initial pulse of all measurements, it should be set large enough to display the largest current spike as well as the largest current. It is recommended to set this value with the <a href="#calcdefaultscales">calcDefaultScales</a> method after the <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set.</td>
 </tr>
 <tr>
   <td></td>
@@ -2219,7 +2236,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Sets the delay in the <script type="math/tex" id="MathJax-Element-71">V_{GS}</script> signal. Uses the <code>CH&lt;x&gt;:DESKew</code> command with VGSDeskew as the value.</td>
+  <td align="left">Sets the delay in the <script type="math/tex" id="MathJax-Element-36">V_{GS}</script> signal. Uses the <code>CH&lt;x&gt;:DESKew</code> command with VGSDeskew as the value.</td>
 </tr>
 <tr>
   <td></td>
@@ -2479,7 +2496,7 @@
 </thead>
 <tbody><tr>
   <td>Default Value</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-72">V_{DS}</script> Channel</td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-37">V_{DS}</script> Channel</td>
 </tr>
 <tr>
   <td>Acceptable Values</td>
@@ -2491,7 +2508,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Sets the channel that the trigger for all measurements will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-73">V_{DS}</script> is assigned to. The deskew trigger source is set in the <a href="#triggersourcedeskew">triggerSourceDeskew</a> setting.</td>
+  <td align="left">Sets the channel that the trigger for all measurements will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-38">V_{DS}</script> is assigned to. The deskew trigger source is set in the <a href="#triggersourcedeskew">triggerSourceDeskew</a> setting.</td>
 </tr>
 <tr>
   <td></td>
@@ -2513,7 +2530,7 @@
 </thead>
 <tbody><tr>
   <td>Default Value</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-74">V_{GS}</script> Channel</td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-39">V_{GS}</script> Channel</td>
 </tr>
 <tr>
   <td>Acceptable Values</td>
@@ -2525,7 +2542,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Sets the channel that the trigger for the deskew will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-75">V_{GS}</script> is assigned to. The trigger source for all other measurements is set in the <a href="#triggersource">triggerSource</a> setting.</td>
+  <td align="left">Sets the channel that the trigger for the deskew will come from. If set to <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">NaN</span></code> it will default to the channel that <script type="math/tex" id="MathJax-Element-40">V_{GS}</script> is assigned to. The trigger source for all other measurements is set in the <a href="#triggersource">triggerSource</a> setting.</td>
 </tr>
 <tr>
   <td></td>
@@ -2975,7 +2992,7 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-76">\frac{\text{Volts}}{\text{Second}}</script></td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-41">\frac{\text{Volts}}{\text{Second}}</script></td>
 </tr>
 <tr>
   <td>Description</td>
@@ -2985,5 +3002,48 @@
   <td></td>
   <td align="left"></td>
 </tr>
-</tbody></table></div></body>
+</tbody></table>
+
+
+
+
+<h2 id="methods">Methods</h2>
+
+
+
+<h3 id="constructor">Constructor</h3>
+
+<p>Initializes the object with default values and creates the sub <a href="channelMapper.html">channelMapper</a> and <a href="WindowSize.html">WindowSize</a> objects.</p>
+
+
+
+<h3 id="calcscale">calcScale</h3>
+
+
+
+<h4 id="arguments">Arguments</h4>
+
+<p>(channel, minValue, maxValue, percentBuffer)</p>
+
+
+
+<h4 id="description">Description</h4>
+
+<p>Calculates the scale for the given channel so that it will show values from minValue to maxValue with a buffer of (percentBuffer / 2)% on the top and bottom.</p>
+
+
+
+<h3 id="calcdefaultscales">calcDefaultScales</h3>
+
+<p>Calls the <a href="#calcscale">calcScale</a> method for all measured values with large buffers. Can only be called after the channel values, <a href="#deskewvoltage">deskewVoltage</a>, <a href="#mingatevoltage">minGateVoltage</a>, <a href="#maxgatevoltage">maxGateVoltage</a>, <a href="#maxcurrentspike">maxCurrentSpike</a>, and <a href="#loadcurrents">loadCurrents</a> settings have been set. </p>
+
+
+
+<h2 id="legacy-code">Legacy Code</h2>
+
+
+
+<h3 id="channels">Channels</h3>
+
+<p>The correct method of accessing the channel number of a particular measurement is with the <code>obj.channel.&lt;MEAS&gt;</code> syntax; however, it is also currently still possible to access them in the old method with the <code>obj.&lt;MEAS&gt;_Channel</code> syntax. Use of this syntax is deprecated and will likely be removed at some point, so it is recommended not to use it.</p></div></body>
 </html>

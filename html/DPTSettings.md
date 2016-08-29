@@ -820,3 +820,25 @@ The DPTSettings class stores the settings that control the operation of the doub
 | Units | $\frac{\text{Volts}}{\text{Second}}$ |
 | Description | Sets the slew rate for changing the voltage of bus supplies with the program.  |
 |||
+
+## Methods
+### Constructor
+Initializes the object with default values and creates the sub [channelMapper][channelMapper] and [WindowSize][WindowSize] objects.
+
+### calcScale
+#### Arguments
+(channel, minValue, maxValue, percentBuffer)
+#### Description
+Calculates the scale for the given channel so that it will show values from minValue to maxValue with a buffer of (percentBuffer / 2)% on the top and bottom.
+
+### calcDefaultScales
+Calls the [calcScale](#calcscale) method for all measured values with large buffers. Can only be called after the channel values, [deskewVoltage](#deskewvoltage), [minGateVoltage](#mingatevoltage), [maxGateVoltage](#maxgatevoltage), [maxCurrentSpike](#maxcurrentspike), and [loadCurrents](#loadcurrents) settings have been set. 
+
+## Legacy Code
+### Channels
+The correct method of accessing the channel number of a particular measurement is with the `obj.channel.<MEAS>` syntax; however, it is also currently still possible to access them in the old method with the `obj.<MEAS>_Channel` syntax. Use of this syntax is deprecated and will likely be removed at some point, so it is recommended not to use it.
+
+
+
+[channelMapper]: channelMapper.html
+[WindowSize]: WindowSize.html
