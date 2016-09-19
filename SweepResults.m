@@ -184,6 +184,7 @@ classdef SweepResults < matlab.mixin.Copyable
                 yValues = [self.plotIntResults.(plotSettings.yValueName)] * plotSettings.yScale;
                 plotObj = plot(xValues, yValues);
                 plotObj.LineWidth = lineWidth;
+                plotObj.LineStyle = 'none';
                 plotObj.MarkerSize = 10;
                 plotObj.Marker = markers{1};
                 markers = circshift(markers, [-1, 0]);

@@ -130,6 +130,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             if self.numChannels == 4
                 self.calcGateVoltage;       
             end
+            
+            % Calculate Peak V_DS
+            self.calcPeakVDS;
 
             % Turn On indices
             if self.numChannels == 4
@@ -173,9 +176,6 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
             % Calculate Turn Off Energy
             self.calcTurnOffEnergy;
-
-            % Calculate Peak V_DS
-            self.calcPeakVDS;
             
             % Calculate Integrals
             self.calcOnIntegrals;
@@ -524,10 +524,36 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Find the power
             self.pOff = self.turnOffWaveform.v_ds .* self.turnOffWaveform.i_d;
             
+            % Find point where current is zero
+%             idAtZero = find(self.turnOffWaveform.i_d < 0, 1);
+
+            % Find Current zero crossings
+            signId = sign(self.turnOffWaveform.i_d);
+            signDiff = diff(signId);
+            zeroCrossings = find(signDiff < 0);
+
+            % Find maximum V_DS point
+            [~, maxVdsIdx] = max(self.turnOffWaveform.v_ds);
+            
+            % Take moving average of V_DS
+            smoothVds = self.movingAvg(5, self.turnOffWaveform.v_ds);
+            
+            % Find V_DS Peaks
+            [vdsPeaks, vdsPeakLocs] = findpeaks(smoothVds(smoothVds > self.busVoltage));
+            
+            % Check if max V_DS is before or after 3rd peak
+            if maxVdsIdx > vdsPeakLocs(3)
+                % Unstable, Use first zero crossing
+                stopIdx = zeroCrossings(1);
+            else
+                % Use zero crossing after max
+                stopIdx = zeroCrossings(find(zeroCrossings > maxVdsIdx, 1));
+            end
+            
             % find energy loss during switching
             eOffCum = cumtrapz(self.turnOffWaveform.time, self.pOff);
             
-            eOff = eOffCum(self.vDSatBus) - eOffCum(self.currentTurnOffIdx);
+            eOff = eOffCum(stopIdx) - eOffCum(self.currentTurnOffIdx);
             
             % Set loss
             self.turnOffEnergy = eOff;
