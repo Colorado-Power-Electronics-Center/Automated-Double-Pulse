@@ -7,6 +7,7 @@ classdef channelMapper < matlab.mixin.Copyable
         VGS = GeneralWaveform.NOT_RECORDED;
         ID = GeneralWaveform.NOT_RECORDED;
         IL = GeneralWaveform.NOT_RECORDED;
+        VSYNC = GeneralWaveform.NOT_RECORDED;
     end
 
     methods

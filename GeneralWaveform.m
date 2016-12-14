@@ -14,6 +14,7 @@ classdef GeneralWaveform < handle
         v_gs
         i_d
         i_l
+        v_sync
         time
         
         % Capture Channels
@@ -63,6 +64,9 @@ classdef GeneralWaveform < handle
                 chCell = cell(1, 5);
                 chCell(:) = {GeneralWaveform.NOT_RECORDED};
                 chCell{self.channel.VDS} = self.v_ds;
+                if self.channel.VSYNC ~= GeneralWaveform.NOT_RECORDED;
+                    chCell{self.channel.VSYNC} = self.v_sync;
+                end
                 chCell{self.channel.ID} = self.i_d;
                 if self.channel.VGS ~= GeneralWaveform.NOT_RECORDED;
                     chCell{self.channel.VGS} = self.v_gs;
@@ -100,6 +104,11 @@ classdef GeneralWaveform < handle
                 newCapture.i_l = waveforms{newCapture.channel.IL};
             else
                 newCapture.i_l = GeneralWaveform.NOT_RECORDED;
+            end
+            if newCapture.channel.VSYNC > 0
+                newCapture.v_sync = waveforms{newCapture.channel.VSYNC};
+            else
+                newCapture.v_sync = GeneralWaveform.NOT_RECORDED;
             end
             newCapture.time = waveforms{end};
             

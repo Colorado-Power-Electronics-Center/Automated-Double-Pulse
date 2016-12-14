@@ -115,6 +115,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 		%% Data Saving
 	    % Data Directory
 	    dataDirectory = 'Measurements\'
+        appendFile = false;
         
         %% Data Processing
         window@WindowSize

@@ -14,12 +14,18 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
         myScope.setChPosition(settings.IL_Channel, myScope.getChPosition(settings.ID_Channel));
     end
     
+    % Rescale Oscilloscope IL Channel
+    if settings.channel.VSYNC > 0
+        myScope.setChScale(settings.channel.VSYNC, myScope.getChScale(settings.channel.VSYNC));
+        myScope.setChPosition(settings.channel.VSYNC, myScope.getChPosition(settings.channel.VSYNC));
+    end
+    
     % Ensure Channels are all on
     myScope.allChannelsOn;
     
-    % Turn Off I_L and V_GS is 2 Channel measurement
+    % Turn Off I_L and V_GS if 2 Channel measurement
     if numChannels == 2
-        myScope.channelsOff([settings.IL_Channel settings.VGS_Channel]);
+        myScope.channelsOff([settings.IL_Channel settings.VGS_Channel settings.channel.VSYNC]);
     end
     
     % Set Sample rate and record Length
@@ -75,7 +81,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     % Invert Series 5000 Scopes
     if settings.invertCurrent && strcmp(myScope.scopeSeries, myScope.Series5000)
         WaveForms{settings.channel.ID} = WaveForms{settings.channel.ID} * -1;
-        if WaveForms{settings.channel.IL} ~= GeneralWaveform.NOT_RECORDED
+        if settings.channel.IL ~= GeneralWaveform.NOT_RECORDED
             WaveForms{settings.channel.IL} = WaveForms{settings.channel.IL} * -1;
         end
     end

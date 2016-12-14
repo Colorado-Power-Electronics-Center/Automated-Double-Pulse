@@ -3,27 +3,48 @@ function [ settings ] = SimpleSettings()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.busVoltages = [100, 200, 300, 400];
-    dpt_settings.loadCurrents = [3, 5, 10, 20, 30];
-    dpt_settings.currentResistor = 102E-3;
+    dpt_settings.busVoltages = [200];
+    dpt_settings.loadCurrents = [2,5:5:30,32];
+    dpt_settings.currentResistor = 50E-3;
     dpt_settings.loadInductor = 720E-6;
-    dpt_settings.maxGateVoltage = 10;
+    dpt_settings.maxGateVoltage = 7;
+    dpt_settings.minGateVoltage = -6;
     dpt_settings.gateLogicVoltage = 5;
 
     %% Instrument Setup
     % VISA Resource Strings
     dpt_settings.scopeVisaAddress = 'USB0::0x0699::0x0502::C051196::0::INSTR';
     dpt_settings.FGenVisaAddress = 'USB0::0x0957::0x2307::MY50000715::0::INSTR';
+    dpt_settings.BusSupplyVisaAddress = 'ASRL5::INSTR';
 
     %% Channel Setup
     % Channel Numbers
     dpt_settings.channel.VDS = 1;
     dpt_settings.channel.VGS = 2;
     dpt_settings.channel.ID = 4;
-    dpt_settings.channel.IL = 3; % Comment out if not measuring
+    dpt_settings.channel.VSYNC = 3;
+%     dpt_settings.channel.IL = 3; % Comment out if not measuring
 
     %% Vertical Settings
+    % Initial Veritcal Settings
+    dpt_settings.maxCurrentSpike = 300;
+    dpt_settings.percentBuffer = 110;
     dpt_settings.calcDefaultScales;
+    
+    dpt_settings.autoBusControl = true;
+    
+    %% Horizontal Settings
+    % Turn on Window
+    dpt_settings.window.turn_on_prequel = 50e-9;
+    dpt_settings.window.turn_on_time = 200e-9;
+
+    % Turn off Window
+    dpt_settings.window.turn_off_prequel = 50e-9;
+    dpt_settings.window.turn_off_time = 200e-9;
+    
+    %% Data Settings
+%     dpt_settings.appendFile = 'Measurements\sweep_results.mat';
+    dpt_settings.dataDirectory = 'Measurements\3\';
        
     settings = dpt_settings;
 end

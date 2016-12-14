@@ -10,6 +10,9 @@ classdef SweepResults < matlab.mixin.Copyable
         % Results sorted by voltage
         chan4ByVoltage@containers.Map
         chan2ByVoltage@containers.Map
+        
+        % Current Delay
+        currentDelay
     end
     
     properties (Access = private)
