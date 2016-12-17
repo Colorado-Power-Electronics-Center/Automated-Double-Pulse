@@ -116,9 +116,6 @@ function Double_Pulse_Test(settings)
                 dpResults.fullWaveform = overviewWaveform;
                 dpResults.plotResults;
                 
-                % Save in SweepResults Object
-                sweepResults.addResult(testChannel, busVoltage, dpResults);
-                
                 % Anonymous function to convert variable name to string
                 vName=@(x) inputname(1);
                 
@@ -126,6 +123,21 @@ function Double_Pulse_Test(settings)
                 file_name = [settings.dataDirectory num2str(busVoltage)...
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
                 save(file_name, vName(dpResults));
+
+                % Remove Full Waveform waveforms from Double Pulse Results object
+                % This will reduce the size of the sweep result object in memory 
+                % and allow more results to be added to a given sweep. No data
+                % is lost as we just saved the fullWaveform to disk. Only remove 
+                % Waveforms so metadata may still be used if necessary.
+                dpResults.fullWaveform.v_ds = [];
+                dpResults.fullWaveform.v_gs = [];
+                dpResults.fullWaveform.i_d = [];
+                dpResults.fullWaveform.i_l = [];
+                dpResults.fullWaveform.v_sync = [];
+                dpResults.fullWaveform.time = [];
+
+                % Save in SweepResults Object
+                sweepResults.addResult(testChannel, busVoltage, dpResults);
             end
         end
     end
