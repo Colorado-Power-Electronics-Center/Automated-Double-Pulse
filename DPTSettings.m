@@ -89,7 +89,7 @@ classdef DPTSettings < matlab.mixin.Copyable
         % Deskew Settings
         deskewVoltage = NaN;
         deskewCurrent = NaN;
-        currentDelay
+        currentDelay = NaN;
         VGSDeskew = 0;
 
 	    % Initial Horizontal Settings

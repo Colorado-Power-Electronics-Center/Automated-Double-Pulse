@@ -44,32 +44,33 @@ function Double_Pulse_Test(settings)
     myBusSupply.initSupply;
     
     % Find Deskew if no append file is given
-    if settings.appendFile == false
+    if settings.appendFile == false % If not appending to existing sweep
+        if settings.currentDelay == NaN % If current delay is unset find it
+            % Find Deskew using lowest load settings
+            loadCurrent = settings.deskewCurrent;
+            busVoltage = settings.deskewVoltage;
 
-        % Find Deskew using lowest load settings
-        loadCurrent = settings.deskewCurrent;
-        busVoltage = settings.deskewVoltage;
+            setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
 
-        setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
+            % Switch to triggering on V_GS for IV misalignment pulses
+            deskew_settings = copy(settings);
+            deskew_settings.triggerSource = deskew_settings.triggerSourceDeskew;
+            deskew_settings.triggerLevel = deskew_settings.triggerLevelDeskew;
+            deskew_settings.triggerSlope = deskew_settings.triggerSlopeDeskew;
 
-        % Switch to triggering on V_GS for IV misalignment pulses
-        deskew_settings = copy(settings);
-        deskew_settings.triggerSource = deskew_settings.triggerSourceDeskew;
-        deskew_settings.triggerLevel = deskew_settings.triggerLevelDeskew;
-        deskew_settings.triggerSlope = deskew_settings.triggerSlopeDeskew;
+            [ fullWaveforms ] = runDoublePulseTest(myScope, myFGen,...
+                        loadCurrent, busVoltage, deskew_settings);
+            [ rescaledFullWaveform ] = rescaleAndRepulse(myScope, myFGen, 4, fullWaveforms, settings);
 
-        [ fullWaveforms ] = runDoublePulseTest(myScope, myFGen,...
-                    loadCurrent, busVoltage, deskew_settings);
-        [ rescaledFullWaveform ] = rescaleAndRepulse(myScope, myFGen, 4, fullWaveforms, settings);
+            % Find Deskew
+            settings.currentDelay = DoublePulseResults.findIVMisalignment(rescaledFullWaveform);
+            disp(['IV Misalignment: ' num2str(settings.currentDelay)]);
+        end
 
-        % Find Deskew
-        settings.currentDelay = DoublePulseResults.findIVMisalignment(rescaledFullWaveform);
-        disp(['IV Misalignment: ' num2str(settings.currentDelay)]);
-        
         % Create Sweep results Object
     	sweepResults = SweepResults;
         sweepResults.currentDelay = settings.currentDelay;
-    else
+    else % If appending to file load load old sweep result and get its current delay
         load Measurements\sweep_results.mat
         settings.currentDelay = sweepResults.currentDelay; %#ok<NODEF>
     end    
