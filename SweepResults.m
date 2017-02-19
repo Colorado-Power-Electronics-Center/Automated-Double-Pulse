@@ -143,6 +143,8 @@ classdef SweepResults < matlab.mixin.Copyable
             
             % Ensure Values are calculated
             self.reCalcResults;
+
+            self.currentDelay += nanoSec * 1e-9;
             
             self.plotEOn
             a = gca;
