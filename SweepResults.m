@@ -127,6 +127,24 @@ classdef SweepResults < matlab.mixin.Copyable
         end
         %% shiftAllCurrents: Shift all currents by nanoSec ns.
         function shiftAllCurrents(self, nanoSec)
+            % Calculate actual change in delay for 4 channel waveform
+            % Grab all Keys from channel 4 measurements
+            chan4_1_keys = self.chan4ByVoltage.keys;
+            
+            % Grab DoublePulseResults of first key
+            chan4_1 = self.chan4ByVoltage(chan4_1_keys{1});
+            
+            % Find sample rate from first DPR in 1st keyed result
+            chan4_SR = chan4_1(1).turnOffWaveform.sampleRate;
+            
+            % Calculate number of Idxs to shift 4 channel
+            numIdx = round(abs(nanoSec * 1E-9) * chan4_SR);
+            
+            % Calculate new number of nanoseconds to shift and update the
+            % value
+            newNanoSec = numIdx * chan4_SR;
+            nanoSec = newNanoSec / 1e-9;            
+            
             % Re run the calculation function for all results
             for key = self.chan2ByVoltage.keys
                 %
@@ -144,7 +162,7 @@ classdef SweepResults < matlab.mixin.Copyable
             % Ensure Values are calculated
             self.reCalcResults;
 
-            self.currentDelay += nanoSec * 1e-9;
+            self.currentDelay = self.currentDelay + nanoSec * 1e-9;
             
             self.plotEOn
             a = gca;

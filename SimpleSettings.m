@@ -42,6 +42,9 @@ function [ settings ] = SimpleSettings()
     dpt_settings.window.turn_off_prequel = 50e-9;
     dpt_settings.window.turn_off_time = 200e-9;
     
+    % Set Desired Deskew
+    dpt_settings.currentDelay = 5e-9;
+    
     %% Data Settings
 %     dpt_settings.appendFile = 'Measurements\sweep_results.mat';
     dpt_settings.dataDirectory = 'Measurements\3\';

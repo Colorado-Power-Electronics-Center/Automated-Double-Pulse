@@ -45,7 +45,7 @@ function Double_Pulse_Test(settings)
     
     % Find Deskew if no append file is given
     if settings.appendFile == false % If not appending to existing sweep
-        if settings.currentDelay == NaN % If current delay is unset find it
+        if isnan(settings.currentDelay) % If current delay is unset find it
             % Find Deskew using lowest load settings
             loadCurrent = settings.deskewCurrent;
             busVoltage = settings.deskewVoltage;
