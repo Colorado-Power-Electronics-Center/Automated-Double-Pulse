@@ -533,19 +533,56 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
         end
 
-        function checkDeskew(self, Lloop)
+        function checkDeskew(self, Lloop, filterSamples)
             % If self contains more than one DoublePulseResult handle run
             % function one at a time.
             if numel(self) > 1
                 for obj = self
-                    obj.checkDeskew(Lloop)
+                    obj.checkDeskew(Lloop,filterSamples)
                 end
                 return;
             end
+            
+            windowRange = 30; %Number of ns of waveform to examine for deskew check
             % Generate I-V graphical alignment plots for all results
+            waveform = self.turnOnWaveform;
+            Vdc = mean(waveform.v_ds(1:10));
+            wfStart = find(waveform.i_d > 0.2*self.loadCurrent, 1);
+            wfEnd = find(waveform.i_d > 0.8*self.loadCurrent, 1);
+%             yScale = [floor(waveform.v_ds(wfEnd) - (Vdc - waveform.v_ds(wfEnd))*0.2) ceil(Vdc + (Vdc - waveform.v_ds(wfEnd))*0.3)];
+            windowMargin = ceil(1*(wfEnd-wfStart));
+            wfStart = wfStart - 2*windowMargin;
+            if wfStart < filterSamples+1
+                wfStart = filterSamples+1;
+            end
+            wfEnd = wfEnd + windowMargin;
+            if wfEnd > length(waveform.time) - filterSamples
+                wfEnd = length(waveform.time) - filterSamples;
+            end
+            time = (waveform.time(wfStart:wfEnd) - waveform.time(wfStart))*1e9;
+            didt = (waveform.i_d(wfStart+filterSamples:wfEnd+filterSamples) - waveform.i_d(wfStart-filterSamples:wfEnd-filterSamples)) / (time(1+2*filterSamples)*1e-9);
+            vds = waveform.v_ds(wfStart:wfEnd);
+%             yScale = [floor(waveform.v_ds(wfEnd) - (Vdc - waveform.v_ds(wfEnd))*0.2) ceil(Vdc + (Vdc - waveform.v_ds(wfEnd))*0.3)];
+            
+            vdsColor = [0 0 1];
+            didtColor = [0.8 0 0.8];
+            lineWidth = 3;
+            fontSize = 20;
+            timeUnits = 'ns';
             switchFigure = figure();
             switchFigure.Name = 'Deskew Plot';
             switchFigure.NumberTitle = 'off';
+            xlabel(['Time (' timeUnits ')']);
+            % vds
+            vdsLine = line(time, vds);
+            vdsLine.Color = vdsColor;
+            vdsLine.LineWidth = lineWidth;
+            % Lloop*di/dt
+            didtLine = line(time, Vdc-Lloop*1e-9*didt);
+            didtLine.Color = didtColor;
+            didtLine.LineWidth = lineWidth;
+            
+%             axis([0 time(end) yScale]);
             
         end
     end
