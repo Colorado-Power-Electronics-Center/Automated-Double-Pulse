@@ -359,6 +359,195 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             plotLegend.Orientation = 'horizontal';
             plotLegend.Location = 'southoutside';
         end
+
+        function plotWaveformsScopeStyle(self, timeBoundsOn, timeBoundsOff)
+            % Set Colors
+            vdsColor = [0 0 1];
+            vgsColor = [0 1 0];
+            idColor = [1 0 0];
+%             ilColor = 'magenta';
+            powerColor = [0 0 0];
+            vdsScaling = 100;
+
+            % Set other plot values
+            lineWidth = 3;
+            fontSize = 20;
+            
+            for waveformNumber=1:2
+                if (waveformNumber == 1)
+                    waveform = self.turnOnWaveform;
+                    name = 'Turn On Waveform';
+                    power = self.pOn;
+                else
+                    waveform = self.turnOffWaveform;
+                    name = 'Turn Off Waveform';
+                    power = self.pOff;
+                end
+            
+                % Find VGS Scaling Factor
+                if self.numChannels == 4
+                    vgsScaling = ceil(max(waveform.v_gs)) / ceil(max(waveform.v_ds)/vdsScaling);
+                    while (min(waveform.v_gs/vgsScaling) < -1)
+                        vgsScaling = vgsScaling + 1;
+                    end
+                end
+                idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling) / 5) * 5;
+                if (idScaling < 5)
+                    idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling));
+                end
+                pScaling = ceil(max(power)/5);
+                if pScaling == 1
+                    pScaling = ceil(max(power)/0.5);
+                end
+                if (waveformNumber == 1)
+                    disp('Turn On Waveform Plot Scaling:');
+                else
+                    disp('Turn Off Waveform Plot Scaling:');
+                end
+                fprintf('Pon scale = %2.0f kW/div \n',pScaling/1e3);
+                fprintf('vds scale = %2.0f V/div \n',vdsScaling);
+                fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
+                fprintf('id scale  = %2.0f A/div \n\n',idScaling);
+                % Change time to nS
+                time = waveform.time * 1e9;
+                timeUnits = 'ns';
+                            
+                % Plot Waveform
+                switchFigure = figure();
+                switchFigure.Name = name;
+                switchFigure.NumberTitle = 'off';
+%                 switchFigure.Units = 'inches';
+                
+                if (waveformNumber == 1)
+                    if (nargin < 3)
+                        timeBoundsOn = [0 time(end)];
+                        timeIndices = [1:length(time)];
+                    else
+                        timeBoundsOn(2) = ceil((timeBoundsOn(2)-timeBoundsOn(1))/10)*10+timeBoundsOn(1);
+                        timeIndices = [find(time>timeBoundsOn(1),1):find(time>timeBoundsOn(2),1)];
+                    end
+                    screenSize = get(groot,'ScreenSize');
+%                     switchFigure.Position = [1 2 7.4 4.5];
+                    switchFigure.Position = [screenSize(4)*0.01 screenSize(4)*0.15 screenSize(3)*0.55 screenSize(4)*0.55];
+                else
+                    if (nargin < 3)
+                        timeBoundsOff = [0 time(end)];
+                        timeIndices = [1:length(time)];
+                    else
+                        timeBoundsOff(2) = ceil((timeBoundsOff(2)-timeBoundsOff(1))*10)/10+timeBoundsOff(1);
+                        timeIndices = [find(time>timeBoundsOff(1),1):find(time>timeBoundsOff(2),1)];
+                    end
+%                     switchFigure.Position = [9 2 7.4 4.5];
+                    switchFigure.Position = [screenSize(3)*0.44 screenSize(4)*0.15 screenSize(3)*0.55 screenSize(4)*0.55];
+                end
+                time = time(timeIndices) - time(timeIndices(1));
+                % Setup Figure
+
+                % Setup Power Subplot
+                powerSubPlot = subplot(2, 1, 1);
+                powerSubPlot.XGrid = 'on';
+                powerSubPlot.YGrid = 'on';
+                powerSubPlot.Position = [0.01 0.77 0.98 0.22];
+                powerSubPlot.XAxis.Visible = 'off';
+                powerSubPlot.YAxis.Visible = 'off';
+                powerSubPlot.FontSize = fontSize;
+                powerSubPlot.YTick = [-100:1:100];
+                powerSubPlot.GridLineStyle = '--';
+                powerSubPlot.GridColor = [0.4 0.4 0.4];
+                powerSubPlot.GridAlpha = 1;
+%                 powerSubPlot.BoxStyle = 'full';
+                line([0 time(end)],[0 0],'Color',[0.4 0.4 0.4],'LineStyle','-.','LineWidth',3);
+
+                powerLine = line(powerSubPlot, time, power(timeIndices)/pScaling);
+                powerLine.Color = powerColor;
+                powerLine.LineWidth = lineWidth;
+
+                powerYAxis = powerSubPlot.YAxis;
+                powerYAxis.Limits = [floor(min(power/pScaling)) ceil(max(power/pScaling))];
+                powerYAxisLength = powerYAxis.Limits(2)-powerYAxis.Limits(1);
+                axis([0 time(end) powerYAxis.Limits]);
+                                
+                hold on;
+                fill([0 0 time(end)/30], [-powerYAxisLength/8 powerYAxisLength/8 0],'black');
+                line([0 0], [powerYAxis.Limits], 'color','black','linewidth',2)
+                line([1 1]*time(end), [powerYAxis.Limits], 'color','black','linewidth',2)
+                line([0 time(end)], [1 1]*powerYAxis.Limits(1), 'color','black','linewidth',2)
+                line([0 time(end)], [1 1]*powerYAxis.Limits(2), 'color','black','linewidth',2)
+
+                % Setup Measured subplot
+                measSubP = subplot(2, 1, 2);
+                measSubP.Position = [0.01 0.16 0.98 0.6];
+
+                measSubP.XGrid = 'on';
+                measSubP.YGrid = 'on';
+                measSubP.GridLineStyle = '--';
+                measSubP.GridColor = [0.6 0.6 0.6];
+                measSubP.GridAlpha = 1;
+                measSubP.FontSize = fontSize;
+                measSubP.XAxis.Visible = 'on';
+                measSubP.YAxis.Visible = 'off';
+                measSubP.YTick = [-100:1:100];
+                measYAxis = measSubP.YAxis;
+
+                xlabel(['Time (' timeUnits ')']);
+                line([0 time(end)],[0 0],'Color',[0.4 0.4 0.4],'LineStyle','-.','LineWidth',3);
+
+                % V_DS
+                vdsOnLine = line(time, waveform.v_ds(timeIndices) / vdsScaling);
+                vdsOnLine.Color = vdsColor;
+                vdsOnLine.LineWidth = lineWidth;
+
+                % V_GS
+                if self.numChannels == 4
+                    vgsOnLine = line(time, waveform.v_gs(timeIndices) / vgsScaling);
+                    vgsOnLine.Color = vgsColor;
+                    vgsOnLine.LineWidth = lineWidth;
+                end
+
+                % I_D
+                idOnLine = line(time, waveform.i_d(timeIndices) / idScaling);
+                idOnLine.Color = idColor;
+                idOnLine.LineWidth = lineWidth;
+
+    %             % I_L
+    %             ilOnLine = line(waveform.time, waveform.i_l);
+    %             ilOnLine.Color = ilColor;
+    %             ilOnLine.LineWidth = lineWidth;
+    %             legendStrs{end + 1} = 'I_L';
+
+                axis([0 time(end) measYAxis.Limits]);
+                measYAxisLength = measYAxis.Limits(2)-measYAxis.Limits(1);
+                xTick = get(measSubP,'XTick');
+                measSubP.XTick = xTick(1:end-1);
+                hold on;
+                if self.numChannels == 4
+                    fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vgsColor);
+                end
+                fill([0 0 time(end)/30]+time(end)/100, [-1 1 0]*measYAxisLength/20, idColor);
+                fill([0 0 time(end)/30], [-1 1 0]*measYAxisLength/20, vdsColor);
+                line([0 0], [measYAxis.Limits], 'color','black','linewidth',2)
+                line([1 1]*time(end), [measYAxis.Limits], 'color','black','linewidth',2)
+                line([0 time(end)], [1 1]*measYAxis.Limits(1), 'color','black','linewidth',2)
+                line([0 time(end)], [1 1]*measYAxis.Limits(2), 'color','black','linewidth',2)
+            end
+
+        end
+
+        function checkDeskew(self, Lloop)
+            % If self contains more than one DoublePulseResult handle run
+            % function one at a time.
+            if numel(self) > 1
+                for obj = self
+                    obj.checkDeskew(Lloop)
+                end
+                return;
+            end
+            % Generate I-V graphical alignment plots for all results
+            switchFigure = figure();
+            switchFigure.Name = 'Deskew Plot';
+            switchFigure.NumberTitle = 'off';
+            
+        end
     end
     
     methods (Access = private)
