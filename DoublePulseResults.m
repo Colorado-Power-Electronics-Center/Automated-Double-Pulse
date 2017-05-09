@@ -533,12 +533,23 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
         end
 
-        function checkDeskew(self, Lloop, filterSamples)
+        function checkDeskew(self, Lloop, filterSamples, wfNumber)
             % If self contains more than one DoublePulseResult handle run
             % function one at a time.
+            if nargin < 2
+                Lloop = 10;
+            end
+            if nargin < 3
+                filterSamples = 1;
+            end
+            if nargin < 4
+                wfNumber = 1;
+            end
+            
             if numel(self) > 1
                 for obj = self
-                    obj.checkDeskew(Lloop,filterSamples)
+                    obj.checkDeskew(Lloop,filterSamples,wfNumber)
+                    wfNumber = wfNumber + 1;
                 end
                 return;
             end
@@ -570,7 +581,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             fontSize = 20;
             timeUnits = 'ns';
             switchFigure = figure();
-            switchFigure.Name = 'Deskew Plot';
+            switchFigure.Name = ['Deskew Plot #' num2str(wfNumber)];
             switchFigure.NumberTitle = 'off';
             xlabel(['Time (' timeUnits ')']);
             % vds
