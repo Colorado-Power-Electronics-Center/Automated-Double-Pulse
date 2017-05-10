@@ -533,9 +533,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
         end
 
-        function checkDeskew(self, Lloop, filterSamples, wfNumber)
-            % If self contains more than one DoublePulseResult handle run
-            % function one at a time.
+        function checkDeskew(self, Lloop, filterSamples, startMargin, endMargin, wfNumber)
             if nargin < 2
                 Lloop = 10;
             end
@@ -543,12 +541,20 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 filterSamples = 1;
             end
             if nargin < 4
+                startMargin = 1;
+            end
+            if nargin < 5
+                endMargin = 3;
+            end
+            if nargin < 6
                 wfNumber = 1;
             end
             
+             % If self contains more than one DoublePulseResult handle run
+            % function one at a time.           
             if numel(self) > 1
                 for obj = self
-                    obj.checkDeskew(Lloop,filterSamples,wfNumber)
+                    obj.checkDeskew(Lloop,filterSamples,startMargin,endMargin,wfNumber)
                     wfNumber = wfNumber + 1;
                 end
                 return;
@@ -561,12 +567,12 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             wfStart = find(waveform.i_d > 0.2*self.loadCurrent, 1);
             wfEnd = find(waveform.i_d > 0.8*self.loadCurrent, 1);
 %             yScale = [floor(waveform.v_ds(wfEnd) - (Vdc - waveform.v_ds(wfEnd))*0.2) ceil(Vdc + (Vdc - waveform.v_ds(wfEnd))*0.3)];
-            windowMargin = ceil(1*(wfEnd-wfStart));
-            wfStart = wfStart - 2*windowMargin;
+            windowSize = ceil(wfEnd-wfStart);
+            wfStart = wfStart - ceil(startMargin*windowSize);
             if wfStart < filterSamples+1
                 wfStart = filterSamples+1;
             end
-            wfEnd = wfEnd + windowMargin;
+            wfEnd = wfEnd + ceil(endMargin*windowSize);
             if wfEnd > length(waveform.time) - filterSamples
                 wfEnd = length(waveform.time) - filterSamples;
             end
