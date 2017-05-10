@@ -138,11 +138,11 @@ classdef SweepResults < matlab.mixin.Copyable
             chan4_SR = chan4_1(1).turnOffWaveform.sampleRate;
             
             % Calculate number of Idxs to shift 4 channel
-            numIdx = round(abs(nanoSec * 1E-9) * chan4_SR);
+            numIdx = round(nanoSec * 1E-9 * chan4_SR);
             
             % Calculate new number of nanoseconds to shift and update the
             % value
-            newNanoSec = numIdx * chan4_SR;
+            newNanoSec = numIdx / chan4_SR;
             nanoSec = newNanoSec / 1e-9;            
             
             % Re run the calculation function for all results
