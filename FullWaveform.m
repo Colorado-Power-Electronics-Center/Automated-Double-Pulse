@@ -56,7 +56,7 @@ classdef FullWaveform < GeneralWaveform & handle
                 % Turn On Waveform
                 prequelIdx = self.windowSize.turn_on_prequel_idxs;
                 startIdx = self.turn_on_idx - prequelIdx;
-                stopIdx = startIdx + self.windowSize.turn_off_time_idxs;
+                stopIdx = startIdx + self.windowSize.turn_on_time_idxs;
             else
                 % Turn Off Waveform
                 prequelIdx = self.windowSize.turn_off_prequel_idxs;
