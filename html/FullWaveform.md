@@ -1,4 +1,5 @@
 # FullWaveform
+The FullWaveform class is used to store the complete waveform. It also contains functionality to split the waveform into the two switching events. 
 ## Table of Contents
 [TOC]
 

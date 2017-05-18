@@ -13,6 +13,7 @@
     	<tocitem target="DPTSettings.html">DPT Settings</tocitem>
     	<tocitem target="GeneralWaveform.html">GeneralWaveform
     		<tocitem target="FullWaveform.html">FullWaveform</tocitem>
+    		<tocitem target="SwitchWaveform.html">SwitchWaveform</tocitem>
     	</tocitem>
 
  </tocitem>
