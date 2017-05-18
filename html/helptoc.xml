@@ -6,12 +6,12 @@
             <tocitem target="Double_Pulse_Test.html#Software Requirements">Software Requirements</tocitem>
         </tocitem>
         <tocitem target="simpleEx.html">Simple Example
-        </tocitem>
- -->    </tocitem>
+        </tocitem>-->    
 
-    <tocitem target="DPTSettings.html">DPT Settings
-    </tocitem>
-    <tocitem target="DoublePulseResults.html">DoublePulseResults</tocitem>
-    <tocitem target="channelMapper.html">channelMappper</tocitem>
+    	<tocitem target="channelMapper.html">channelMappper</tocitem>
+    	<tocitem target="DoublePulseResults.html">DoublePulseResults</tocitem>
+    	<tocitem target="DPTSettings.html">DPT Settings</tocitem>
+    	<tocitem target="FullWaveform.html">FullWaveform</tocitem>
 
+ </tocitem>
 </toc>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FullWaveform.md</title>
+<link rel="stylesheet" href="themes/base.css" />
+<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="fullwaveform">FullWaveform</h1>
+
+
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<p><div class="toc">
+<ul>
+<li><a href="#fullwaveform">FullWaveform</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#super-classes">Super Classes</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#turnonidx">turn_on_idx</a></li>
+<li><a href="#turnoffidx">turn_off_idx</a></li>
+<li><a href="#turnonwaveform">turnOnWaveform</a></li>
+<li><a href="#turnoffwaveform">turnOffWaveform</a></li>
+<li><a href="#windowsize">windowSize</a></li>
+</ul>
+</li>
+<li><a href="#methods-private">Methods (Private)</a><ul>
+<li><a href="#extractswitches">extractSwitches</a></li>
+<li><a href="#sectionwaveform">sectionWaveform</a></li>
+</ul>
+</li>
+<li><a href="#methods-static">Methods (Static)</a><ul>
+<li><a href="#fromchannelcell">fromChannelCell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+
+
+<h2 id="super-classes">Super Classes</h2>
+
+<p><a href="GeneralWaveform.html">GeneralWaveform</a> <br>
+handle</p>
+
+
+
+<h2 id="properties">Properties</h2>
+
+
+
+<h3 id="turnonidx">turn_on_idx</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Index in the waveform where the turn on occurs. This value is approximate and should not be used for precise timing. It is calculated in the <a href="#extractswitches">extractSwitches</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="turnoffidx">turn_off_idx</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Index in the waveform where the turn off occurs. This value is approximate and should not be used for precise timing. It is calculated in the <a href="#extractswitches">extractSwitches</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="turnonwaveform">turnOnWaveform</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"><a href="SwitchWaveform.html">SwitchWaveform</a></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The extracted turn on waveform. Created during the <a href="#extractswitches">extractSwitches</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="turnoffwaveform">turnOffWaveform</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"><a href="SwitchWaveform.html">SwitchWaveform</a></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The extracted turn off waveform. Created during the <a href="#extractswitches">extractSwitches</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="windowsize">windowSize</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"><a href="WindowSize.html">WindowSize</a></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Window size used to determine the length of the turn on and turn off waveforms.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h2 id="methods-private">Methods (Private)</h2>
+
+
+
+<h3 id="extractswitches">extractSwitches</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Extracts the turn on and turn off waveforms and stores them in the <a href="#turnonwaveform">turnOnWaveform</a> and <a href="#turnoffwaveform">turnOffWaveform</a> objects.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h3 id="sectionwaveform">sectionWaveform</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String) switchCapture</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(<a href="SwitchWaveform.html">SwitchWaveform</a>) sectionedWF</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sections either the turn on or the turn off waveform from the base waveform as specified by the switchCapture argument. It is recommended to use <a href="SwitchWaveform.html">SwitchWaveforms</a> TURN_ON and TURN_OFF properties for the argument. This method is called by the <a href="#extractswitches">extractSwitches</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+
+
+<h2 id="methods-static">Methods (Static)</h2>
+
+
+
+<h3 id="fromchannelcell">fromChannelCell</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Cell Array) waveforms, (<a href="channelMapper.html">channelMapper</a>) channels, (float) busVoltage, (<a href="WindowSize.html">windowSize</a>) windowSize</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(<a href="FullWaveform.html">FullWaveform</a>) FW</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Creates a fullWaveform object from a cell array of waveforms and the settings associated with their capture.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table></div></body>
+</html>
