@@ -91,6 +91,8 @@ classdef SCPI_Instrument < handle
                 if islogical(triggerStr)
                     push2pulse = triggerStr;
                     triggerStr = 'trigger';
+                else
+                    push2pulse = true;
                 end
             end
             if push2pulse

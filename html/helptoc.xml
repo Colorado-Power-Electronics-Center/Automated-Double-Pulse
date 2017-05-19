@@ -20,5 +20,8 @@
     	<tocitem target="min2Scale.html">min2scale</tocitem>
     	<tocitem target="pulse_generator.html">pulse_generator</tocitem>
 
- </tocitem>
+ 	</tocitem>
+ 	<tocitem target="SCPI_Instrument.html">SCPI_Instrument
+
+ 	</tocitem>
 </toc>
