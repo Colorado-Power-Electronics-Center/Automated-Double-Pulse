@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCPI_Oscilloscope.md</title>
+<link rel="stylesheet" href="themes/base.css" />
+<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="scpioscilloscope">SCPI_Oscilloscope</h1>
+
+<p>Use of this class requires knowledge of oscilloscope that is being controlled and it’s programming manual. An attempt to use the SCPI_Oscilloscope class without the assistance of your oscilloscope’s programming manual is a futile effort. This class is also very incomplete, please add new methods and properties as needed using those already present as a template. </p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<p><div class="toc">
+<ul>
+<li><a href="#scpioscilloscope">SCPI_Oscilloscope</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#super-classes">Super Classes</a></li>
+<li><a href="#properties-constant">Properties (Constant)</a><ul>
+<li><a href="#series2000">Series2000</a></li>
+<li><a href="#series4000">Series4000</a></li>
+<li><a href="#series5000">Series5000</a></li>
+</ul>
+</li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#scopeseries">scopeSeries</a></li>
+<li><a href="#horizontal-command-group">Horizontal Command Group</a><ul>
+<li><a href="#recordlengthcommand">recordLengthCommand</a></li>
+<li><a href="#sampleratecommand">sampleRateCommand</a></li>
+<li><a href="#horizontalscalecommand">horizontalScaleCommand</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#properties-dependent">Properties (Dependent)</a><ul>
+<li><a href="#acquisition-command-group">Acquisition Command Group</a><ul>
+<li><a href="#acqmode">acqMode</a></li>
+<li><a href="#acqstopafter">acqStopAfter</a></li>
+<li><a href="#acqstate">acqState</a></li>
+<li><a href="#acqsamplingmode">acqSamplingMode</a></li>
+</ul>
+</li>
+<li><a href="#hard-copy-command">Hard Copy Command</a><ul>
+<li><a href="#exportfilename">exportFilename</a></li>
+</ul>
+</li>
+<li><a href="#horizontal-command-group-1">Horizontal Command Group</a><ul>
+<li><a href="#recordlength">recordLength</a></li>
+<li><a href="#samplerate">sampleRate</a></li>
+<li><a href="#horizontalscale">horizontalScale</a></li>
+<li><a href="#horizontalposition">horizontalPosition</a></li>
+<li><a href="#horizontalmode">horizontalMode</a></li>
+<li><a href="#horizontaldelaymode">horizontalDelayMode</a></li>
+</ul>
+</li>
+<li><a href="#waveform-transfer-command-group">Waveform Transfer Command Group</a><ul>
+<li><a href="#datastart">dataStart</a></li>
+<li><a href="#datastop">dataStop</a></li>
+<li><a href="#dataresolution">dataResolution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#super-overrides">Super Overrides</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#connect">connect</a></li>
+</ul>
+</li>
+<li><a href="#miscellaneous-methods">Miscellaneous Methods</a><ul>
+<li><a href="#setseries">setSeries</a></li>
+<li><a href="#setseriesstr">setSeriesStr</a></li>
+</ul>
+</li>
+<li><a href="#channel-methods">Channel Methods</a><ul>
+<li><a href="#allchannelson">allChannelsOn</a></li>
+<li><a href="#allchannelsoff">allChannelsOff</a></li>
+<li><a href="#channelson">channelsOn</a></li>
+<li><a href="#channelsoff">channelsOff</a></li>
+<li><a href="#ischannelon">isChannelOn</a></li>
+<li><a href="#getchannelsstate">getChannelsState</a></li>
+<li><a href="#enabledchannels">enabledChannels</a></li>
+<li><a href="#rescalechannel">rescaleChannel</a></li>
+<li><a href="#minmaxrescalechannel">minMaxRescaleChannel</a></li>
+<li><a href="#setchprobegain">setChProbeGain</a></li>
+<li><a href="#getchprobegain">getChProbeGain</a></li>
+<li><a href="#setchoffset">setChOffSet</a></li>
+<li><a href="#getchoffset">getChOffSet</a></li>
+<li><a href="#setchscale">setChScale</a></li>
+<li><a href="#getchscale">getChScale</a></li>
+<li><a href="#setchposition">setChPosition</a></li>
+<li><a href="#getchposition">getChPosition</a></li>
+<li><a href="#setchdeskew">setChDeskew</a></li>
+<li><a href="#getchdeskew">getChDeskew</a></li>
+<li><a href="#setchtermination">setChTermination</a></li>
+<li><a href="#getchtermination">getChTermination</a></li>
+<li><a href="#getchdegaussstate">getChDegaussState</a></li>
+<li><a href="#setchinvert">setChInvert</a></li>
+<li><a href="#getchinvert">getChInvert</a></li>
+<li><a href="#setchprobeforcedrange">setChProbeForcedRange</a></li>
+<li><a href="#getchprobeforcedrange">getChProbeForcedRange</a></li>
+<li><a href="#setchprobecontrol">setChProbeControl</a></li>
+<li><a href="#getchprobecontrol">getChProbeControl</a></li>
+<li><a href="#setchlabelname">setChLabelName</a></li>
+<li><a href="#getchlabelname">getChLabelName</a></li>
+<li><a href="#setchextatten">setChExtAtten</a></li>
+<li><a href="#getchextatten">getChExtAtten</a></li>
+<li><a href="#setchextattenunits">setChExtAttenUnits</a></li>
+<li><a href="#getchextattenunits">getChExtAttenUnits</a></li>
+</ul>
+</li>
+<li><a href="#measurement-methods">Measurement Methods</a><ul>
+<li><a href="#setimmediatemeasurementsource">setImmediateMeasurementSource</a></li>
+<li><a href="#setmeasurementstate">setMeasurementState</a></li>
+<li><a href="#setimmediatemeasurementtype">setImmediateMeasurementType</a></li>
+<li><a href="#getimmediatemeasurementvalue">getImmediateMeasurementValue</a></li>
+</ul>
+</li>
+<li><a href="#setup-methods">Setup Methods</a><ul>
+<li><a href="#setuptrigger">setupTrigger</a></li>
+<li><a href="#setupwaveformtransfer">setupWaveformTransfer</a></li>
+</ul>
+</li>
+<li><a href="#waveform-methods">Waveform Methods</a><ul>
+<li><a href="#getwaveform">getWaveform</a></li>
+</ul>
+</li>
+<li><a href="#miscellaneous-methods-1">Miscellaneous Methods</a><ul>
+<li><a href="#removeheaders">removeHeaders</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+<h2 id="super-classes">Super Classes</h2>
+
+<p><a href="SCPI_Instrument.html">SCPI_Instrument</a></p>
+
+<h2 id="properties-constant">Properties (Constant)</h2>
+
+<h3 id="series2000">Series2000</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left">‘2XXX’</td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">String Constant for 2000 Series Tektronix Oscilloscopes.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="series4000">Series4000</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left">‘4XXX’</td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">String Constant for 4000 Series Tektronix Oscilloscopes.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="series5000">Series5000</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left">‘5XXX’</td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">String Constant for 2000 Series Tektronix Oscilloscopes.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="properties">Properties</h2>
+
+<h3 id="scopeseries">scopeSeries</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The series of a particular scope object. Set by the <a href="#setseries">setSeries</a> method. Currently supports Tektronix 2, 4, and 5000 series scopes.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="horizontal-command-group">Horizontal Command Group</h3>
+
+<h4 id="recordlengthcommand">recordLengthCommand</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that is used for a particular oscilloscope to set or get the record Length. It is set by the <a href="#setseriesstr">setSeriesStr</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="sampleratecommand">sampleRateCommand</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that is used for a particular oscilloscope to set or get the sample Rate. It is set by the <a href="#setseriesstr">setSeriesStr</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="horizontalscalecommand">horizontalScaleCommand</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that is used for a particular oscilloscope to set or get the horizontal Scale. It is set by the <a href="#setseriesstr">setSeriesStr</a> method.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="properties-dependent">Properties (Dependent)</h2>
+
+<h3 id="acquisition-command-group">Acquisition Command Group</h3>
+
+<h4 id="acqmode">acqMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The acquisition mode of the oscilloscope controlled by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ACQuire:MODe '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'SAMple'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'PEAKdetect'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'HIRes'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'AVErage'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ENVelope'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="acqstopafter">acqStopAfter</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The acquisition stop after setting controlled by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ACQuire:STOPAfter '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RUNSTop'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'SEQuence'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="acqstate">acqState</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The current acquisition state controlled by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ACQuire:STATE '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="pun">‘</span><span class="pln">OFF</span><span class="pun">’</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">‘</span><span class="pln">ON</span><span class="pun">’</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">‘</span><span class="pln">RUN</span><span class="pun">’</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">‘</span><span class="pln">STOP</span><span class="pun">’</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="acqsamplingmode">acqSamplingMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">The sampling mode setting controlled by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ACQuire:SAMPlingmode '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RT'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ET'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'IT'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="hard-copy-command">Hard Copy Command</h3>
+
+<h4 id="exportfilename">exportFilename</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the filename of the next export command. Uses the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXPort:FILEName'</span></code> SCPI command.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="horizontal-command-group-1">Horizontal Command Group</h3>
+
+<h4 id="recordlength">recordLength</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s record Length by using the <a href="#recordlengthcommand">recordLengthCommand</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="samplerate">sampleRate</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Hertz</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s sample Rate by using the <a href="#sampleratecommand">sampleRateCommand</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="horizontalscale">horizontalScale</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Units per divisions</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s horizontal Scale by using the <a href="#horizontalscalecommand">horizontalScaleCommand</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="horizontalposition">horizontalPosition</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Percentage</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s horizontal Position by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HORizontal:POSition '</span></code> command. The argument is the horizontal position expressed as the percentage of the waveform displayed left of the center of the graticule.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="horizontalmode">horizontalMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s horizontal Mode by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HORizontal:MODE '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'AUTO'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'CONStant'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'MANual'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="horizontaldelaymode">horizontalDelayMode</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s horizontal Delay Mode by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HORizontal:DELay:MODe '</span></code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'OFF'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'ON'</span><span class="pln"> </span><span class="pun">}</span></code>code&gt;</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="waveform-transfer-command-group">Waveform Transfer Command Group</h3>
+
+<h4 id="datastart">dataStart</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Integer</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s data start by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DATa:STARt '</span></code> Command. Sets or returns the starting data point for incoming or outgoing waveform transfer. This command allows for the transfer of partial waveforms to and from the oscilloscope.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="datastop">dataStop</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s data stop by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DATa:STOP '</span></code> Command. Sets or returns the last data point that will be transferred when using the CURVe? query. This command allows for the transfer of partial waveforms from the oscilloscope.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="dataresolution">dataResolution</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Controls the oscilloscope’s data resolution by using the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DATa:RESOlution '</span></code> Command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'FULL'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'REDUced'</span><span class="pln"> </span><span class="pun">}</span></code>code&gt;</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="methods">Methods</h2>
+
+<h3 id="super-overrides">Super Overrides</h3>
+
+<h4 id="constructor">Constructor</h4>
+
+<p>Constructor is the same as <a href="SCPI_Instrument.html">SCPI_Instrument</a>.</p>
+
+<h4 id="connect">connect</h4>
+
+<p>The connect method performs the same actions as <a href="SCPI_Instrument.html">SCPI_Instrument</a>; however, it also calls the <a href="#setseries">setSeries</a> method. </p>
+
+<h3 id="miscellaneous-methods">Miscellaneous Methods</h3>
+
+<h4 id="setseries">setSeries</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Automatically determines the series of the oscilloscope in order to determine the appropriate command strings for certain oscilloscope dependent commands. Currently supports the 2, 4, and 5000 series oscilloscopes.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setseriesstr">setSeriesStr</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets series specific command strings.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="channel-methods">Channel Methods</h3>
+
+<h4 id="allchannelson">allChannelsOn</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Turns all channels on.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="allchannelsoff">allChannelsOff</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Turns all channels off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="channelson">channelsOn</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String | Integer Array) channels</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Turns the channels specified by the argument on.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="channelsoff">channelsOff</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String | Integer Array) channels</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Turns the channels specified by the argument off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="ischannelon">isChannelOn</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String | Integer) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Boolean) out</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Checks if a channel is on and returns true if so, false if not.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchannelsstate">getChannelsState</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Boolean Array) channelStates</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Checks the state of all channels and returns an array of booleans containing true for the channels that are on and false for those that are off.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="enabledchannels">enabledChannels</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Integer Array) onChannels</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Returns an array containing the number of each channel that is on. (e.g. if channels 1 and 3 are on the return will be [1, 3].)</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="rescalechannel">rescaleChannel</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer) channel, (Float Array) waveform, (Integer) numDivisions, (Float) percentBuffer</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">channel: Channel to rescale</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">waveform: Waveform vector containing channel’s waveform</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">numDivisions: Number of divisions on oscilloscope screen</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">percentBuffer: Integer percent buffer to increase scale by adds percentBuffer / 2 to top and bottom.</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">rescaleChannel Rescales channel to give full range of values.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="minmaxrescalechannel">minMaxRescaleChannel</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer channel, (Float) minValue, (Float) maxValue, (Integer) numDivisions, (Float) percentBuffer</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">channel: Channel to rescale</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">minValue: Minimum value to be displayed on Oscilloscope</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">maxValue: Maximum Value to be displayed on Oscilloscope</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">numDivisions: Number of divisions on oscilloscope screen</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">percentBuffer: Integer percent buffer to increase scale by adds percentBuffer / 2 to top and bottom.</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">minMaxRescaleChannel Rescales channel to give full range of values. Based on supplied minimum and maximum values.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchprobegain">setChProbeGain</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Integer) chProbeGain</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel ProbeGain</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchprobegain">getChProbeGain</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chProbeGain</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel ProbeGain.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchoffset">setChOffSet</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chOffSet</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel Offset</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchoffset">getChOffSet</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chOffSet</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel OffSet.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchscale">setChScale</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chScale</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel Scale</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchscale">getChScale</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chScale</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel Scale.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchposition">setChPosition</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chPosition</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel Position</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchposition">getChPosition</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chPosition</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel Position.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchdeskew">setChDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chDeskew</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel Deskew</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchdeskew">getChDeskew</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chDeskew</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel Deskew.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchtermination">setChTermination</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chTermination</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets Channel Termination. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'FIFty'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'MEG'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchtermination">getChTermination</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chTermination</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets current Channel Termination.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchdegaussstate">getChDegaussState</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chDegauss</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">NEEDED: indicates the probe should be degaussed before taking measurements.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">RECOMMENDED: indicates the measurement accuracy might be improved by degaussing the probe.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">PASSED: indicates the probe is degaussed.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">FAILED: indicates the degauss operation failed.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">RUNNING: indicates the probe degauss operation is currently in progress.</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Returns the state of the probe degauss for the channel specified.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchinvert">setChInvert</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (String) chInvert</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the Channel Invert. Either <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ON'</span><span class="pln"> </span><span class="kwd">or</span><span class="pln"> </span><span class="str">'OFF'</span></code>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchinvert">getChInvert</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chInvert</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the Channel Invert. Either <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ON'</span><span class="pln"> </span><span class="kwd">or</span><span class="pln"> </span><span class="str">'OFF'</span></code>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchprobeforcedrange">setChProbeForcedRange</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chForcedRange</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the range of a TekVPI probe attached to the channel specified.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchprobeforcedrange">getChProbeForcedRange</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chForcedRange</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Returns the range of a TekVPI probe attached to the channel specified.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchprobecontrol">setChProbeControl</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (String) chProbeControl</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Switches probe between auto and manual Mode. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'AUTO'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'MANual'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchprobecontrol">getChProbeControl</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chProbeControl</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Returns probe control setting. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'AUTO'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'MANual'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchlabelname">setChLabelName</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (String) chLabel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the channel’s label.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchlabelname">getChLabelName</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chLabel</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets the channel’s label.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchextatten">setChExtAtten</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (Float) chExtAtten</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets external attenuation for channel. Only Supported on the 5000 series scopes. Generally used to convert scaled Voltage to Current.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchextatten">getChExtAtten</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) chExtAtten</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets external attenuation for channel. Only Supported on the 5000 series scopes. Generally used to convert scaled Voltage to Current.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setchextattenunits">setChExtAttenUnits</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel, (String) chExtAttenUnits</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets external attenuation units for channel. Only Supported on the 5000 series scopes. Generally used to convert scaled Voltage to Current.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getchextattenunits">getChExtAttenUnits</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) chExtAttenUnits</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets external attenuation units for channel. Only Supported on the 5000 series scopes. Generally used to convert scaled Voltage to Current.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="measurement-methods">Measurement Methods</h3>
+
+<h4 id="setimmediatemeasurementsource">setImmediateMeasurementSource</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) sourceChan</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the source of the Immediate measurement to the channel specified by the sourceChan Parameter</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setmeasurementstate">setMeasurementState</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer | String) measNum, (Integer | String) measState</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Sets the state of the measNum measurement to measState. measState can be either <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'ON'</span></code>, <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'OFF'</span></code>, or any number. 0 is equivalent to off whereas any other number is equivalent to on.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setimmediatemeasurementtype">setImmediateMeasurementType</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String) measType</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">Acceptable values for measType: { ‘AMPlitude’ | ‘AREa’ |  ‘BURst’ | ‘CARea’ | ‘CMEan’ | ‘CRMs’ | ‘DELay’ | ‘DISTDUty’ | ’ EXTINCTDB’ | ‘EXTINCTPCT’ | ‘EXTINCTRATIO’ | ‘EYEHeight’ | ’ EYEWIdth’ | ‘FALL’ | ‘FREQuency’ | ‘HIGH’ | ‘HITs’ | ‘LOW’ | ’ MAXimum’ | ‘MEAN’ | ‘MEDian’ | ‘MINImum’ | ‘NCROss’ | ‘NDUty’ | ’ NOVershoot’ | ‘NWIdth’ | ‘PBASe’ | ‘PCROss’ | ‘PCTCROss’ | ‘PDUty’ | ’ PEAKHits’ | ‘PERIod’ | ‘PHAse’ | ‘PK2Pk’ | ‘PKPKJitter’ | ’ PKPKNoise’ | ‘POVershoot’ | ‘PTOP’ | ‘PWIdth’ | ‘QFACtor’ | ’ RISe’ | ‘RMS’ | ‘RMSJitter’ | ‘RMSNoise’ | ‘SIGMA1’ | ‘SIGMA2’ | ’ SIGMA3’ | ‘SIXSigmajit’ | ‘SNRatio’ | ‘STDdev’ | ‘UNDEFINED’ |  ‘WAVEFORMS}</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'AMPlitude'</span></code> measures the amplitude of the selected waveform. In other words, it measures the high value less the low value measured over the entire waveform or gated region. Amplitude = High - Low</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'AREa'</span></code> measures the voltage over time. The area is over the entire waveform or gated region and is measured in volt-seconds. The area measured above the ground is positive, while the area below ground is negative.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'BURst'</span></code> measures the duration of a burst. The measurement is made over the entire waveform or gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'CARea'</span></code> (cycle area) measures the voltage over time. In other words, it measures in volt-seconds, the area over the first cycle in the waveform or the first cycle in the gated region. The area measured above the common reference point is positive, while the area below the common reference point is negative.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'CMEan'</span></code> (cycle mean) measures the arithmetic mean over the first cycle in the waveform or the first cycle in the gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'CRMs'</span></code> (cycle rms) measures the true Root Mean Square voltage over the first cycle in the waveform or the first cycle in the gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DELay'</span></code> measures the time between the middle reference (default = 50%) amplitude point of the source waveform and the destination waveform.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'DISTDUty'</span></code> (duty cycle distortion) measures the time between the falling edge and the rising edge of the eye pattern at the mid reference level. It is the peak-to-peak time variation of the first eye crossing measured at the mid-reference as a percent of the eye period.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXTINCTDB'</span></code> measures the extinction ratio of an optical waveform (eye diagram). Extinction Ratio (dB) measures the ratio of the average power levels for the logic High to the logic Low of an optical waveform and expresses the result in dB. This measurement only works for fast acquisition signals or a reference waveform saved in fast acquisition mode. Extinction dB <script type="math/tex" id="MathJax-Element-4">= 10 × (log_{10} (High / Low)</script></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXTINCTPCT'</span></code> measures the extinction ratio of the selected optical waveform. Extinction Ratio (%) measures the ratio of the average power levels for the logic Low (off) to the logic (High) (on) of an optical waveform and expresses the result in percent. This measurement only works for fast acquisition signals or a reference waveform saved in fast acquisition mode. Extinction % = 100.0 × (Low / High)</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXTINCTRATIO'</span></code> measures the extinction ratio of the selected optical waveform. Extinction Ratio measures the ratio of the average power levels for the logic High to the logic Low of an optical waveform and expresses the result without units. This measurement only works for fast acquisition signals or a reference waveform saved in fast acquisition mode. Extinction ratios greater than 100 or less than 1 generate errors; low must be greater than or equal to 1 μW. Extinction Ratio = (High / Low)</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EYEHeight'</span></code> measures the vertical opening of an eye diagram in volts.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EYEWidth'</span></code> measures the width of an eye diagram in seconds.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'FALL'</span></code> measures the time taken for the falling edge of the first pulse in the waveform or gated region to fall from a high reference value (default is 90%) to a low reference value (default is 10%).</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'FREQuency'</span></code> measures the first cycle in the waveform or gated region. Frequency is the reciprocal of the period and is measured in hertz (Hz), where 1 Hz = 1 cycle per second.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HIGH'</span></code> measures the High reference (100% level, sometimes called Topline) of a waveform. You can also limit the High measurement (normally taken over the entire waveform record) to a gated region on the waveform.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'HITs'</span></code> (histogram hits) measures the number of points in or on the histogram box. LOW measures the Low reference (0% level, sometimes called Baseline) of a waveform.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'MAXimum'</span></code> finds the maximum amplitude. This value is the most positive peak voltage found. It is measured over the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the maximum measurement measures the voltage of the highest nonzero bin in vertical histograms or the time of the right-most bin in horizontal histograms.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'MEAN'</span></code> amplitude measurement finds the arithmetic mean over the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the mean measurement measures the average of all acquired points within or on the histogram.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'MEDian'</span></code> (histogram measurement) measures the middle point of the histogram box. Half of all acquired points within or on the histogram box are less than this value and half are greater than this value.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'MINImum'</span></code> finds the minimum amplitude. This value is typically the most negative peak voltage. It is measured over the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the minimum measurement measures the lowest nonzero bin in vertical histograms or the time of the left-most nonzero bin in the horizontal histograms.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'NCROss'</span></code> (timing measurement) measures the time from the trigger point to the first falling edge of the waveform or gated region. The distance (time) is measured at the middle reference amplitude point of the signal.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'NDUty'</span></code> (negative duty cycle) is the ratio of the negative pulse width to the signal period, expressed as a percentage. The duty cycle is measured on the first cycle in the waveform or gated region. Negative Duty Cycle = (Negative Width) / Period × 100%</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'NOVershoot'</span></code> (negative overshoot) finds the negative overshoot value over the entire waveform or gated region. Negative Overshoot = (Low - Minimum) / Amplitude × 100%)</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'NWIdth'</span></code> (negative width) measurement is the distance (time) between the middle reference (default = 50%) amplitude points of a negative pulse. The measurement is made on the first pulse in the waveform or gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PBASe'</span></code> measures the base value used in extinction ratio measurements.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PCROss'</span></code> (timing measurement) measures the time from the trigger point to the first positive edge of the waveform or gated region. The distance (time) is measured at the middle reference amplitude point of the signal.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PCTCROss'</span></code> measures the location of the eye crossing point expressed as a percentage of EYEHeight. Crossing percent = 100 ×[(eye-crossing-point - PBASe)/(PTOP - PBASe)]</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PDUty'</span></code> (positive duty cycle) is the ratio of the positive pulse width to the signal period, expressed as a percentage. It is measured on the first cycle in the waveform or gated region. Positive Duty Cycle = (Positive Width)/Period × 100%</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PEAKHits'</span></code> measures the number of points in the largest bin of the histogram.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PERIod'</span></code> is the time required to complete the first cycle in a waveform or gated region. Period is the reciprocal of frequency and is measured in seconds.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PHAse'</span></code> measures the phase difference (amount of time a waveform leads or lags the reference waveform) between two waveforms. The measurement is made between the middle reference points of the two waveforms and is expressed in degrees, where 360° represents one waveform cycle.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">PK2Pk (peak-to-peak) finds the absolute difference between the maximum and minimum amplitude in the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the PK2Pk measurement measures the histogram peak to peak difference.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PKPKJitter'</span></code> measures the variance (minimum and maximum values) in the time locations of the cross point.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PKPKNoise'</span></code> measures the peak-to-peak noise on a waveform at the mid reference level.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'POVershoot'</span></code> The positive overshoot amplitude measurement finds the positive overshoot value over the entire waveform or gated region. Positive Overshoot = (Maximum - High) / Amplitude ×100%</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PTOT'</span></code> measures the top value used in extinction ratio measurements.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PWIdth'</span></code> (positive width) is the distance (time) between the middle reference (default = 50%) amplitude points of a positive pulse. The measurement is made on the first pulse in the waveform or gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'QFACtor'</span></code> measures the quality factor. The Q factor is a figure of merit for an eye diagram, which indicates the vertical eye opening relative to the noise at the low and high logic levels. It is the ratio of the eye size to noise.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RISe'</span></code> timing measurement finds the rise time of the waveform. The rise time is the time it takes for the leading edge of the first pulse encountered to rise from a low reference value (default is 10%) to a high reference value (default is 90%). RMS amplitude measurement finds the true Root Mean Square voltage in the entire waveform or gated region.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RMSJitter'</span></code> measures the variance in the time locations of the cross point. The RMS jitter is defined as one standard deviation at the cross point.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'RMSNoise'</span></code> measures the Root Mean Square noise amplitude on a waveform at the mid reference level.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SIGMA1'</span></code> (histogram measurement) measures the percentage of points in the histogram that are within one standard deviation of the histogram mean.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SIGMA2'</span></code> (histogram measurement) measures the percentage of points in the histogram that are within two standard deviations of the histogram mean.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SIGMA3'</span></code> (histogram measurement) measures the percentage of points in the histogram that are within three standard deviations of the histogram mean.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SIXSigmajit'</span></code> (histogram measurement) is six × RMSJitter.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'SNRatio'</span></code> measures the signal-to-noise ratio. The signal-to-noise ratio is the amplitude of a noise rejection band centered on the mid level.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'STDdev'</span></code> measures the standard deviation (Root Mean Square (RMS) deviation) of all acquired points within or on the histogram box.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'UNDEFINED'</span></code> is the default measurement type, which indicates that no measurement type is specified. Once a measurement type is chosen, it can be cleared using this argument.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'WAVEFORMS'</span></code> (waveform count) measures the number of waveforms used to calculate the histogram.</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">This command sets or queries the immediate measurement type. Immediate measurements and annotations are not displayed on the screen.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="getimmediatemeasurementvalue">getImmediateMeasurementValue</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float) value</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Gets the value of the immediate measurement.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="setup-methods">Setup Methods</h3>
+
+<h4 id="setuptrigger">setupTrigger</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String) triggerType, (String) coupling, (String) slope, (Integer) source, (Float) level</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">triggerType: trigger type <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'EDGe'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'LOGic'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'PULSe'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'BUS'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'VIDeo'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">coupling: Trigger Coupling <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'DC'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'HFRej'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'LFRej'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'NOISErej'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">slope: Trigger Slope <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="pln"> </span><span class="str">'RISe'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'FALL'</span><span class="pln"> </span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">source: Trigger Source (int) <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="lit">1</span><span class="pun">-</span><span class="lit">4</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">level: Trigger Level (double)</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">setupTrigger sets up oscilloscope trigger currently only works with edge trigger</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h4 id="setupwaveformtransfer">setupWaveformTransfer</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer) numBytes, (String) encoding</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">numBytes: Number of bytes to use to send waveform points. Must be 1 or 2.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left">encoding: Encoding scheme to use with binary data, see programming manual for acceptable values and descriptions.</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">setupWaveformTransfer sets binary format for waveform.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="waveform-methods">Waveform Methods</h3>
+
+<h4 id="getwaveform">getWaveform</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(Integer) Channel</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(Float Array) waveform</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">getWaveform gets one channel’s waveform from scope <a href="#setupwaveformtransfer">setupWaveformTransfer</a> should be called first.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="miscellaneous-methods-1">Miscellaneous Methods</h3>
+
+<h4 id="removeheaders">removeHeaders</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Removes headers from the oscilloscope return values.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table></div></body>
+</html>

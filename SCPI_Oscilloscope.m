@@ -181,7 +181,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             self.sendCommand(['TRIGger:A:LEVel:CH1 ' num2str(level)]);
         end
         function setupWaveformTransfer(self, numBytes, encoding)
-            % setupWaveformTransfer sets binary format for waverform.
+            % setupWaveformTransfer sets binary format for waveform.
             %   Args: (numBytes, encoding)
             %   numBytes: Number of bytes to use to send waveform points.
             %   must be 1 or 2.
@@ -196,7 +196,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             self.sendCommand(['DATa:WIDth ' numBytes]);
         end
         function waveform = getWaveform(self, channel)
-            % getWaveform gets one channels waveform from scope
+            % getWaveform gets one channel's waveform from scope
             % setupWaveformTransfer should be called first.
             %   Args: (channel)
             %   channel: Channel to get waveform from (1-4)
@@ -250,7 +250,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function rescaleChannel(self, channel, waveform, numDivisions, percentBuffer)
             % rescaleChannel Rescales channel to give full range of values.
             % Based on supplied waveform.
-            %   Args: (channel, waveform, numDivisions)
+            %   Args: (channel, waveform, numDivisions, percentBuffer)
             %   channel: Channel to rescale
             %   waveform: Waveform vector containing channel's waveform
             %   numDivisions: Number of divisions on oscilloscope screen
@@ -263,7 +263,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         function minMaxRescaleChannel(self, channel, minValue, maxValue, numDivisions, percentBuffer)
             % minMaxRescaleChannel Rescales channel to give full range of
             % values. Based on supplied minimum and maximum values.
-            %   Args: (channel, minValue, maxValue, waveform, numDivisions, percentBuffer)
+            %   Args: (channel, minValue, maxValue, numDivisions, percentBuffer)
             %   channel: Channel to rescale
             %   minValue: Minimum value to be displayed on Oscilloscope
             %   maxValue: Maximum Value to be displayed on Oscilloscope
@@ -322,6 +322,7 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
         end    
         % Channel Termination
+        %todo: fix improper num2str
         function setChTermination(self, channel, chTermination)
             channel = self.U2Str(channel);
             self.sendCommand(['CH' channel ':TERmination ' num2str(chTermination)]);
@@ -331,9 +332,9 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             chTermination = str2double(self.query(['CH' channel ':TERmination?']));
         end    
         % Channel Degauss State
-        function chDeskew = getChDegaussState(self, channel)
+        function chDegauss = getChDegaussState(self, channel)
             channel = self.U2Str(channel);
-            chDeskew = str2double(self.query(['CH' channel ':DESKew?']));
+            chDegauss = self.query(['CH' channel ':PRObe:DEGAUss:STATE?']);
         end   
         % Channel Invert
         % chInvert is 'ON' or 'OFF'
@@ -415,8 +416,8 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
         %% Measurement Commands
         % Measurement Source
         function setImmediateMeasurementSource(self, sourceChan)
-            % Sets the source of the Immediate measurement to the channnel
-            % specified by the sourceChan Paramter
+            % Sets the source of the Immediate measurement to the channel
+            % specified by the sourceChan Parameter
             sourceChan = self.U2Str(sourceChan);
             
             self.sendCommand(['MEASUrement:IMMed:SOUrce1 CH' sourceChan]);
@@ -431,9 +432,9 @@ classdef SCPI_Oscilloscope < SCPI_Instrument & handle
             self.sendCommand(['MEASUrement:MEAS' measNum ':STATE ' measState]);
         end
         
-        % Measuremnent Type
+        % Measurement Type
         function setImmediateMeasurementType(self, measType)
-            % Sets the type of the measNum measurement to measType
+            % Sets the type of the immediate measurement to measType
             % Acceptable values for measType: {AMPlitude|AREa|
             % BURst|CARea|CMEan|CRMs|DELay|DISTDUty|
             % EXTINCTDB|EXTINCTPCT|EXTINCTRATIO|EYEHeight|

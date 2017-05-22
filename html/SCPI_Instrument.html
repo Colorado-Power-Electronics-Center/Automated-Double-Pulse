@@ -12,6 +12,8 @@
 
 <p>The SCPI_Instrument class is the super class used for control of all measurement equipment. It contains methods that all instruments need, including connection, sending commands arbitrary commands, sending specific common commands, and more. It is inherited by many specific classes to prevent code duplication.</p>
 
+
+
 <h2 id="table-of-contents">Table of Contents</h2>
 
 <p><div class="toc">
@@ -57,11 +59,17 @@
 </div>
 </p>
 
+
+
 <h2 id="super-classes">Super classes</h2>
 
 <p>handle</p>
 
+
+
 <h2 id="properties">Properties</h2>
+
+
 
 <h3 id="visaaddress">visaAddress</h3>
 
@@ -93,6 +101,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="visavendor">visaVendor</h3>
@@ -127,6 +137,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="visaobj">visaObj</h3>
 
 <table>
@@ -157,6 +169,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="connected">connected</h3>
@@ -191,6 +205,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="typestr">typeStr</h3>
 
 <table>
@@ -221,6 +237,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="commanddelay">commandDelay</h3>
@@ -255,7 +273,11 @@
 </tbody></table>
 
 
+
+
 <h2 id="methods">Methods</h2>
+
+
 
 <h3 id="constructor">Constructor</h3>
 
@@ -272,7 +294,7 @@
 </tr>
 <tr>
   <td>Output</td>
-  <td align="left">[SCPI_Instrument][SCPI_Instrument]</td>
+  <td align="left"><a href="SCPI_Instrument.html">SCPI_Instrument</a></td>
 </tr>
 <tr>
   <td>Description</td>
@@ -283,6 +305,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="createvisaobj">createVisaObj</h3>
@@ -313,6 +337,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="clearvisaobj">clearVisaObj</h3>
 
 <table>
@@ -339,6 +365,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="connect">connect</h3>
@@ -369,6 +397,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="disconnect">disconnect</h3>
 
 <table>
@@ -395,6 +425,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="sendcommand">sendCommand</h3>
@@ -425,6 +457,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="readresponse">readResponse</h3>
 
 <table>
@@ -451,6 +485,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="query">query</h3>
@@ -481,6 +517,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="numquery">numQuery</h3>
 
 <table>
@@ -507,6 +545,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="binblockquery">binBlockQuery</h3>
@@ -537,6 +577,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="reset">reset</h3>
 
 <table>
@@ -563,6 +605,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="trigger">trigger</h3>
@@ -593,6 +637,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="push2trigger">push2Trigger</h3>
 
 <table>
@@ -604,7 +650,7 @@
 </thead>
 <tbody><tr>
   <td>Arguments</td>
-  <td align="left">(String</td>
+  <td align="left">(String | Boolean) triggerStr, (Boolean) push2pulse</td>
 </tr>
 <tr>
   <td>Output</td>
@@ -619,6 +665,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="clearstatus">clearStatus</h3>
@@ -649,6 +697,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="identity">identity</h3>
 
 <table>
@@ -675,6 +725,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="operationcomplete">operationComplete</h3>
@@ -705,7 +757,11 @@
 </tbody></table>
 
 
+
+
 <h2 id="methods-static">Methods (Static)</h2>
+
+
 
 <h3 id="u2str">U2Str</h3>
 
@@ -718,7 +774,7 @@
 </thead>
 <tbody><tr>
   <td>Arguments</td>
-  <td align="left">(String</td>
+  <td align="left">(String | number) UStr</td>
 </tr>
 <tr>
   <td>Output</td>

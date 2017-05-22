@@ -58,6 +58,62 @@
 <li><a href="#turnoffidint">turnOffIDInt</a></li>
 </ul>
 </li>
+<li><a href="#properties-private">Properties (Private)</a><ul>
+<li><a href="#gateturnonidx">gateTurnOnIdx</a></li>
+<li><a href="#currentturnonidx">currentTurnOnIdx</a></li>
+<li><a href="#vdsat0idx">v_ds_at0Idx</a></li>
+<li><a href="#gateturnoffidx">gateTurnOffIdx</a></li>
+<li><a href="#currentturnoffidx">currentTurnOffIdx</a></li>
+<li><a href="#vdsatbus">vDSatBus</a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#shiftcurrent">shiftCurrent</a></li>
+<li><a href="#calcallvalues">calcAllValues</a></li>
+<li><a href="#pubcalcivmis">pubCalcIvMis</a></li>
+<li><a href="#dispresults">dispResults</a></li>
+<li><a href="#plotresults">plotResults</a></li>
+<li><a href="#plotwaveform">plotWaveform</a></li>
+</ul>
+</li>
+<li><a href="#methods-private">Methods (private)</a><ul>
+<li><a href="#calcbusvoltage">calcBusVoltage</a></li>
+<li><a href="#calcloadcurrent">calcLoadCurrent</a></li>
+<li><a href="#calcgatevoltage">calcGateVoltage</a></li>
+<li><a href="#calcgateturnonidx">calcGateTurnOnIdx</a></li>
+<li><a href="#calcgateturnoffidx">calcGateTurnOffIdx</a></li>
+<li><a href="#calccurrentturnonidx">calcCurrentTurnOnIdx</a></li>
+<li><a href="#calccurrentturnoffidx">calcCurrentTurnOffIdx</a></li>
+<li><a href="#calcturnondelay">calcTurnOnDelay</a></li>
+<li><a href="#calcturnoffdelay">calcTurnOffDelay</a></li>
+<li><a href="#calccurrentrisetime">calcCurrentRiseTime</a></li>
+<li><a href="#calcvoltagefalltime">calcVoltageFallTime</a></li>
+<li><a href="#calcvoltagerisetime">calcVoltageRiseTime</a></li>
+<li><a href="#calcturnontime">calcTurnOnTime</a></li>
+<li><a href="#calcturnofftime">calcTurnOffTime</a></li>
+<li><a href="#calcturnonpeakdvdt">calcTurnOnPeakDV_DT</a></li>
+<li><a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a></li>
+<li><a href="#calcturnonenergy">calcTurnOnEnergy</a></li>
+<li><a href="#calcturnoffenergy">calcTurnOffEnergy</a></li>
+<li><a href="#calcpeakvds">calcPeakVDS</a></li>
+<li><a href="#calconintegrals">calcOnIntegrals</a></li>
+<li><a href="#calcoffintegrals">calcOffIntegrals</a></li>
+<li><a href="#calcivmisalignment">calcIVMisalignment</a></li>
+</ul>
+</li>
+<li><a href="#methods-public-static">Methods (public, Static)</a><ul>
+<li><a href="#findivmisalignment">findIVMisalignment</a></li>
+<li><a href="#findnominalvalue">findNominalValue</a></li>
+<li><a href="#movingavg">movingAvg</a></li>
+</ul>
+</li>
+<li><a href="#methods-protected-static">Methods (protected, Static)</a><ul>
+<li><a href="#findonidx">findOnIdx</a></li>
+<li><a href="#findoffidx">findOffIdx</a></li>
+<li><a href="#range">range</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -489,7 +545,7 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-1">\frac{Volts}{Second}</script></td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-5">\frac{Volts}{Second}</script></td>
 </tr>
 <tr>
   <td>Description</td>
@@ -553,7 +609,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Maximum value of <script type="math/tex" id="MathJax-Element-2">V_{DS}</script> during the turn on. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
+  <td align="left">Maximum value of <script type="math/tex" id="MathJax-Element-6">V_{DS}</script> during the turn on. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -579,11 +635,11 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left">Volt <script type="math/tex" id="MathJax-Element-3">\cdot</script> Seconds</td>
+  <td align="left">Volt <script type="math/tex" id="MathJax-Element-7">\cdot</script> Seconds</td>
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-4">V_{DS}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
+  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-8">V_{DS}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -609,11 +665,11 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left">Amp <script type="math/tex" id="MathJax-Element-5">\cdot</script> Seconds</td>
+  <td align="left">Amp <script type="math/tex" id="MathJax-Element-9">\cdot</script> Seconds</td>
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-6">I_{D}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
+  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-10">I_{D}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -707,7 +763,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-7">V_{DS}</script> voltage rise to the point where the voltage is at the bus voltage. Calculated with the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
+  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-11">V_{DS}</script> voltage rise to the point where the voltage is at the bus voltage. Calculated with the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -737,7 +793,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-8">V_{GS}</script> voltage fall to the point where <script type="math/tex" id="MathJax-Element-9">V_{DS}</script> is at the bus voltage. Calculated with the <a href="#calcturnofftime">calcTurnOffTime</a> method.</td>
+  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-12">V_{GS}</script> voltage fall to the point where <script type="math/tex" id="MathJax-Element-13">V_{DS}</script> is at the bus voltage. Calculated with the <a href="#calcturnofftime">calcTurnOffTime</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -763,11 +819,11 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-10">\frac{Volts}{Second}</script></td>
+  <td align="left"><script type="math/tex" id="MathJax-Element-14">\frac{Volts}{Second}</script></td>
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The maximum rate of change of <script type="math/tex" id="MathJax-Element-11">V_{DS}</script> during the turn off. Calculated with the <a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a> method.</td>
+  <td align="left">The maximum rate of change of <script type="math/tex" id="MathJax-Element-15">V_{DS}</script> during the turn off. Calculated with the <a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -827,7 +883,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The maximum value of <script type="math/tex" id="MathJax-Element-12">V_{DS}</script> during the turn off. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
+  <td align="left">The maximum value of <script type="math/tex" id="MathJax-Element-16">V_{DS}</script> during the turn off. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -853,11 +909,11 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left">Volt <script type="math/tex" id="MathJax-Element-13">\cdot</script> Seconds</td>
+  <td align="left">Volt <script type="math/tex" id="MathJax-Element-17">\cdot</script> Seconds</td>
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-14">V_{DS}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
+  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-18">V_{DS}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -883,11 +939,11 @@
 </tr>
 <tr>
   <td>Units</td>
-  <td align="left">Amp <script type="math/tex" id="MathJax-Element-17">\cdot</script> Seconds</td>
+  <td align="left">Amp <script type="math/tex" id="MathJax-Element-19">\cdot</script> Seconds</td>
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-18">I_{D}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
+  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-20">I_{D}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -925,7 +981,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Index in turn on waveforms where <script type="math/tex" id="MathJax-Element-19">V_{GS}</script> starts to increase and does not stop increasing. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
+  <td align="left">Index in turn on waveforms where <script type="math/tex" id="MathJax-Element-21">V_{GS}</script> starts to increase and does not stop increasing. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -993,7 +1049,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Index in the turn on waveform where <script type="math/tex" id="MathJax-Element-20">V_{DS}</script> crosses zero. Calculated during the calcVoltageFallTime method.</td>
+  <td align="left">Index in the turn on waveform where <script type="math/tex" id="MathJax-Element-22">V_{DS}</script> crosses zero. Calculated during the calcVoltageFallTime method.</td>
 </tr>
 <tr>
   <td></td>
@@ -1027,7 +1083,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-21">V_{GS}</script> starts to decrease and does not stop. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
+  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-23">V_{GS}</script> starts to decrease and does not stop. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -1095,7 +1151,7 @@
 </tr>
 <tr>
   <td>Description</td>
-  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-22">V_{DS}</script> crosses the bus voltage. Calculated during the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
+  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-24">V_{DS}</script> crosses the bus voltage. Calculated during the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
 </tr>
 <tr>
   <td></td>
@@ -1301,7 +1357,7 @@
 </thead>
 <tbody><tr>
   <td>Arguments</td>
-  <td align="left">((SwitchWaveform</td>
+  <td align="left">((SwitchWaveform | GeneralWaveform) waveform, (String) name, [(Float Array) power])</td>
 </tr>
 <tr>
   <td>Output</td>

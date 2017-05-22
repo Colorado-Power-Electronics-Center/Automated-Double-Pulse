@@ -178,7 +178,7 @@ handle
 ### push2Trigger
 | Method | |
 |--------|:--|
-| Arguments | (String | Boolean) triggerStr, (Boolean) push2pulse |
+| Arguments | (String \| Boolean) triggerStr, (Boolean) push2pulse |
 | Output |  |
 | Description | Works similarly to the [trigger](#trigger) function; however, it includes additional functionality that can ask a user to confirm before continuing with the operation. If triggerStr is given the message presented to the user will be <code class="prettyprint lang-MATLAB">['Push any button to ' triggerStr '...']</code> if not given triggerStr will default to <code class="prettyprint lang-MATLAB">'trigger'</code>. Either argument may be skipped if desired. (i.e. <code class="prettyprint lang-MATLAB">obj.push2Trigger('pulse', true)</code>, <code class="prettyprint lang-MATLAB">obj.push2Trigger(true)</code>, and <code class="prettyprint lang-MATLAB">obj.push2Trigger('pulse')</code> are all valid function calls. |
 |||
@@ -215,8 +215,40 @@ handle
 ### U2Str
 | Method | |
 |--------|:--|
-| Arguments | (String | number) UStr |
+| Arguments | (String \| number) UStr |
 | Output | (String) out |
-| Description | Converts an unknown variable type to a string. Allows arguments to be accepted as both numbers and strings and be correctly converted to a string for sending to the instrument. |
+| Description | Converts an unknown variable type to a string. Allows arguments to be accepted as both numbers and strings and be correctly converted to a string for sending to the instrument.|
 |||
 
+
+[channelMapper]: channelMapper.html
+[checkLoadInductor]: checkLoadInductor.html
+[DoublePulseResults]: DoublePulseResults.html
+[Double_Pulse_Test]: Double_Pulse_Test.html
+[DPTSettings]: DPTSettings.html
+[extractWaveforms]: extractWaveforms.html
+[extract_turn_on_waveform]: extract_turn_on_waveform.html
+[findDeskew]: findDeskew.html
+[FullWaveform]: FullWaveform.html
+[GeneralWaveform]: GeneralWaveform.html
+[Keithley2260B]: Keithley2260B.html
+[min2Scale]: min2Scale.html
+[processWaveform]: processWaveform.html
+[pulse_generator]: pulse_generator.html
+[rescaleAndRepulse]: rescaleAndRepulse.html
+[runDoublePulseTest]: runDoublePulseTest.html
+[SCPI_FunctionGenerator]: SCPI_FunctionGenerator.html
+[SCPI_Instrument]: SCPI_Instrument.html
+[SCPI_Oscilloscope]: SCPI_Oscilloscope.html
+[SCPI_VoltageSource]: SCPI_VoltageSource.html
+[SettingsSweepObject]: SettingsSweepObject.html
+[setVoltageToLoad]: setVoltageToLoad.html
+[SimpleSettings]: SimpleSettings.html
+[SorensonVoltageSource]: SorensonVoltageSource.html
+[splitWaveforms]: splitWaveforms.html
+[SurfacePlotSettings]: SurfacePlotSettings.html
+[SweepPlotSettings]: SweepPlotSettings.html
+[SweepResults]: SweepResults.html
+[SwitchWaveform]: SwitchWaveform.html
+[waveformTimeIdx]: waveformTimeIdx.html
+[WindowSize]: WindowSize.html

@@ -334,7 +334,7 @@ matlab.mixin.Copyable
 ### plotWaveform
 | Method | |
 |--------|:--|
-| Arguments | ((SwitchWaveform | GeneralWaveform) waveform, (String) name, [(Float Array) power]) |
+| Arguments | ((SwitchWaveform \| GeneralWaveform) waveform, (String) name, [(Float Array) power]) |
 | Output |  |
 | Description | Plots a given waveform and gives the figure a title of name. The power argument is optional, but should be included if the waveform is a SwitchWaveform. |
 |||
