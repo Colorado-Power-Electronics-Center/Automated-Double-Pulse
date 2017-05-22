@@ -23,5 +23,6 @@
  	</tocitem>
  	<tocitem target="SCPI_Instrument.html">SCPI_Instrument
 		<tocitem target="SCPI_Oscilloscope.html">SCPI_Oscilloscope</tocitem>
+		<tocitem target="SCPI_VoltageSource.html">SCPI_VoltageSource</tocitem>
  	</tocitem>
 </toc>

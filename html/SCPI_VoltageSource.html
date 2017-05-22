@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCPI_VoltageSource.md</title>
+<link rel="stylesheet" href="themes/base.css" />
+<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="scpivoltagesource">SCPI_VoltageSource</h1>
+
+<p>SCPI_VoltageSource is a Sub-Class of SCPI_Instrument for use with Voltage Sources. Currently the class requires the use of a sub class to control various functions. This class describes functions that can be implemented, but will throw an error if they are not implemented within the sub class. The class was designed in this way to ensure that no commands are assumed to be known, because of the potential of power supplies to cause real damage to the user or equipment. </p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<p><div class="toc">
+<ul>
+<li><a href="#scpivoltagesource">SCPI_VoltageSource</a><ul>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#outvoltagecmd">outVoltageCmd</a></li>
+<li><a href="#outcurrentcmd">outCurrentCmd</a></li>
+<li><a href="#outputstatecmd">outputStateCmd</a></li>
+<li><a href="#outputmodecmd">outputModeCmd</a></li>
+<li><a href="#voltageslewrisingcmd">voltageSlewRisingCmd</a></li>
+<li><a href="#voltageslewfallingcmd">voltageSlewFallingCmd</a></li>
+<li><a href="#initialized">initialized</a></li>
+</ul>
+</li>
+<li><a href="#properties-dependent">Properties (Dependent)</a><ul>
+<li><a href="#outvoltage">outVoltage</a></li>
+<li><a href="#outcurrent">outCurrent</a></li>
+<li><a href="#outputstate">outputState</a></li>
+<li><a href="#outputmode">outputMode</a></li>
+<li><a href="#voltageslewrising">voltageSlewRising</a></li>
+<li><a href="#voltageslewfalling">voltageSlewFalling</a></li>
+</ul>
+</li>
+<li><a href="#methods-private-static">Methods (Private, Static)</a><ul>
+<li><a href="#notimplemented">notImplemented</a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+</ul>
+</li>
+<li><a href="#control-methods">Control Methods</a><ul>
+<li><a href="#initsupply">initSupply</a></li>
+<li><a href="#setslewedvoltage">setSlewedVoltage</a></li>
+</ul>
+</li>
+<li><a href="#stop-methods">Stop Methods</a><ul>
+<li><a href="#outputoffzero">outputOffZero</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+
+<h2 id="properties">Properties</h2>
+
+<h3 id="outvoltagecmd">outVoltageCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to change the output voltage.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outcurrentcmd">outCurrentCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to set the output current.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outputstatecmd">outputStateCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to change the output state.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outputmodecmd">outputModeCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to change the output mode.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="voltageslewrisingcmd">voltageSlewRisingCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to change the rising voltage slew rate.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="voltageslewfallingcmd">voltageSlewFallingCmd</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Command that should be sent to the power supply to change the falling voltage slew rate.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="initialized">initialized</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left">false</td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Boolean</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">If the scope has been initialized this value should be set to true. SHould be false if not yet initialized or if for some reason brought out of the initialized state.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="properties-dependent">Properties (Dependent)</h2>
+
+<h3 id="outvoltage">outVoltage</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Volts</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s output voltage.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outcurrent">outCurrent</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Amps</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s output current (limit).</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outputstate">outputState</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s output state. <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">{</span><span class="str">'ON'</span><span class="pln"> </span><span class="pun">|</span><span class="pln"> </span><span class="str">'OFF'</span><span class="pun">}</span></code></td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="outputmode">outputMode</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">String</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s output mode.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="voltageslewrising">voltageSlewRising</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Volts / second</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s rising voltage slew rate.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="voltageslewfalling">voltageSlewFalling</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Properties</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Default Value</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Type</td>
+  <td align="left">Float</td>
+</tr>
+<tr>
+  <td>Units</td>
+  <td align="left">Volts / second</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Power Supply’s falling voltage slew rate.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="methods-private-static">Methods (Private, Static)</h2>
+
+<h3 id="notimplemented">notImplemented</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String) funcName</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left">(String) str</td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Appends the string <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">' not implemented for this power supply'</span></code> to the given string and returns the result.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="methods">Methods</h2>
+
+<h3 id="constructor">Constructor</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left">(String) visaVendor, (String) visaAddress</td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"><a href="SCPI_VoltageSource.html">SCPI_VoltageSource</a></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">Same as parent class, <a href="SCPI_Instrument.html">SCPI_Instrument</a>.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="control-methods">Control Methods</h2>
+
+<p>These functions must be implemented in the class for the individual power supply. If called and not implemented an error will be thrown. The methods in this category do not do anything other than throw errors, they must be implemented in the subclass for each specific power supply.</p>
+
+<h3 id="initsupply">initSupply</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">This method should set the power supply up in a way that allows the supply to receive commands for changing the voltage, current, output state, etc and have them behave in whatever way is desirable for the given application. It should also set the initialized parameter to true when finished. In most applications it is probably desirable to ensure the supply is <strong>not</strong> energized after this method is finished.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h3 id="setslewedvoltage">setSlewedVoltage</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">This method should set the rising and falling slew rates as desired and ensure that the supply is set up to use them.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table>
+
+
+<h2 id="stop-methods">Stop Methods</h2>
+
+<h3 id="outputoffzero">outputOffZero</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>Arguments</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Output</td>
+  <td align="left"></td>
+</tr>
+<tr>
+  <td>Description</td>
+  <td align="left">This method is meant to be used when some error in the code or operation requires the circuit to be rapidly de-energized. It turns the supply’s output off, then sets the output voltage to 0, and then finally declares the supply as not initialized.</td>
+</tr>
+<tr>
+  <td></td>
+  <td align="left"></td>
+</tr>
+</tbody></table></div></body>
+</html>
