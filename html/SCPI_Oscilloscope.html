@@ -12,6 +12,8 @@
 
 <p>Use of this class requires knowledge of oscilloscope that is being controlled and it’s programming manual. An attempt to use the SCPI_Oscilloscope class without the assistance of your oscilloscope’s programming manual is a futile effort. This class is also very incomplete, please add new methods and properties as needed using those already present as a template. </p>
 
+
+
 <h2 id="table-of-contents">Table of Contents</h2>
 
 <p><div class="toc">
@@ -140,11 +142,17 @@
 </div>
 </p>
 
+
+
 <h2 id="super-classes">Super Classes</h2>
 
 <p><a href="SCPI_Instrument.html">SCPI_Instrument</a></p>
 
+
+
 <h2 id="properties-constant">Properties (Constant)</h2>
+
+
 
 <h3 id="series2000">Series2000</h3>
 
@@ -176,6 +184,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h3 id="series4000">Series4000</h3>
@@ -210,6 +220,8 @@
 </tbody></table>
 
 
+
+
 <h3 id="series5000">Series5000</h3>
 
 <table>
@@ -242,7 +254,11 @@
 </tbody></table>
 
 
+
+
 <h2 id="properties">Properties</h2>
+
+
 
 <h3 id="scopeseries">scopeSeries</h3>
 
@@ -276,7 +292,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="horizontal-command-group">Horizontal Command Group</h3>
+
+
 
 <h4 id="recordlengthcommand">recordLengthCommand</h4>
 
@@ -308,6 +328,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="sampleratecommand">sampleRateCommand</h4>
@@ -342,6 +364,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="horizontalscalecommand">horizontalScaleCommand</h4>
 
 <table>
@@ -374,9 +398,15 @@
 </tbody></table>
 
 
+
+
 <h2 id="properties-dependent">Properties (Dependent)</h2>
 
+
+
 <h3 id="acquisition-command-group">Acquisition Command Group</h3>
+
+
 
 <h4 id="acqmode">acqMode</h4>
 
@@ -408,6 +438,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="acqstopafter">acqStopAfter</h4>
@@ -442,6 +474,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="acqstate">acqState</h4>
 
 <table>
@@ -472,6 +506,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="acqsamplingmode">acqSamplingMode</h4>
@@ -506,7 +542,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="hard-copy-command">Hard Copy Command</h3>
+
+
 
 <h4 id="exportfilename">exportFilename</h4>
 
@@ -540,7 +580,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="horizontal-command-group-1">Horizontal Command Group</h3>
+
+
 
 <h4 id="recordlength">recordLength</h4>
 
@@ -572,6 +616,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="samplerate">sampleRate</h4>
@@ -606,6 +652,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="horizontalscale">horizontalScale</h4>
 
 <table>
@@ -636,6 +684,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="horizontalposition">horizontalPosition</h4>
@@ -670,6 +720,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="horizontalmode">horizontalMode</h4>
 
 <table>
@@ -700,6 +752,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="horizontaldelaymode">horizontalDelayMode</h4>
@@ -734,7 +788,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="waveform-transfer-command-group">Waveform Transfer Command Group</h3>
+
+
 
 <h4 id="datastart">dataStart</h4>
 
@@ -766,6 +824,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="datastop">dataStop</h4>
@@ -800,6 +860,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="dataresolution">dataResolution</h4>
 
 <table>
@@ -832,19 +894,31 @@
 </tbody></table>
 
 
+
+
 <h2 id="methods">Methods</h2>
 
+
+
 <h3 id="super-overrides">Super Overrides</h3>
+
+
 
 <h4 id="constructor">Constructor</h4>
 
 <p>Constructor is the same as <a href="SCPI_Instrument.html">SCPI_Instrument</a>.</p>
 
+
+
 <h4 id="connect">connect</h4>
 
 <p>The connect method performs the same actions as <a href="SCPI_Instrument.html">SCPI_Instrument</a>; however, it also calls the <a href="#setseries">setSeries</a> method. </p>
 
+
+
 <h3 id="miscellaneous-methods">Miscellaneous Methods</h3>
+
+
 
 <h4 id="setseries">setSeries</h4>
 
@@ -872,6 +946,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="setseriesstr">setSeriesStr</h4>
@@ -902,7 +978,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="channel-methods">Channel Methods</h3>
+
+
 
 <h4 id="allchannelson">allChannelsOn</h4>
 
@@ -930,6 +1010,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="allchannelsoff">allChannelsOff</h4>
@@ -960,6 +1042,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="channelson">channelsOn</h4>
 
 <table>
@@ -986,6 +1070,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="channelsoff">channelsOff</h4>
@@ -1016,6 +1102,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="ischannelon">isChannelOn</h4>
 
 <table>
@@ -1042,6 +1130,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchannelsstate">getChannelsState</h4>
@@ -1072,6 +1162,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="enabledchannels">enabledChannels</h4>
 
 <table>
@@ -1098,6 +1190,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="rescalechannel">rescaleChannel</h4>
@@ -1142,6 +1236,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="minmaxrescalechannel">minMaxRescaleChannel</h4>
@@ -1192,6 +1288,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchprobegain">setChProbeGain</h4>
 
 <table>
@@ -1218,6 +1316,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchprobegain">getChProbeGain</h4>
@@ -1248,6 +1348,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchoffset">setChOffSet</h4>
 
 <table>
@@ -1274,6 +1376,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchoffset">getChOffSet</h4>
@@ -1304,6 +1408,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchscale">setChScale</h4>
 
 <table>
@@ -1330,6 +1436,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchscale">getChScale</h4>
@@ -1360,6 +1468,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchposition">setChPosition</h4>
 
 <table>
@@ -1386,6 +1496,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchposition">getChPosition</h4>
@@ -1416,6 +1528,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchdeskew">setChDeskew</h4>
 
 <table>
@@ -1442,6 +1556,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchdeskew">getChDeskew</h4>
@@ -1472,6 +1588,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchtermination">setChTermination</h4>
 
 <table>
@@ -1500,6 +1618,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="getchtermination">getChTermination</h4>
 
 <table>
@@ -1526,6 +1646,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchdegaussstate">getChDegaussState</h4>
@@ -1576,6 +1698,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchinvert">setChInvert</h4>
 
 <table>
@@ -1602,6 +1726,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchinvert">getChInvert</h4>
@@ -1632,6 +1758,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchprobeforcedrange">setChProbeForcedRange</h4>
 
 <table>
@@ -1658,6 +1786,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchprobeforcedrange">getChProbeForcedRange</h4>
@@ -1688,6 +1818,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchprobecontrol">setChProbeControl</h4>
 
 <table>
@@ -1714,6 +1846,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchprobecontrol">getChProbeControl</h4>
@@ -1744,6 +1878,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchlabelname">setChLabelName</h4>
 
 <table>
@@ -1770,6 +1906,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchlabelname">getChLabelName</h4>
@@ -1800,6 +1938,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchextatten">setChExtAtten</h4>
 
 <table>
@@ -1826,6 +1966,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchextatten">getChExtAtten</h4>
@@ -1856,6 +1998,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setchextattenunits">setChExtAttenUnits</h4>
 
 <table>
@@ -1882,6 +2026,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="getchextattenunits">getChExtAttenUnits</h4>
@@ -1912,7 +2058,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="measurement-methods">Measurement Methods</h3>
+
+
 
 <h4 id="setimmediatemeasurementsource">setImmediateMeasurementSource</h4>
 
@@ -1942,6 +2092,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setmeasurementstate">setMeasurementState</h4>
 
 <table>
@@ -1968,6 +2120,8 @@
   <td align="left"></td>
 </tr>
 </tbody></table>
+
+
 
 
 <h4 id="setimmediatemeasurementtype">setImmediateMeasurementType</h4>
@@ -2021,7 +2175,7 @@
 </tr>
 <tr>
   <td></td>
-  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXTINCTDB'</span></code> measures the extinction ratio of an optical waveform (eye diagram). Extinction Ratio (dB) measures the ratio of the average power levels for the logic High to the logic Low of an optical waveform and expresses the result in dB. This measurement only works for fast acquisition signals or a reference waveform saved in fast acquisition mode. Extinction dB <script type="math/tex" id="MathJax-Element-4">= 10 × (log_{10} (High / Low)</script></td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'EXTINCTDB'</span></code> measures the extinction ratio of an optical waveform (eye diagram). Extinction Ratio (dB) measures the ratio of the average power levels for the logic High to the logic Low of an optical waveform and expresses the result in dB. This measurement only works for fast acquisition signals or a reference waveform saved in fast acquisition mode. Extinction dB <script type="math/tex" id="MathJax-Element-1">= 10 × (log_{10} (High / Low)</script></td>
 </tr>
 <tr>
   <td></td>
@@ -2097,7 +2251,7 @@
 </tr>
 <tr>
   <td></td>
-  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PCTCROss'</span></code> measures the location of the eye crossing point expressed as a percentage of EYEHeight. Crossing percent = 100 ×[(eye-crossing-point - PBASe)/(PTOP - PBASe)]</td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PCTCROss'</span></code> measures the location of the eye crossing point expressed as a percentage of EYEHeight. Crossing percent <script type="math/tex" id="MathJax-Element-2">= 100 \times \left[\frac{\text{eye-crossing-point} - PBASe}{PTOP - PBASe}\right] </script></td>
 </tr>
 <tr>
   <td></td>
@@ -2117,7 +2271,7 @@
 </tr>
 <tr>
   <td></td>
-  <td align="left">PK2Pk (peak-to-peak) finds the absolute difference between the maximum and minimum amplitude in the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the PK2Pk measurement measures the histogram peak to peak difference.</td>
+  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'PK2Pk'</span></code> (peak-to-peak) finds the absolute difference between the maximum and minimum amplitude in the entire waveform or gated region. When histogram is selected with the MEASUrement:METHod command, the PK2Pk measurement measures the histogram peak to peak difference.</td>
 </tr>
 <tr>
   <td></td>
@@ -2202,6 +2356,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="getimmediatemeasurementvalue">getImmediateMeasurementValue</h4>
 
 <table>
@@ -2230,7 +2386,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="setup-methods">Setup Methods</h3>
+
+
 
 <h4 id="setuptrigger">setupTrigger</h4>
 
@@ -2280,6 +2440,8 @@
 </tbody></table>
 
 
+
+
 <h4 id="setupwaveformtransfer">setupWaveformTransfer</h4>
 
 <table>
@@ -2316,7 +2478,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="waveform-methods">Waveform Methods</h3>
+
+
 
 <h4 id="getwaveform">getWaveform</h4>
 
@@ -2346,7 +2512,11 @@
 </tbody></table>
 
 
+
+
 <h3 id="miscellaneous-methods-1">Miscellaneous Methods</h3>
+
+
 
 <h4 id="removeheaders">removeHeaders</h4>
 
