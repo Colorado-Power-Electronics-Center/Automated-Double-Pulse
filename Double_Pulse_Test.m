@@ -6,7 +6,7 @@ function Double_Pulse_Test(settings)
     save([settings.dataDirectory 'Measurement_Settings.mat'], 'settings');
 
     %% Setup
-    % Clear Matlab Workspace of any previous instrument connections
+    % Clear MATLAB Workspace of any previous instrument connections
     instrreset;
 
     % Setup Oscilloscope
