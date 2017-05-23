@@ -6,6 +6,7 @@ Use of this class requires knowledge of oscilloscope that is being controlled an
 
 ## Super Classes
 [SCPI_Instrument][SCPI_Instrument]
+handle
 
 ## Properties (Constant)
 ### Series2000
@@ -104,7 +105,7 @@ Use of this class requires knowledge of oscilloscope that is being controlled an
 | Default Value |  |
 | Type | String |
 | Units |  |
-| Description | The current acquisition state controlled by using the <code class="prettyprint lang-MATLAB">'ACQuire:STATE '</code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'OFF' \| 'ON' \| 'RUN' \| 'STOP' | <NR1> }</code> |
+| Description | The current acquisition state controlled by using the <code class="prettyprint lang-MATLAB">'ACQuire:STATE '</code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'OFF' \| 'ON' \| 'RUN' \| 'STOP' \| (Any Number) }</code> |
 |||
 
 
@@ -188,7 +189,7 @@ Use of this class requires knowledge of oscilloscope that is being controlled an
 | Default Value |  |
 | Type |  |
 | Units |  |
-| Description | Controls the oscilloscope's horizontal Delay Mode by using the <code class="prettyprint lang-MATLAB">'HORizontal:DELay:MODe '</code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'OFF' \| 'ON' }</code>code>|
+| Description | Controls the oscilloscope's horizontal Delay Mode by using the <code class="prettyprint lang-MATLAB">'HORizontal:DELay:MODe '</code> command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'OFF' \| 'ON' }</code>|
 |||
 
 
@@ -220,7 +221,7 @@ Use of this class requires knowledge of oscilloscope that is being controlled an
 | Default Value |  |
 | Type |  |
 | Units |  |
-| Description | Controls the oscilloscope's data resolution by using the <code class="prettyprint lang-MATLAB">'DATa:RESOlution '</code> Command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'FULL' \| 'REDUced' }</code>code>  |
+| Description | Controls the oscilloscope's data resolution by using the <code class="prettyprint lang-MATLAB">'DATa:RESOlution '</code> Command. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'FULL' \| 'REDUced' }</code>  |
 |||
 
 
@@ -421,7 +422,7 @@ The connect method performs the same actions as [SCPI_Instrument][SCPI_Instrumen
 |--------|:--|
 | Arguments | (Integer \| String) channel, (Float) chTermination |
 | Output |  |
-| Description | Sets Channel Termination. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'FIFty' \| 'MEG' \| <NR3>}</code>|
+| Description | Sets Channel Termination. Possible values are scope dependent, but are most likely <code class="prettyprint lang-MATLAB">{ 'FIFty' \| 'MEG' \| (Any Number)}</code>|
 |||
 
 #### getChTermination
