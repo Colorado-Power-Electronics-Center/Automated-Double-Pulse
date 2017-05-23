@@ -14,6 +14,7 @@
     		<tocitem target="windowSize.html">windowSize</tocitem>
     	</tocitem>
     	<tocitem target="runDoublePulseTest.html">runDoublePulseTest</tocitem>
+    	<tocitem target="rescaleAndRepulse.html">rescaleAndRepulse</tocitem>
     	<tocitem target="setVoltageToLoad.html">setVoltageToLoad</tocitem>
     	<tocitem target="GeneralWaveform.html">GeneralWaveform
     		<tocitem target="FullWaveform.html">FullWaveform</tocitem>
