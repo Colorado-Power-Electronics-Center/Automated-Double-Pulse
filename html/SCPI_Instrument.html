@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCPI_Instrument.md</title>
-<link rel="stylesheet" href="themes/base.css" />
-<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body><div class="container"><h1 id="scpiinstrument">SCPI_Instrument</h1>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCPI_Instrument</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="scpi_instrument">SCPI_Instrument</h1>
 <p>The SCPI_Instrument class is the super class used for control of all measurement equipment. It contains methods that all instruments need, including connection, sending commands arbitrary commands, sending specific common commands, and more. It is inherited by many specific classes to prevent code duplication.</p>
-
-
-
-<h2 id="table-of-contents">Table of Contents</h2>
-
-<p><div class="toc">
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
 <ul>
-<li><a href="#scpiinstrument">SCPI_Instrument</a><ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
-<li><a href="#super-classes">Super classes</a></li>
+<li><a href="#scpi_instrument">SCPI_Instrument</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super classes</a></li>
 <li><a href="#properties">Properties</a><ul>
 <li><a href="#visaaddress">visaAddress</a></li>
 <li><a href="#visavendor">visaVendor</a></li>
@@ -49,7 +44,7 @@
 <li><a href="#operationcomplete">operationComplete</a></li>
 </ul>
 </li>
-<li><a href="#methods-static">Methods (Static)</a><ul>
+<li><a href="#methods_static">Methods (Static)</a><ul>
 <li><a href="#u2str">U2Str</a></li>
 </ul>
 </li>
@@ -57,736 +52,653 @@
 </li>
 </ul>
 </div>
-</p>
-
-
-
-<h2 id="super-classes">Super classes</h2>
-
+<h2 id="super_classes">Super classes</h2>
 <p>handle</p>
-
-
-
 <h2 id="properties">Properties</h2>
-
-
-
 <h3 id="visaaddress">visaAddress</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">String</td>
+<td>Type</td>
+<td align="left">String</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Contains the visa address for an instrument.</td>
+<td>Description</td>
+<td align="left">Contains the visa address for an instrument.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="visavendor">visaVendor</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">String</td>
+<td>Type</td>
+<td align="left">String</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Contains the string indicating what flavor of VISA should be used to communicate with the instrument. Uses a setter method to change value that prevents invalid values from being used. The only options at this time are <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="str">'tek'</span><span class="pln"> </span><span class="str">'agilent'</span><span class="pln"> </span><span class="str">'ni'</span><span class="pun">]</span></code>. Unless given otherwise, a value of <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'agilent'</span></code>, is generally sufficient.</td>
+<td>Description</td>
+<td align="left">Contains the string indicating what flavor of VISA should be used to communicate with the instrument. Uses a setter method to change value that prevents invalid values from being used. The only options at this time are <code class="prettyprint lang-MATLAB">['tek' 'agilent' 'ni']</code>. Unless given otherwise, a value of <code class="prettyprint lang-MATLAB">'agilent'</code>, is generally sufficient.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="visaobj">visaObj</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">visa</td>
+<td>Type</td>
+<td align="left">visa</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Visa object used to communicate with the instrument. Created with the <a href="#createvisaobj">createVisaObj</a> method.</td>
+<td>Description</td>
+<td align="left">Visa object used to communicate with the instrument. Created with the <a href="#createvisaobj">createVisaObj</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="connected">connected</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Boolean</td>
+<td>Type</td>
+<td align="left">Boolean</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">If MATLAB is connected to the instrument this property will be true. If not connected will be false. This value is not automatically detected and if an error causes a disconnect it may not be accurate.</td>
+<td>Description</td>
+<td align="left">If MATLAB is connected to the instrument this property will be true. If not connected will be false. This value is not automatically detected and if an error causes a disconnect it may not be accurate.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="typestr">typeStr</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"><code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'Instrument'</span></code></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'Instrument'</code></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">String</td>
+<td>Type</td>
+<td align="left">String</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">String defining what type of instrument the object represents. Currently not well implemented, but is only used in Error messages.</td>
+<td>Description</td>
+<td align="left">String defining what type of instrument the object represents. Currently not well implemented, but is only used in Error messages.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="commanddelay">commandDelay</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left">50 ms</td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">50 ms</td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Delay between each command. This is theoretically not necessary, but when communicating with multiple instruments it can be helpful. Generally, data transfer is the limiting factor in operation time so a small delay between commands is negligible.</td>
+<td>Description</td>
+<td align="left">Delay between each command. This is theoretically not necessary, but when communicating with multiple instruments it can be helpful. Generally, data transfer is the limiting factor in operation time so a small delay between commands is negligible.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h2 id="methods">Methods</h2>
-
-
-
 <h3 id="constructor">Constructor</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String) visaVendor, (String) visaAddress</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) visaVendor, (String) visaAddress</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"><a href="SCPI_Instrument.html">SCPI_Instrument</a></td>
+<td>Output</td>
+<td align="left"><a href="SCPI_Instrument.html">SCPI_Instrument</a></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Creates SCPI_Instrument object from given vendor and address. Also creates visa object.</td>
+<td>Description</td>
+<td align="left">Creates SCPI_Instrument object from given vendor and address. Also creates visa object.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="createvisaobj">createVisaObj</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Creates the visa object. Called by the <a href="#constructor">constructor</a>.</td>
+<td>Description</td>
+<td align="left">Creates the visa object. Called by the <a href="#constructor">constructor</a>.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="clearvisaobj">clearVisaObj</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Deletes the visa object.</td>
+<td>Description</td>
+<td align="left">Deletes the visa object.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="connect">connect</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Connects to the Instrument.</td>
+<td>Description</td>
+<td align="left">Connects to the Instrument.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="disconnect">disconnect</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Disconnects from the Instrument.</td>
+<td>Description</td>
+<td align="left">Disconnects from the Instrument.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="sendcommand">sendCommand</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String) command</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) command</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends command to the instrument if connected.</td>
+<td>Description</td>
+<td align="left">Sends command to the instrument if connected.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="readresponse">readResponse</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(String) out</td>
+<td>Output</td>
+<td align="left">(String) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Reads the output of the instrument if connected and returns the string value.</td>
+<td>Description</td>
+<td align="left">Reads the output of the instrument if connected and returns the string value.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="query">query</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String) query</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) query</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(String) out</td>
+<td>Output</td>
+<td align="left">(String) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends command to instrument and returns the response if connected.</td>
+<td>Description</td>
+<td align="left">Sends command to instrument and returns the response if connected.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="numquery">numQuery</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String) queryStr</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) queryStr</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Double) out</td>
+<td>Output</td>
+<td align="left">(Double) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends command to instrument and returns the response as a double if connected.</td>
+<td>Description</td>
+<td align="left">Sends command to instrument and returns the response as a double if connected.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="binblockquery">binBlockQuery</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String) query, (String) precision</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) query, (String) precision</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Varies) out</td>
+<td>Output</td>
+<td align="left">(Varies) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends command and returns binary block response if connected. Refer to instrument documentation for commands that support this method. Precision is “The number of bits read for each value, and the interpretation of the bits as character, integer, or floating-point values.” (See binblockread and fread MATLAB documentation for more details.)</td>
+<td>Description</td>
+<td align="left">Sends command and returns binary block response if connected. Refer to instrument documentation for commands that support this method. Precision is "The number of bits read for each value, and the interpretation of the bits as character, integer, or floating-point values." (See binblockread and fread MATLAB documentation for more details.)</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="reset">reset</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'*RST'</span></code> to the instrument. Generally sets the instrument to factory default settings. Typically used to set the instrument to a known state.</td>
+<td>Description</td>
+<td align="left">Sends the <code class="prettyprint lang-MATLAB">'*RST'</code> to the instrument. Generally sets the instrument to factory default settings. Typically used to set the instrument to a known state.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="trigger">trigger</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'*TRG'</span></code> command to the instrument. What this does depends on the instrument and settings.</td>
+<td>Description</td>
+<td align="left">Sends the <code class="prettyprint lang-MATLAB">'*TRG'</code> command to the instrument. What this does depends on the instrument and settings.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="push2trigger">push2Trigger</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String | Boolean) triggerStr, (Boolean) push2pulse</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String | Boolean) triggerStr, (Boolean) push2pulse</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Works similarly to the <a href="#trigger">trigger</a> function; however, it includes additional functionality that can ask a user to confirm before continuing with the operation. If triggerStr is given the message presented to the user will be <code class="prettyprint lang-MATLAB prettyprinted"><span class="pun">[</span><span class="str">'Push any button to '</span><span class="pln"> triggerStr </span><span class="str">'...'</span><span class="pun">]</span></code> if not given triggerStr will default to <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'trigger'</span></code>. Either argument may be skipped if desired. (i.e. <code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">obj</span><span class="pun">.</span><span class="pln">push2Trigger</span><span class="pun">(</span><span class="str">'pulse'</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">)</span></code>, <code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">obj</span><span class="pun">.</span><span class="pln">push2Trigger</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">)</span></code>, and <code class="prettyprint lang-MATLAB prettyprinted"><span class="pln">obj</span><span class="pun">.</span><span class="pln">push2Trigger</span><span class="pun">(</span><span class="str">'pulse'</span><span class="pun">)</span></code> are all valid function calls.</td>
+<td>Description</td>
+<td align="left">Works similarly to the <a href="#trigger">trigger</a> function; however, it includes additional functionality that can ask a user to confirm before continuing with the operation. If triggerStr is given the message presented to the user will be <code class="prettyprint lang-MATLAB">['Push any button to ' triggerStr '...']</code> if not given triggerStr will default to <code class="prettyprint lang-MATLAB">'trigger'</code>. Either argument may be skipped if desired. (i.e. <code class="prettyprint lang-MATLAB">obj.push2Trigger('pulse', true)</code>, <code class="prettyprint lang-MATLAB">obj.push2Trigger(true)</code>, and <code class="prettyprint lang-MATLAB">obj.push2Trigger('pulse')</code> are all valid function calls.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="clearstatus">clearStatus</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Sends the <code class="prettyprint lang-MATLAB prettyprinted"><span class="str">'*CLS'</span></code> command to the instrument. This will clear any errors found in the instruments error register.</td>
+<td>Description</td>
+<td align="left">Sends the <code class="prettyprint lang-MATLAB">'*CLS'</code> command to the instrument. This will clear any errors found in the instruments error register.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="identity">identity</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(String) out</td>
+<td>Output</td>
+<td align="left">(String) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Requests and returns the value of the instrument’s identity. Typically a string containing manufacture and model number information.</td>
+<td>Description</td>
+<td align="left">Requests and returns the value of the instrument's identity. Typically a string containing manufacture and model number information.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="operationcomplete">operationComplete</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(String) out</td>
+<td>Output</td>
+<td align="left">(String) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">“Returns an ASCII “+1” when all pending overlapped operations have been completed.”</td>
+<td>Description</td>
+<td align="left">"Returns an ASCII "+1" when all pending overlapped operations have been completed."</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="methods-static">Methods (Static)</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="methods_static">Methods (Static)</h2>
 <h3 id="u2str">U2Str</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(String | number) UStr</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String | number) UStr</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(String) out</td>
+<td>Output</td>
+<td align="left">(String) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Converts an unknown variable type to a string. Allows arguments to be accepted as both numbers and strings and be correctly converted to a string for sending to the instrument.</td>
+<td>Description</td>
+<td align="left">Converts an unknown variable type to a string. Allows arguments to be accepted as both numbers and strings and be correctly converted to a string for sending to the instrument.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table></div></body>
-</html>
+</tbody>
+</table></html>

@@ -4,7 +4,7 @@ The SwitchWaveform class is used to store only the waveforms of the individual s
 [TOC]
 
 ## Super Classes
-[GeneralWaveform][GeneralWaveform]
+[GeneralWaveform][GeneralWaveform]   
 handle
 
 ## Properties (Constant)

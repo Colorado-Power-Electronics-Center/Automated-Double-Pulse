@@ -4,7 +4,7 @@ The FullWaveform class is used to store the complete waveform. It also contains 
 [TOC]
 
 ## Super Classes
-[GeneralWaveform][GeneralWaveform]
+[GeneralWaveform][GeneralWaveform]       
 handle
 
 ## Properties

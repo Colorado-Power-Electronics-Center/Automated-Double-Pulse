@@ -24,9 +24,9 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Instrument Setup
 |Setting | Default Value |
 |--------|---------------:|
-| [`FGen_buffer_size`](#fgenbuffersize) | <code class="prettyprint lang-MATLAB">6000000</code> |
-| [`Scope_Buffer_size`](#scopebuffersize) | <code class="prettyprint lang-MATLAB">200000</code>|
-| [`Bus_Supply_buffer_size`](#bussupplybuffer_size) | <code class="prettyprint lang-MATLAB">200000</code>|
+| [`FGen_buffer_size`](#fgen_buffer_size) | <code class="prettyprint lang-MATLAB">6000000</code> |
+| [`Scope_Buffer_size`](#scope_buffer_size) | <code class="prettyprint lang-MATLAB">200000</code>|
+| [`Bus_Supply_buffer_size`](#bus_supply_buffer_size) | <code class="prettyprint lang-MATLAB">200000</code>|
 | [`scopeVisaAddress`](#scopevisaaddress) | |
 | [`FGenVisaAddress`](#fgenvisaaddress) | |
 | [`BusSupplyVisaAddress`](#bussupplyvisaaddress) | |
@@ -40,12 +40,12 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Pulse Creation
 |Setting | Default Value |
 |--------|---------------:|
-| [`pulse_lead_dead_t`](#pulseleaddeadt) | <code class="prettyprint lang-MATLAB">1e-6</code> |
-| [`pulse_off_t`](#pulseofft) | <code class="prettyprint lang-MATLAB">5e-6</code> |
-| [`pulse_second_pulse_t`](#pulsesecondpulset) | <code class="prettyprint lang-MATLAB">5e-6</code> |
-| [`pulse_end_dead_t`](#pulseenddeadt) | <code class="prettyprint lang-MATLAB">1e-6</code> |
-| [`use_mini_2nd_pulse`](#usemini2ndpulse) | <code class="prettyprint lang-MATLAB">false</code> |
-| [`mini_2nd_pulse_off_time`](#mini2ndpulseofftime) | <code class="prettyprint lang-MATLAB">50e-9</code> |
+| [`pulse_lead_dead_t`](#pulse_lead_dead_t) | <code class="prettyprint lang-MATLAB">1e-6</code> |
+| [`pulse_off_t`](#pulse_off_t) | <code class="prettyprint lang-MATLAB">5e-6</code> |
+| [`pulse_second_pulse_t`](#pulse_second_pulse_t) | <code class="prettyprint lang-MATLAB">5e-6</code> |
+| [`pulse_end_dead_t`](#pulse_end_dead_t) | <code class="prettyprint lang-MATLAB">1e-6</code> |
+| [`use_mini_2nd_pulse`](#use_mini_2nd_pulse) | <code class="prettyprint lang-MATLAB">false</code> |
+| [`mini_2nd_pulse_off_time`](#mini_2nd_pulse_off_time) | <code class="prettyprint lang-MATLAB">50e-9</code> |
 | [`burstMode`](#burstmode) | <code class="prettyprint lang-MATLAB">'TRIGgered'</code> |
 | [`FGenTriggerSource`](#fgentriggersource) | <code class="prettyprint lang-MATLAB">'BUS'</code> |
 | [`burstCycles`](#burstcycles) | <code class="prettyprint lang-MATLAB">1</code> |
@@ -97,10 +97,10 @@ The DPTSettings class stores the settings that control the operation of the doub
 ### Windows Size
 |Setting | Default Value |
 |--------|---------------:|
-| [`window.turn_on_prequel`](#windowturnonprequel) | <code class="prettyprint lang-MATLAB">30e-9</code> |
-| [`window.turn_on_time`](#windowturnontime) | <code class="prettyprint lang-MATLAB">80e-9</code> |
-| [`window.turn_off_prequel`](#windowturnoffprequel) | <code class="prettyprint lang-MATLAB">30e-9</code> |
-| [`window.turn_off_time`](#windowturnofftime) | <code class="prettyprint lang-MATLAB">80e-9 </code> |
+| [`window.turn_on_prequel`](#windowturn_on_prequel) | <code class="prettyprint lang-MATLAB">30e-9</code> |
+| [`window.turn_on_time`](#windowturn_on_time) | <code class="prettyprint lang-MATLAB">80e-9</code> |
+| [`window.turn_off_prequel`](#windowturn_off_prequel) | <code class="prettyprint lang-MATLAB">30e-9</code> |
+| [`window.turn_off_time`](#windowturn_off_time) | <code class="prettyprint lang-MATLAB">80e-9 </code> |
 |||
 
 ### Automation Level
@@ -768,6 +768,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 | Units | Seconds |
 | Description | Sets the time to show in plots before the turn on. |
 |||
+
 #### window.turn_on_time
 | Properties | |
 |---------|:--|
@@ -776,6 +777,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 | Units | Seconds |
 | Description | Sets the time to show in plots after the turn on. |
 |||
+
 #### window.turn_off_prequel
 | Properties | |
 |---------|:--|
@@ -784,6 +786,7 @@ The DPTSettings class stores the settings that control the operation of the doub
 | Units | Seconds |
 | Description | Sets the time to show in plots before the turn off.  |
 |||
+
 #### window.turn_off_time
 | Properties | |
 |---------|:--|

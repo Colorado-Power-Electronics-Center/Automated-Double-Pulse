@@ -1,37 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Double_Pulse_Test.md</title>
-<link rel="stylesheet" href="themes/base.css" />
-<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body><div class="container"><h1 id="automated-double-pulse-test">Automated Double Pulse Test</h1>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double_Pulse_Test</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="automated_double_pulse_test">Automated Double Pulse Test</h1>
 <p>The Automated Double Pulse Test toolbox allows users to run the double pulse test (DPT) completely automated. The toolbox can control all aspects of the double pulse test including oscilloscope setup, data capture, and full control of all other lab equipment. The toolbox is highly  configurable and will allow the user to control as much or as little of its operation as desirable.</p>
-
-
-
-<h2 id="table-of-contents">Table of Contents</h2>
-
-<p><div class="toc">
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
 <ul>
-<li><a href="#automated-double-pulse-test">Automated Double Pulse Test</a><ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#automated_double_pulse_test">Automated Double Pulse Test</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
 <li><a href="#requirements">Requirements</a><ul>
-<li><a href="#software-requirements">Software Requirements</a><ul>
-<li><a href="#matlab-2016a">MATLAB 2016a</a></li>
-<li><a href="#keysight-io-libraries-suite">Keysight IO Libraries Suite</a></li>
+<li><a href="#software_requirements">Software Requirements</a><ul>
+<li><a href="#matlab_2016a">MATLAB 2016a</a></li>
+<li><a href="#keysight_io_libraries_suite">Keysight IO Libraries Suite</a></li>
 <li><a href="#tekvisa">TekVisa</a></li>
 </ul>
 </li>
-<li><a href="#hardware-requirements">Hardware Requirements</a><ul>
-<li><a href="#known-compatible-instruments">Known Compatible Instruments</a><ul>
+<li><a href="#hardware_requirements">Hardware Requirements</a><ul>
+<li><a href="#known_compatible_instruments">Known Compatible Instruments</a><ul>
 <li><a href="#oscilloscopes">Oscilloscopes</a></li>
-<li><a href="#function-generators">Function Generators</a></li>
-<li><a href="#power-supplies">Power Supplies</a></li>
+<li><a href="#function_generators">Function Generators</a></li>
+<li><a href="#power_supplies">Power Supplies</a></li>
 </ul>
 </li>
 </ul>
@@ -39,289 +34,217 @@
 </ul>
 </li>
 <li><a href="#setup">Setup</a><ul>
-<li><a href="#hardware-setup">Hardware Setup</a><ul>
+<li><a href="#hardware_setup">Hardware Setup</a><ul>
 <li><a href="#layout">Layout</a></li>
-<li><a href="#required-information">Required Information</a></li>
+<li><a href="#required_information">Required Information</a></li>
 </ul>
 </li>
-<li><a href="#software-setup">Software Setup</a></li>
+<li><a href="#software_setup">Software Setup</a></li>
 <li><a href="#verification">Verification</a></li>
 </ul>
 </li>
-<li><a href="#running-the-test">Running the Test</a></li>
-<li><a href="#accessing-the-results">Accessing the results</a></li>
+<li><a href="#running_the_test">Running the Test</a></li>
+<li><a href="#accessing_the_results">Accessing the results</a></li>
 </ul>
 </li>
 </ul>
 </div>
-</p>
-
-
-
 <h2 id="requirements">Requirements</h2>
-
 <p>There are a number of requirements that must be taken care of before the toolbox can be used. These are separated into software and hardware requirements.</p>
-
-
-
-<h3 id="software-requirements">Software Requirements</h3>
-
-
-
-<h4 id="matlab-2016a">MATLAB 2016a</h4>
-
+<h3 id="software_requirements">Software Requirements</h3>
+<h4 id="matlab_2016a">MATLAB 2016a</h4>
 <ul>
 <li>Only MATLAB version 2016a or greater will be supported</li>
 </ul>
-
-
-
-<h4 id="keysight-io-libraries-suite">Keysight IO Libraries Suite</h4>
-
+<h4 id="keysight_io_libraries_suite">Keysight IO Libraries Suite</h4>
 <ul>
 <li>Can currently be found <a href="http://www.keysight.com/find/iosuitedownload">here</a>.</li>
 <li>Should be installed first and used for any devices that are not made by Tektronix.</li>
 </ul>
-
-
-
 <h4 id="tekvisa">TekVisa</h4>
-
 <ul>
 <li>Can be found <a href="http://www.tek.com/search/apachesolr_search/tekvisa?filters=type%3Asoftware%20tid%3A1031">here</a>.</li>
 <li>Once installed use the Keysight IO Libraries Suite to set the default VISA to tekVISA.</li>
 </ul>
-
-
-
-<h3 id="hardware-requirements">Hardware Requirements</h3>
-
+<h3 id="hardware_requirements">Hardware Requirements</h3>
 <p>All instruments that will be controlled by the toolbox must be able to connect to the computer running MATLAB. The most common way is USB; however, ethernet, serial, and all other interfaces supported by VISA are also possible. Furthermore the instrument must be able to communicate with the Keysight, Tektronix, or National Instruments VISA library as these are the only choices in MATLAB. An instrument does not necessarily need to be manufactured by one of these vendors to be compatible with their implementation of VISA as it is intended to be a universal standard. </p>
-
 <p>Additionally, all instruments should be updated to their most recent firmware version. The toolbox has been known to fail when used with instruments running old firmware.</p>
-
-
-
-<h4 id="known-compatible-instruments">Known Compatible Instruments</h4>
-
+<h4 id="known_compatible_instruments">Known Compatible Instruments</h4>
 <p>This version of the software has been tested with the following Instruments and is verified to work with them. As many of the SCPI commands are somewhat similar across different devices and vendors other devices may also be compatible. The program can be updated to support other devices using the methods detailed in the <a href="SCPI_Instrument.html">SCPI_Instruments Documentation</a>.</p>
-
-
-
 <h5 id="oscilloscopes">Oscilloscopes</h5>
-
 <ul>
 <li>Tektronix 5000 Series Oscilloscopes</li>
 <li>Tektronix 4000 Series Oscilloscopes (Coming Soon)</li>
 <li>Tektronix 2000 Series Oscilloscopes</li>
 </ul>
-
-
-
-<h5 id="function-generators">Function Generators</h5>
-
+<h5 id="function_generators">Function Generators</h5>
 <ul>
 <li>Agilent Function Generators (With Arbitrary mode)</li>
 <li>Keysight Function Generators (With Arbitrary mode)</li>
 </ul>
-
-
-
-<h5 id="power-supplies">Power Supplies</h5>
-
+<h5 id="power_supplies">Power Supplies</h5>
 <ul>
 <li>Keithley Voltage Supplies</li>
-<li>Sorenson Voltage Supplies <br>
-<ul><li>Must be controllable through VISA interface</li></ul></li>
+<li>Sorenson Voltage Supplies<ul>
+<li>Must be controllable through VISA interface</li>
 </ul>
-
+</li>
+</ul>
 <p>Note that as of August 3rd, 2016 only the Bus voltage supply can be controlled. Control of the supply for control circuitry is planned, but not yet implemented. </p>
-
-
-
 <h2 id="setup">Setup</h2>
-
-
-
-<h3 id="hardware-setup">Hardware Setup</h3>
-
+<h3 id="hardware_setup">Hardware Setup</h3>
 <p>The hardware setup is not rigid as the software setup allows the program to be flexible; However, without good reason otherwise the default setup is recommended and documented below. </p>
-
-
-
 <h4 id="layout">Layout</h4>
-
-<p><img src="Images/Layout.png" alt="Overview Layout of Double Pulse Test" title="Layout"></p>
-
-<p>The Oscilloscope, Function Generator, and Bus Power supply can all be connected to the computer with any interface as long as they can be detected by the VISA Drivers. The best way to check connectivity to VISA Driver is to use the Keysight IO connection manager and use its auto detection feature. It will automatically find and identify most USB and Ethernet Devices; however, some will require extra setup if they are setup as a USB <script type="math/tex" id="MathJax-Element-5">\rightarrow</script> Serial interface. Some devices may also require separate USB Drivers from the manufacturer. </p>
-
+<p><img alt="Overview Layout of Double Pulse Test" src="Images/Layout.png" title="Layout" /></p>
+<p>The Oscilloscope, Function Generator, and Bus Power supply can all be connected to the computer with any interface as long as they can be detected by the VISA Drivers. The best way to check connectivity to VISA Driver is to use the Keysight IO connection manager and use its auto detection feature. It will automatically find and identify most USB and Ethernet Devices; however, some will require extra setup if they are setup as a USB <script type="math/tex">\rightarrow</script> Serial interface. Some devices may also require separate USB Drivers from the manufacturer. </p>
 <p>The probe connections to the oscilloscope can be made to any channel as they are configured in the software setup. If the probes add an external gain to the signal extra configuration will be configured in the software. The function generator should be setup with DUT gate driver connected to channel 1 and the high side gate driver connected to channel 2 if high side control is required. </p>
-
 <p>Currently the toolbox does not support measuring the results from the high side device. </p>
-
-
-
-<h4 id="required-information">Required Information</h4>
-
+<h4 id="required_information">Required Information</h4>
 <p>Before moving on to the software setup there is important information that should be noted about the hardware setup.</p>
-
 <ol>
 <li>The VISA Address of the Oscilloscope</li>
 <li>The VISA Address of the Function Generator</li>
 <li>The VISA Address of the Bus Voltage Supply</li>
-<li>Oscilloscope Channels <br>
-<ul><li><script type="math/tex" id="MathJax-Element-6">V_{DS}</script></li>
-<li><script type="math/tex" id="MathJax-Element-7">V_{GS}</script></li>
-<li><script type="math/tex" id="MathJax-Element-8">I_D</script></li>
-<li><script type="math/tex" id="MathJax-Element-9">I_L</script> - If Measuring</li></ul></li>
+<li>Oscilloscope Channels<ul>
+<li>
+<script type="math/tex">V_{DS}</script>
+</li>
+<li>
+<script type="math/tex">V_{GS}</script>
+</li>
+<li>
+<script type="math/tex">I_D</script>
+</li>
+<li>
+<script type="math/tex">I_L</script> - If Measuring</li>
+</ul>
+</li>
 <li>Value of the load inductor</li>
 <li>Value of the current sensing resistor</li>
 <li>The logic voltage for the gate drivers</li>
 <li>The output voltage of the gate driver</li>
 </ol>
-
 <p>VISA Addresses can be found in the Keysight IO software.</p>
-
-
-
-<h3 id="software-setup">Software Setup</h3>
-
+<h3 id="software_setup">Software Setup</h3>
 <p>Once the software is installed and the hardware is connected to the computer, there is still some additional setup required before the program can be run. This setup is done by creating a settings object using the DPTSettings class. </p>
-
 <p>The simplest version of the settings object can be created using the following code contained in the SimpleSettings.m file:</p>
+<div class="codehilite"><pre><span></span><span class="k">function</span><span class="w"> </span>[ settings ] <span class="p">=</span><span class="w"> </span><span class="nf">SimpleSettings</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="n">dpt_settings</span> <span class="p">=</span> <span class="n">DPTSettings</span><span class="p">;</span>
 
+    <span class="c">% Double Pulse Test Settings</span>
+    <span class="c">%% Test Specific Settings</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">busVoltages</span> <span class="p">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">];</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">loadCurrents</span> <span class="p">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">];</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">currentResistor</span> <span class="p">=</span> <span class="mf">102E-3</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">loadInductor</span> <span class="p">=</span> <span class="mf">720E-6</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">maxGateVoltage</span> <span class="p">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">gateLogicVoltage</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span>
 
+    <span class="c">%% Instrument Setup</span>
+    <span class="c">% VISA Resource Strings</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">scopeVisaAddress</span> <span class="p">=</span> <span class="s">&#39;USB0::0x0699::0x0502::C051196::0::INSTR&#39;</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">FGenVisaAddress</span> <span class="p">=</span> <span class="s">&#39;USB0::0x0957::0x2307::MY50000715::0::INSTR&#39;</span><span class="p">;</span>
 
-<pre class="prettyprint prettyprinted"><code class="language-MATLAB"><span class="kwd">function</span><span class="pln"> </span><span class="pun">[</span><span class="pln"> settings </span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="typ">SimpleSettings</span><span class="pun">()</span><span class="pln">
-    dpt_settings </span><span class="pun">=</span><span class="pln"> </span><span class="typ">DPTSettings</span><span class="pun">;</span><span class="pln">
+    <span class="c">%% Channel Setup</span>
+    <span class="c">% Channel Numbers</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">channel</span><span class="p">.</span><span class="n">VDS</span> <span class="p">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">channel</span><span class="p">.</span><span class="n">VGS</span> <span class="p">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">channel</span><span class="p">.</span><span class="n">ID</span> <span class="p">=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">channel</span><span class="p">.</span><span class="n">IL</span> <span class="p">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c">% Comment out if not measuring</span>
 
-    </span><span class="pun">%</span><span class="pln"> </span><span class="typ">Double</span><span class="pln"> </span><span class="typ">Pulse</span><span class="pln"> </span><span class="typ">Test</span><span class="pln"> </span><span class="typ">Settings</span><span class="pln">
-    </span><span class="pun">%%</span><span class="pln"> </span><span class="typ">Test</span><span class="pln"> </span><span class="typ">Specific</span><span class="pln"> </span><span class="typ">Settings</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">busVoltages </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[</span><span class="lit">100</span><span class="pun">,</span><span class="pln"> </span><span class="lit">200</span><span class="pun">,</span><span class="pln"> </span><span class="lit">300</span><span class="pun">,</span><span class="pln"> </span><span class="lit">400</span><span class="pun">];</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">loadCurrents </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[</span><span class="lit">3</span><span class="pun">,</span><span class="pln"> </span><span class="lit">5</span><span class="pun">,</span><span class="pln"> </span><span class="lit">10</span><span class="pun">,</span><span class="pln"> </span><span class="lit">20</span><span class="pun">,</span><span class="pln"> </span><span class="lit">30</span><span class="pun">];</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">currentResistor </span><span class="pun">=</span><span class="pln"> </span><span class="lit">102E-3</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">loadInductor </span><span class="pun">=</span><span class="pln"> </span><span class="lit">720E-6</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">maxGateVoltage </span><span class="pun">=</span><span class="pln"> </span><span class="lit">10</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">gateLogicVoltage </span><span class="pun">=</span><span class="pln"> </span><span class="lit">5</span><span class="pun">;</span><span class="pln">
+    <span class="c">%% Vertical Settings</span>
+    <span class="n">dpt_settings</span><span class="p">.</span><span class="n">calcDefaultScales</span><span class="p">;</span>
 
-    </span><span class="pun">%%</span><span class="pln"> </span><span class="typ">Instrument</span><span class="pln"> </span><span class="typ">Setup</span><span class="pln">
-    </span><span class="pun">%</span><span class="pln"> VISA </span><span class="typ">Resource</span><span class="pln"> </span><span class="typ">Strings</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">scopeVisaAddress </span><span class="pun">=</span><span class="pln"> </span><span class="str">'USB0::0x0699::0x0502::C051196::0::INSTR'</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="typ">FGenVisaAddress</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">'USB0::0x0957::0x2307::MY50000715::0::INSTR'</span><span class="pun">;</span><span class="pln">
+    <span class="n">settings</span> <span class="p">=</span> <span class="n">dpt_settings</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
 
-    </span><span class="pun">%%</span><span class="pln"> </span><span class="typ">Channel</span><span class="pln"> </span><span class="typ">Setup</span><span class="pln">
-    </span><span class="pun">%</span><span class="pln"> </span><span class="typ">Channel</span><span class="pln"> </span><span class="typ">Numbers</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">channel</span><span class="pun">.</span><span class="pln">VDS </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">channel</span><span class="pun">.</span><span class="pln">VGS </span><span class="pun">=</span><span class="pln"> </span><span class="lit">2</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">channel</span><span class="pun">.</span><span class="pln">ID </span><span class="pun">=</span><span class="pln"> </span><span class="lit">4</span><span class="pun">;</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">channel</span><span class="pun">.</span><span class="pln">IL </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span><span class="pun">;</span><span class="pln"> </span><span class="pun">%</span><span class="pln"> </span><span class="typ">Comment</span><span class="pln"> </span><span class="kwd">out</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> measuring
-
-    </span><span class="pun">%%</span><span class="pln"> </span><span class="typ">Vertical</span><span class="pln"> </span><span class="typ">Settings</span><span class="pln">
-    dpt_settings</span><span class="pun">.</span><span class="pln">calcDefaultScales</span><span class="pun">;</span><span class="pln">
-
-    settings </span><span class="pun">=</span><span class="pln"> dpt_settings</span><span class="pun">;</span><span class="pln">
-</span><span class="kwd">end</span></code></pre>
 
 <p>Each setting is explained in detail in the <a href="DPTSettings.html">DPTSettings documentation</a>, but the short version is below:</p>
-
 <table>
 <thead>
 <tr>
-  <th>Setting</th>
-  <th>Description</th>
+<th>Setting</th>
+<th>Description</th>
 </tr>
 </thead>
-<tbody><tr>
-  <td><code>busVoltages</code></td>
-  <td>A Vector of the desired test Bus Voltages</td>
+<tbody>
+<tr>
+<td><code>busVoltages</code></td>
+<td>A Vector of the desired test Bus Voltages</td>
 </tr>
 <tr>
-  <td><code>loadCurrents</code></td>
-  <td>A Vector of the desired test Load Currents (Each current will be tested at all bus voltages)</td>
+<td><code>loadCurrents</code></td>
+<td>A Vector of the desired test Load Currents (Each current will be tested at all bus voltages)</td>
 </tr>
 <tr>
-  <td><code>currentResistor</code></td>
-  <td>The value of the current sensing resistor used to measure the drain current. <script type="math/tex" id="MathJax-Element-10">\left(\Omega\right)</script></td>
+<td><code>currentResistor</code></td>
+<td>The value of the current sensing resistor used to measure the drain current. <script type="math/tex">\left(\Omega\right)</script>
+</td>
 </tr>
 <tr>
-  <td><code>loadInductor</code></td>
-  <td>The value of the load inductor. <script type="math/tex" id="MathJax-Element-11">\left(H\right)</script></td>
+<td><code>loadInductor</code></td>
+<td>The value of the load inductor. <script type="math/tex">\left(H\right)</script>
+</td>
 </tr>
 <tr>
-  <td><code>maxGateVoltage</code></td>
-  <td>The expected maximum value of the gate voltage. <script type="math/tex" id="MathJax-Element-12">\left(V\right)</script></td>
+<td><code>maxGateVoltage</code></td>
+<td>The expected maximum value of the gate voltage. <script type="math/tex">\left(V\right)</script>
+</td>
 </tr>
 <tr>
-  <td><code>gateLogicVoltage</code></td>
-  <td>The logic voltage to be sent to the gate driver. <script type="math/tex" id="MathJax-Element-13">\left(V\right)</script></td>
+<td><code>gateLogicVoltage</code></td>
+<td>The logic voltage to be sent to the gate driver. <script type="math/tex">\left(V\right)</script>
+</td>
 </tr>
 <tr>
-  <td><code>scopeVisaAddress</code></td>
-  <td>The VISA address of the Oscilloscope.</td>
+<td><code>scopeVisaAddress</code></td>
+<td>The VISA address of the Oscilloscope.</td>
 </tr>
 <tr>
-  <td><code>FGenVisaAddress</code></td>
-  <td>The VISA address of the Function Generator.</td>
+<td><code>FGenVisaAddress</code></td>
+<td>The VISA address of the Function Generator.</td>
 </tr>
 <tr>
-  <td><code>channel.VDS</code></td>
-  <td>The oscilloscope channel measuring <script type="math/tex" id="MathJax-Element-14">V_{DS}</script>.</td>
+<td><code>channel.VDS</code></td>
+<td>The oscilloscope channel measuring <script type="math/tex">V_{DS}</script>.</td>
 </tr>
 <tr>
-  <td><code>channel.VGS</code></td>
-  <td>The oscilloscope channel measuring <script type="math/tex" id="MathJax-Element-15">V_{GS}</script>.</td>
+<td><code>channel.VGS</code></td>
+<td>The oscilloscope channel measuring <script type="math/tex">V_{GS}</script>.</td>
 </tr>
 <tr>
-  <td><code>channel.ID</code></td>
-  <td>The oscilloscope channel measuring <script type="math/tex" id="MathJax-Element-16">I_{D}</script>.</td>
+<td><code>channel.ID</code></td>
+<td>The oscilloscope channel measuring <script type="math/tex">I_{D}</script>.</td>
 </tr>
 <tr>
-  <td><code>channel.IL</code></td>
-  <td>The oscilloscope channel measuring <script type="math/tex" id="MathJax-Element-17">I_{L}</script>. <br> Remove or comment out this line if not                   measuring load current.</td>
+<td><code>channel.IL</code></td>
+<td>The oscilloscope channel measuring <script type="math/tex">I_{L}</script>. <br> Remove or comment out this line if not                  measuring load current.</td>
 </tr>
 <tr>
-  <td></td>
-  <td></td>
+<td></td>
+<td></td>
 </tr>
-</tbody></table>
-
-
-<p>There are also many more settings that can be adjusted and they are also <br>
+</tbody>
+</table>
+<p>There are also many more settings that can be adjusted and they are also
 documented in the <a href="DPTSettings.html">DPTSettings documentation</a>.</p>
-
-
-
 <h3 id="verification">Verification</h3>
-
 <p>It is very important that the hardware and software setups are verified to be accurate. If, for example, the load inductor value is set incorrectly the current sent through it could well exceed the capability of the device / circuit. </p>
-
 <p>Once you have verified that the setup is correct add the following line before the <code>settings = dpt_settings;</code> line:</p>
+<div class="codehilite"><pre><span></span><span class="n">dpt_settings</span><span class="p">.</span><span class="n">setupVerified</span> <span class="p">=</span> <span class="n">true</span><span class="p">;</span>
+</pre></div>
 
 
-
-<pre class="prettyprint prettyprinted"><code class="language-MATLAB"><span class="pln">dpt_settings</span><span class="pun">.</span><span class="pln">setupVerified </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></code></pre>
-
-
-
-<h2 id="running-the-test">Running the Test</h2>
-
+<h2 id="running_the_test">Running the Test</h2>
 <p>Once the software settings have been configured and verified, the test can be run. Keep in mind that with the default settings, once the test starts, it will continue until finished without any additional user input required. The toolbox contains settings that will prompt the user before carrying out important actions as well as settings that allow the user to control the Bus Voltage Supply themselves; however, these settings are turned off by default. More information about them can be found in the <a href="DPTSettings.html">DPTSettings documentation</a>.</p>
-
 <p>The test can be run by sending the following command from a script or from the MATLAB command window:</p>
+<div class="codehilite"><pre><span></span><span class="n">Double_Pulse_Test</span><span class="p">(</span><span class="n">SimpleSettings</span><span class="p">)</span>
+</pre></div>
 
-
-
-<pre class="prettyprint prettyprinted"><code class="language-MATLAB"><span class="typ">Double_Pulse_Test</span><span class="pun">(</span><span class="typ">SimpleSettings</span><span class="pun">)</span></code></pre>
 
 <p>Where <code>SimpleSettings</code> is either a function that returns a DPTSettings object as shown in the earlier or is an actual DPTSettings object. </p>
-
-
-
-<h2 id="accessing-the-results">Accessing the results</h2>
-
+<h2 id="accessing_the_results">Accessing the results</h2>
 <p>By default the results are stored in the <code>Measurements</code> directory in the form of several <code>.mat</code> files. For each bus voltage and load current pair there are two <code>.mat</code> files that each contain one <a href="DoublePulseResults.html">DoublePulseResults</a> object. The first of these <code>.mat</code> files is for the measurement with four channels on and the second is for results with two channels on. They are named in the format <code>{Bus_Voltage}V_{Load_Current}A_{Num_Channels}CH.mat</code> </p>
-
 <p>There is also a <a href="SweepResults.html">SweepResults</a> object stored in the <code>sweep_results.mat</code> file as well as a <a href="DPTSettings.html">DPTSettings</a> object stored in the <code>Measurement_Settings.mat</code> file. </p>
-
-<p>These objects can be loaded into the MATLAB workspace with the <code>load(file_name.mat)</code> command. See their respective documentation pages for more details on usage. </p></div></body>
-</html>
+<p>These objects can be loaded into the MATLAB workspace with the <code>load(file_name.mat)</code> command. See their respective documentation pages for more details on usage. </p></html>

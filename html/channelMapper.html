@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>channelMapper.md</title>
-<link rel="stylesheet" href="themes/base.css" />
-<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body><div class="container"><h1 id="channelmapper">channelMapper</h1>
-
-
-
-<h2 id="table-of-contents">Table of Contents</h2>
-
-<p><div class="toc">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>channelMapper</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="channelmapper">channelMapper</h1>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
 <ul>
 <li><a href="#channelmapper">channelMapper</a><ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#table_of_contents">Table of Contents</a></li>
 <li><a href="#description">Description</a></li>
 <li><a href="#properties">Properties</a><ul>
 <li><a href="#vds">VDS</a></li>
 <li><a href="#vgs">VGS</a></li>
 <li><a href="#id">ID</a></li>
 <li><a href="#il">IL</a></li>
+</ul>
+</li>
 <li><a href="#methods">Methods</a><ul>
 <li><a href="#constructor">Constructor</a></li>
 <li><a href="#allunset">allUnset</a></li>
@@ -32,207 +30,186 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
 </div>
-</p>
-
-
-
 <h2 id="description">Description</h2>
-
 <p>The channelMapper class contains the mapping of measurement to oscilloscope channel. </p>
-
-
-
 <h2 id="properties">Properties</h2>
-
-
-
 <h3 id="vds">VDS</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
 </tr>
 <tr>
-  <td>Acceptable Values</td>
-  <td align="left">Integer [1-4]</td>
+<td>Acceptable Values</td>
+<td align="left">Integer [1-4]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-49">V_{DS}</script> is connected to.</td>
+<td>Description</td>
+<td align="left">Channel that the probe measuring <script type="math/tex">V_{DS}</script> is connected to.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <h3 id="vgs">VGS</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
 </tr>
 <tr>
-  <td>Acceptable Values</td>
-  <td align="left">Integer [1-4]</td>
+<td>Acceptable Values</td>
+<td align="left">Integer [1-4]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-51">V_{GS}</script> is connected to.</td>
+<td>Description</td>
+<td align="left">Channel that the probe measuring <script type="math/tex">V_{GS}</script> is connected to.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <h3 id="id">ID</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
 </tr>
 <tr>
-  <td>Acceptable Values</td>
-  <td align="left">Integer [1-4]</td>
+<td>Acceptable Values</td>
+<td align="left">Integer [1-4]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-54">I_{D}</script> is connected to.</td>
+<td>Description</td>
+<td align="left">Channel that the probe measuring <script type="math/tex">I_{D}</script> is connected to.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <h3 id="il">IL</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code>GeneralWaveform.NOT_RECORDED</code></td>
 </tr>
 <tr>
-  <td>Acceptable Values</td>
-  <td align="left">Integer [1-4]</td>
+<td>Acceptable Values</td>
+<td align="left">Integer [1-4]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Channel that the probe measuring <script type="math/tex" id="MathJax-Element-55">I_{L}</script> is connected to. Should not be set if the load current is not being measured.</td>
+<td>Description</td>
+<td align="left">Channel that the probe measuring <script type="math/tex">I_{L}</script> is connected to. Should not be set if the load current is not being measured.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <h2 id="methods">Methods</h2>
-
-
-
 <h3 id="constructor">Constructor</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(VDS_Channel, VGS_Channel, ID_Channel, IL_Channel)</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(VDS_Channel, VGS_Channel, ID_Channel, IL_Channel)</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">channelMapper</td>
+<td>Output</td>
+<td align="left">channelMapper</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Creates a new channelMapper object with the channels as given. If no arguments are given all channels default to the value of <code>GeneralWaveform.NOT_RECORDED</code>.</td>
+<td>Description</td>
+<td align="left">Creates a new channelMapper object with the channels as given. If no arguments are given all channels default to the value of <code>GeneralWaveform.NOT_RECORDED</code>.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <h3 id="allunset">allUnset</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">Boolean</td>
+<td>Output</td>
+<td align="left">Boolean</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Returns <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">true</span></code> if all channels are set to <code>GeneralWaveform.NOT_RECORDED</code> otherwise returns <code class="prettyprint lang-MATLAB prettyprinted"><span class="kwd">false</span></code>.</td>
+<td>Description</td>
+<td align="left">Returns <code class="prettyprint lang-MATLAB">true</code> if all channels are set to <code>GeneralWaveform.NOT_RECORDED</code> otherwise returns <code class="prettyprint lang-MATLAB">false</code>.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table></div></body>
-</html>
+</tbody>
+</table></html>

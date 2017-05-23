@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>min2scale.md</title>
-<link rel="stylesheet" href="themes/base.css" />
-<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body><div class="container"><h1 id="min2scale">min2Scale</h1>
-
-<p>min2Scale calculates the scale and and position required to fit a waveform on an oscilloscope to make full use of the oscilloscope’s 8-bot ADC. </p>
-
-<h2 id="table-of-contents">Table of Contents</h2>
-
-<p><div class="toc">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>min2scale</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="min2scale">min2Scale</h1>
+<p>min2Scale calculates the scale and and position required to fit a waveform on an oscilloscope to make full use of the oscilloscope's 8-bot ADC. </p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
 <ul>
 <li><a href="#min2scale">min2Scale</a><ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#table_of_contents">Table of Contents</a></li>
 <li><a href="#methods">Methods</a></li>
 </ul>
 </li>
 </ul>
 </div>
-</p>
-
 <h2 id="methods">Methods</h2>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(Float) minValue, (Float) maxValue, (Integer) numDivisions, (Float) percentBuffer</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) minValue, (Float) maxValue, (Integer) numDivisions, (Float) percentBuffer</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">[(Float) scale, (Float) position]</td>
+<td>Output</td>
+<td align="left">[(Float) scale, (Float) position]</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Determines the scale (Units per division) and the 0 position necessary to maximize the waveforms usage of the Oscilloscope’s ADC. minValue is the minimum expected value of the waveform, maxValue is the maximum expected value of the waveform, numDivisions is the number of divisions on the oscilloscope, and percentBuffer is the amount off buffer that should be left on the top and bottom of the waveform. The percent buffer is shared between the top and bottom (i.e. A percent Buffer of 10% (percentBuffer = 10) will result in 5% of the oscilloscope screen being blank at the top and bottom of the waveform.</td>
+<td>Description</td>
+<td align="left">Determines the scale (Units per division) and the 0 position necessary to maximize the waveforms usage of the Oscilloscope's ADC. minValue is the minimum expected value of the waveform, maxValue is the maximum expected value of the waveform, numDivisions is the number of divisions on the oscilloscope, and percentBuffer is the amount off buffer that should be left on the top and bottom of the waveform. The percent buffer is shared between the top and bottom (i.e. A percent Buffer of 10% (percentBuffer = 10) will result in 5% of the oscilloscope screen being blank at the top and bottom of the waveform.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table></div></body>
-</html>
+</tbody>
+</table></html>

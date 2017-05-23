@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DoublePulseResults.md</title>
-<link rel="stylesheet" href="themes/base.css" />
-<link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-</head>
-<body><div class="container"><h1 id="doublepulseresults">DoublePulseResults</h1>
-
-
-
-<h2 id="table-of-contents">Table of Contents</h2>
-
-<p><div class="toc">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoublePulseResults</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="doublepulseresults">DoublePulseResults</h1>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
 <ul>
 <li><a href="#doublepulseresults">DoublePulseResults</a><ul>
-<li><a href="#table-of-contents">Table of Contents</a></li>
-<li><a href="#super-classes">Super Classes</a></li>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super Classes</a></li>
 <li><a href="#properties">Properties</a><ul>
 <li><a href="#turnonwaveform">turnOnWaveform</a></li>
 <li><a href="#turnoffwaveform">turnOffWaveform</a></li>
@@ -26,42 +22,42 @@
 <li><a href="#numchannels">numChannels</a></li>
 </ul>
 </li>
-<li><a href="#shared-properties">Shared Properties</a><ul>
+<li><a href="#shared_properties">Shared Properties</a><ul>
 <li><a href="#busvoltage">busVoltage</a></li>
 <li><a href="#loadcurrent">loadCurrent</a></li>
 <li><a href="#gatevoltage">gateVoltage</a></li>
 <li><a href="#ivmisalignment">ivMisalignment</a></li>
 </ul>
 </li>
-<li><a href="#turn-on-properties">Turn On Properties</a><ul>
+<li><a href="#turn_on_properties">Turn On Properties</a><ul>
 <li><a href="#turnonenergy">turnOnEnergy</a></li>
 <li><a href="#turnondelay">turnOnDelay</a></li>
 <li><a href="#voltagefalltime">voltageFallTime</a></li>
 <li><a href="#currentrisetime">currentRiseTime</a></li>
 <li><a href="#turnontime">turnOnTime</a></li>
-<li><a href="#turnonpeakdvdt">turnOnPeakDV_DT</a></li>
+<li><a href="#turnonpeakdv_dt">turnOnPeakDV_DT</a></li>
 <li><a href="#pon">pOn</a></li>
 <li><a href="#turnonpeakvds">turnOnPeakVDS</a></li>
 <li><a href="#turnonvdsint">turnOnVDSInt</a></li>
 <li><a href="#turnonidint">turnOnIDInt</a></li>
 </ul>
 </li>
-<li><a href="#turn-off-properties">Turn Off Properties</a><ul>
+<li><a href="#turn_off_properties">Turn Off Properties</a><ul>
 <li><a href="#turnoffenergy">turnOffEnergy</a></li>
 <li><a href="#turnoffdelay">turnOffDelay</a></li>
 <li><a href="#voltagerisetime">voltageRiseTime</a></li>
 <li><a href="#turnofftime">turnOffTime</a></li>
-<li><a href="#turnoffpeakdvdt">turnOffPeakDV_DT</a></li>
+<li><a href="#turnoffpeakdv_dt">turnOffPeakDV_DT</a></li>
 <li><a href="#poff">pOff</a></li>
 <li><a href="#turnoffpeakvds">turnOffPeakVDS</a></li>
 <li><a href="#turnoffvdsint">turnOffVDSInt</a></li>
 <li><a href="#turnoffidint">turnOffIDInt</a></li>
 </ul>
 </li>
-<li><a href="#properties-private">Properties (Private)</a><ul>
+<li><a href="#properties_private">Properties (Private)</a><ul>
 <li><a href="#gateturnonidx">gateTurnOnIdx</a></li>
 <li><a href="#currentturnonidx">currentTurnOnIdx</a></li>
-<li><a href="#vdsat0idx">v_ds_at0Idx</a></li>
+<li><a href="#v_ds_at0idx">v_ds_at0Idx</a></li>
 <li><a href="#gateturnoffidx">gateTurnOffIdx</a></li>
 <li><a href="#currentturnoffidx">currentTurnOffIdx</a></li>
 <li><a href="#vdsatbus">vDSatBus</a></li>
@@ -77,7 +73,7 @@
 <li><a href="#plotwaveform">plotWaveform</a></li>
 </ul>
 </li>
-<li><a href="#methods-private">Methods (private)</a><ul>
+<li><a href="#methods_private">Methods (private)</a><ul>
 <li><a href="#calcbusvoltage">calcBusVoltage</a></li>
 <li><a href="#calcloadcurrent">calcLoadCurrent</a></li>
 <li><a href="#calcgatevoltage">calcGateVoltage</a></li>
@@ -92,8 +88,8 @@
 <li><a href="#calcvoltagerisetime">calcVoltageRiseTime</a></li>
 <li><a href="#calcturnontime">calcTurnOnTime</a></li>
 <li><a href="#calcturnofftime">calcTurnOffTime</a></li>
-<li><a href="#calcturnonpeakdvdt">calcTurnOnPeakDV_DT</a></li>
-<li><a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a></li>
+<li><a href="#calcturnonpeakdv_dt">calcTurnOnPeakDV_DT</a></li>
+<li><a href="#calcturnoffpeakdv_dt">calcTurnOffPeakDV_DT</a></li>
 <li><a href="#calcturnonenergy">calcTurnOnEnergy</a></li>
 <li><a href="#calcturnoffenergy">calcTurnOffEnergy</a></li>
 <li><a href="#calcpeakvds">calcPeakVDS</a></li>
@@ -102,13 +98,13 @@
 <li><a href="#calcivmisalignment">calcIVMisalignment</a></li>
 </ul>
 </li>
-<li><a href="#methods-public-static">Methods (public, Static)</a><ul>
+<li><a href="#methods_public_static">Methods (public, Static)</a><ul>
 <li><a href="#findivmisalignment">findIVMisalignment</a></li>
 <li><a href="#findnominalvalue">findNominalValue</a></li>
 <li><a href="#movingavg">movingAvg</a></li>
 </ul>
 </li>
-<li><a href="#methods-protected-static">Methods (protected, Static)</a><ul>
+<li><a href="#methods_protected_static">Methods (protected, Static)</a><ul>
 <li><a href="#findonidx">findOnIdx</a></li>
 <li><a href="#findoffidx">findOffIdx</a></li>
 <li><a href="#range">range</a></li>
@@ -118,2112 +114,1879 @@
 </li>
 </ul>
 </div>
-</p>
-
-
-
-<h2 id="super-classes">Super Classes</h2>
-
+<h2 id="super_classes">Super Classes</h2>
 <p>matlab.mixin.Copyable</p>
-
-
-
 <h2 id="properties">Properties</h2>
-
-
-
 <h3 id="turnonwaveform">turnOnWaveform</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">SwitchWaveform</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">SwitchWaveform</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The <a href="SwitchWaveform.html">SwitchWaveform</a> containing the data for the turn on.</td>
+<td>Description</td>
+<td align="left">The <a href="SwitchWaveform.html">SwitchWaveform</a> containing the data for the turn on.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnoffwaveform">turnOffWaveform</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">SwitchWaveform</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">SwitchWaveform</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The <a href="SwitchWaveform.html">SwitchWaveform</a> containing the data for the turn off.</td>
+<td>Description</td>
+<td align="left">The <a href="SwitchWaveform.html">SwitchWaveform</a> containing the data for the turn off.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="fullwaveform">fullWaveform</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">FullWaveform</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">FullWaveform</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The <a href="FullWaveform.html">FullWaveform</a> containing the data for the entire pulse.</td>
+<td>Description</td>
+<td align="left">The <a href="FullWaveform.html">FullWaveform</a> containing the data for the entire pulse.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="numchannels">numChannels</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The number of channels captured in the DoublePulseResults object.</td>
+<td>Description</td>
+<td align="left">The number of channels captured in the DoublePulseResults object.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="shared-properties">Shared Properties</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="shared_properties">Shared Properties</h2>
 <h3 id="busvoltage">busVoltage</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volts</td>
+<td>Units</td>
+<td align="left">Volts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The bus voltage during the pulse. This value is calculated by the <a href="#calcbusvoltage">calcBusVoltage</a> method.</td>
+<td>Description</td>
+<td align="left">The bus voltage during the pulse. This value is calculated by the <a href="#calcbusvoltage">calcBusVoltage</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="loadcurrent">loadCurrent</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Amps</td>
+<td>Units</td>
+<td align="left">Amps</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The load current during the pulse. This value is calculated by the <a href="#calcloadcurrent">calcLoadCurrent</a> method.</td>
+<td>Description</td>
+<td align="left">The load current during the pulse. This value is calculated by the <a href="#calcloadcurrent">calcLoadCurrent</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="gatevoltage">gateVoltage</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volts</td>
+<td>Units</td>
+<td align="left">Volts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The gate voltage during the pulse. This value is calculated by the <a href="#calcgatevoltage">calcGateVoltage</a> Method.</td>
+<td>Description</td>
+<td align="left">The gate voltage during the pulse. This value is calculated by the <a href="#calcgatevoltage">calcGateVoltage</a> Method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="ivmisalignment">ivMisalignment</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The misalignment between the current and the voltage waveforms. This value is calculated by the <a href="#calcivmisalignment">calcIVMisalignment</a> method.</td>
+<td>Description</td>
+<td align="left">The misalignment between the current and the voltage waveforms. This value is calculated by the <a href="#calcivmisalignment">calcIVMisalignment</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="turn-on-properties">Turn On Properties</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="turn_on_properties">Turn On Properties</h2>
 <h3 id="turnonenergy">turnOnEnergy</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Joules</td>
+<td>Units</td>
+<td align="left">Joules</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The turn on energy loss of the device. Calculated with the <a href="#calcturnonenergy">calcTurnOnEnergy</a> Method.</td>
+<td>Description</td>
+<td align="left">The turn on energy loss of the device. Calculated with the <a href="#calcturnonenergy">calcTurnOnEnergy</a> Method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnondelay">turnOnDelay</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time between the gate rise and the current rise. Calculated with the <a href="#calcturnondelay">calcTurnOnDelay</a> method.</td>
+<td>Description</td>
+<td align="left">The time between the gate rise and the current rise. Calculated with the <a href="#calcturnondelay">calcTurnOnDelay</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="voltagefalltime">voltageFallTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the voltage falling to the point where the voltage crosses zero. Calculated with the <a href="#calcvoltagefalltime">calcVoltageFallTime</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the voltage falling to the point where the voltage crosses zero. Calculated with the <a href="#calcvoltagefalltime">calcVoltageFallTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="currentrisetime">currentRiseTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the current rise to the point where the current is at the load current. Calculated with the <a href="#calccurrentrisetime">calcCurrentRiseTime</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the current rise to the point where the current is at the load current. Calculated with the <a href="#calccurrentrisetime">calcCurrentRiseTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnontime">turnOnTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the gate rise to the time where the bus voltage drops to zero. This value is calculated with the <a href="#calcturnontime">calcTurnOnTime</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the gate rise to the time where the bus voltage drops to zero. This value is calculated with the <a href="#calcturnontime">calcTurnOnTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h3 id="turnonpeakdvdt">turnOnPeakDV_DT</h3>
-
+</tbody>
+</table>
+<h3 id="turnonpeakdv_dt">turnOnPeakDV_DT</h3>
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-5">\frac{Volts}{Second}</script></td>
+<td>Units</td>
+<td align="left">
+<script type="math/tex">\frac{Volts}{Second}</script>
+</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The maximum rate of change in voltage during the turn on. Calculated with the <a href="#calcturnonpeakdvdt">calcTurnOnPeakDV_DT</a> method.</td>
+<td>Description</td>
+<td align="left">The maximum rate of change in voltage during the turn on. Calculated with the <a href="#calcturnonpeakdvdt">calcTurnOnPeakDV_DT</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="pon">pOn</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">[Float]</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">[Float]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Watts</td>
+<td>Units</td>
+<td align="left">Watts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Power waveform during turn on.</td>
+<td>Description</td>
+<td align="left">Power waveform during turn on.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnonpeakvds">turnOnPeakVDS</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volts</td>
+<td>Units</td>
+<td align="left">Volts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Maximum value of <script type="math/tex" id="MathJax-Element-6">V_{DS}</script> during the turn on. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
+<td>Description</td>
+<td align="left">Maximum value of <script type="math/tex">V_{DS}</script> during the turn on. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnonvdsint">turnOnVDSInt</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volt <script type="math/tex" id="MathJax-Element-7">\cdot</script> Seconds</td>
+<td>Units</td>
+<td align="left">Volt <script type="math/tex">\cdot</script> Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-8">V_{DS}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
+<td>Description</td>
+<td align="left">The integral of <script type="math/tex">V_{DS}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnonidint">turnOnIDInt</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Amp <script type="math/tex" id="MathJax-Element-9">\cdot</script> Seconds</td>
+<td>Units</td>
+<td align="left">Amp <script type="math/tex">\cdot</script> Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-10">I_{D}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
+<td>Description</td>
+<td align="left">The integral of <script type="math/tex">I_{D}</script> from the start of the turn on to the end of the turn on. Calculated during the <a href="#calconintegrals">calcOnIntegrals</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="turn-off-properties">Turn Off Properties</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="turn_off_properties">Turn Off Properties</h2>
 <h3 id="turnoffenergy">turnOffEnergy</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Joules</td>
+<td>Units</td>
+<td align="left">Joules</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The turn off energy loss of the pulse. Calculated with the <a href="#calcturnoffenergy">calcTurnOffEnergy</a> method.</td>
+<td>Description</td>
+<td align="left">The turn off energy loss of the pulse. Calculated with the <a href="#calcturnoffenergy">calcTurnOffEnergy</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnoffdelay">turnOffDelay</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the gate fall to the start of the current fall. Calculated with the <a href="#calcturnoffdelay">calcTurnOffDelay</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the gate fall to the start of the current fall. Calculated with the <a href="#calcturnoffdelay">calcTurnOffDelay</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="voltagerisetime">voltageRiseTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-11">V_{DS}</script> voltage rise to the point where the voltage is at the bus voltage. Calculated with the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the <script type="math/tex">V_{DS}</script> voltage rise to the point where the voltage is at the bus voltage. Calculated with the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnofftime">turnOffTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Seconds</td>
+<td>Units</td>
+<td align="left">Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The time from the start of the <script type="math/tex" id="MathJax-Element-12">V_{GS}</script> voltage fall to the point where <script type="math/tex" id="MathJax-Element-13">V_{DS}</script> is at the bus voltage. Calculated with the <a href="#calcturnofftime">calcTurnOffTime</a> method.</td>
+<td>Description</td>
+<td align="left">The time from the start of the <script type="math/tex">V_{GS}</script> voltage fall to the point where <script type="math/tex">V_{DS}</script> is at the bus voltage. Calculated with the <a href="#calcturnofftime">calcTurnOffTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h3 id="turnoffpeakdvdt">turnOffPeakDV_DT</h3>
-
+</tbody>
+</table>
+<h3 id="turnoffpeakdv_dt">turnOffPeakDV_DT</h3>
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"><script type="math/tex" id="MathJax-Element-14">\frac{Volts}{Second}</script></td>
+<td>Units</td>
+<td align="left">
+<script type="math/tex">\frac{Volts}{Second}</script>
+</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The maximum rate of change of <script type="math/tex" id="MathJax-Element-15">V_{DS}</script> during the turn off. Calculated with the <a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a> method.</td>
+<td>Description</td>
+<td align="left">The maximum rate of change of <script type="math/tex">V_{DS}</script> during the turn off. Calculated with the <a href="#calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="poff">pOff</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">[Float]</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">[Float]</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Watts</td>
+<td>Units</td>
+<td align="left">Watts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The power waveform during the turn off pulse. Calculated during the <a href="#calcturnoffenergy">calcTurnOffEnergy</a> method.</td>
+<td>Description</td>
+<td align="left">The power waveform during the turn off pulse. Calculated during the <a href="#calcturnoffenergy">calcTurnOffEnergy</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnoffpeakvds">turnOffPeakVDS</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volts</td>
+<td>Units</td>
+<td align="left">Volts</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The maximum value of <script type="math/tex" id="MathJax-Element-16">V_{DS}</script> during the turn off. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
+<td>Description</td>
+<td align="left">The maximum value of <script type="math/tex">V_{DS}</script> during the turn off. Calculated with the <a href="#calcpeakvds">calcPeakVDS</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnoffvdsint">turnOffVDSInt</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Volt <script type="math/tex" id="MathJax-Element-17">\cdot</script> Seconds</td>
+<td>Units</td>
+<td align="left">Volt <script type="math/tex">\cdot</script> Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-18">V_{DS}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
+<td>Description</td>
+<td align="left">The integral of <script type="math/tex">V_{DS}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="turnoffidint">turnOffIDInt</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Type</td>
-  <td align="left">Float</td>
+<tbody>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left">Amp <script type="math/tex" id="MathJax-Element-19">\cdot</script> Seconds</td>
+<td>Units</td>
+<td align="left">Amp <script type="math/tex">\cdot</script> Seconds</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">The integral of <script type="math/tex" id="MathJax-Element-20">I_{D}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
+<td>Description</td>
+<td align="left">The integral of <script type="math/tex">I_{D}</script> from the start of the turn off to the end of the turn off. Calculated during the <a href="#calcoffintegrals">calcOffIntegrals</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="properties-private">Properties (Private)</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="properties_private">Properties (Private)</h2>
 <h3 id="gateturnonidx">gateTurnOnIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in turn on waveforms where <script type="math/tex" id="MathJax-Element-21">V_{GS}</script> starts to increase and does not stop increasing. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
+<td>Description</td>
+<td align="left">Index in turn on waveforms where <script type="math/tex">V_{GS}</script> starts to increase and does not stop increasing. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="currentturnonidx">currentTurnOnIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in the turn on waveform where the current starts to rise and does not stop rising. Calculated with the <a href="#calccurrentturnonidx">calcCurrentTurnOnIdx</a> method.</td>
+<td>Description</td>
+<td align="left">Index in the turn on waveform where the current starts to rise and does not stop rising. Calculated with the <a href="#calccurrentturnonidx">calcCurrentTurnOnIdx</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h3 id="vdsat0idx">v_ds_at0Idx</h3>
-
+</tbody>
+</table>
+<h3 id="v_ds_at0idx">v_ds_at0Idx</h3>
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in the turn on waveform where <script type="math/tex" id="MathJax-Element-22">V_{DS}</script> crosses zero. Calculated during the calcVoltageFallTime method.</td>
+<td>Description</td>
+<td align="left">Index in the turn on waveform where <script type="math/tex">V_{DS}</script> crosses zero. Calculated during the calcVoltageFallTime method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="gateturnoffidx">gateTurnOffIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-23">V_{GS}</script> starts to decrease and does not stop. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
+<td>Description</td>
+<td align="left">Index in the turn off waveform where <script type="math/tex">V_{GS}</script> starts to decrease and does not stop. Calculated with the <a href="#calcgateturnoffidx">calcGateTurnOffIdx</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="currentturnoffidx">currentTurnOffIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in the turn off waveform where the current starts to decrease and does not stop. Calculated with the <a href="#calccurrentturnoffidx">calcCurrentTurnOffIdx</a> method.</td>
+<td>Description</td>
+<td align="left">Index in the turn off waveform where the current starts to decrease and does not stop. Calculated with the <a href="#calccurrentturnoffidx">calcCurrentTurnOffIdx</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="vdsatbus">vDSatBus</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Properties</th>
-  <th align="left"></th>
+<th>Properties</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Default Value</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Type</td>
-  <td align="left">Integer</td>
+<td>Type</td>
+<td align="left">Integer</td>
 </tr>
 <tr>
-  <td>Units</td>
-  <td align="left"></td>
+<td>Units</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Index in the turn off waveform where <script type="math/tex" id="MathJax-Element-24">V_{DS}</script> crosses the bus voltage. Calculated during the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
+<td>Description</td>
+<td align="left">Index in the turn off waveform where <script type="math/tex">V_{DS}</script> crosses the bus voltage. Calculated during the <a href="#calcvoltagerisetime">calcVoltageRiseTime</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h2 id="methods">Methods</h2>
-
-
-
 <h3 id="constructor">Constructor</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">((SwitchWaveform) onWaveforms, (SwitchWaveform) offWaveforms)</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">((SwitchWaveform) onWaveforms, (SwitchWaveform) offWaveforms)</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">DoublePulseResults</td>
+<td>Output</td>
+<td align="left">DoublePulseResults</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Creates a new DoublePulseResults object, sets the on and off SwitchWaveform, determines the number of channels, and calculates all values. If no arguments are given, no errors will be thrown; however, the waveforms and number of channels will need to be set and all values will need to be calculated before the object can be fully used.</td>
+<td>Description</td>
+<td align="left">Creates a new DoublePulseResults object, sets the on and off SwitchWaveform, determines the number of channels, and calculates all values. If no arguments are given, no errors will be thrown; however, the waveforms and number of channels will need to be set and all values will need to be calculated before the object can be fully used.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="shiftcurrent">shiftCurrent</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">((float) nanoSec)</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">((float) nanoSec)</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Shift Current By nanoSec ns. A positive value will shift to the right and a negative value will shift to the left.</td>
+<td>Description</td>
+<td align="left">Shift Current By nanoSec ns. A positive value will shift to the right and a negative value will shift to the left.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcallvalues">calcAllValues</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculates all properties by calling their corresponding “calc” method.</td>
+<td>Description</td>
+<td align="left">Calculates all properties by calling their corresponding "calc" method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="pubcalcivmis">pubCalcIvMis</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Public method that calls the private <a href="#calcivmisalignment">calcIVMisalignment</a> method.</td>
+<td>Description</td>
+<td align="left">Public method that calls the private <a href="#calcivmisalignment">calcIVMisalignment</a> method.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="dispresults">dispResults</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Output results to the command window.</td>
+<td>Description</td>
+<td align="left">Output results to the command window.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="plotresults">plotResults</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Generates plots for the turn on, turn off, and full waveforms.</td>
+<td>Description</td>
+<td align="left">Generates plots for the turn on, turn off, and full waveforms.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="plotwaveform">plotWaveform</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">((SwitchWaveform | GeneralWaveform) waveform, (String) name, [(Float Array) power])</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">((SwitchWaveform | GeneralWaveform) waveform, (String) name, [(Float Array) power])</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Plots a given waveform and gives the figure a title of name. The power argument is optional, but should be included if the waveform is a SwitchWaveform.</td>
+<td>Description</td>
+<td align="left">Plots a given waveform and gives the figure a title of name. The power argument is optional, but should be included if the waveform is a SwitchWaveform.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="methods-private">Methods (private)</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="methods_private">Methods (private)</h2>
 <h3 id="calcbusvoltage">calcBusVoltage</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the Bus Voltage by finding the average of V_DS from the start of the turn on waveform to 1/4 of the time until turn on.</td>
+<td>Description</td>
+<td align="left">Calculate the Bus Voltage by finding the average of V_DS from the start of the turn on waveform to 1/4 of the time until turn on.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcloadcurrent">calcLoadCurrent</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the load current by taking the mean of the Drain Current from start of turn off window until 5 ns before turn off.</td>
+<td>Description</td>
+<td align="left">Calculate the load current by taking the mean of the Drain Current from start of turn off window until 5 ns before turn off.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcgatevoltage">calcGateVoltage</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the gate voltage by finding the average of the values from the start of the turn off waveform to 1/4 of the time until turn off.</td>
+<td>Description</td>
+<td align="left">Calculate the gate voltage by finding the average of the values from the start of the turn off waveform to 1/4 of the time until turn off.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcgateturnonidx">calcGateTurnOnIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Gate Turn on idx:Point in V_GS turn on waveform where voltage starts to increase and does not stop increasing.</td>
+<td>Description</td>
+<td align="left">Find Gate Turn on idx:Point in V_GS turn on waveform where voltage starts to increase and does not stop increasing.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcgateturnoffidx">calcGateTurnOffIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Gate Turn off idx: Point in V_GS turn off waveform where voltage starts to fall and does not stop decreasing.</td>
+<td>Description</td>
+<td align="left">Find Gate Turn off idx: Point in V_GS turn off waveform where voltage starts to fall and does not stop decreasing.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calccurrentturnonidx">calcCurrentTurnOnIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Current Turn on idx: Point in I_D turn on waveform where current starts to increase and does not stop increasing</td>
+<td>Description</td>
+<td align="left">Find Current Turn on idx: Point in I_D turn on waveform where current starts to increase and does not stop increasing</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calccurrentturnoffidx">calcCurrentTurnOffIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Current Turn Off idx: Point in I_D turn off waveform where current starts to decrease and does not stop decreasing.</td>
+<td>Description</td>
+<td align="left">Find Current Turn Off idx: Point in I_D turn off waveform where current starts to decrease and does not stop decreasing.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnondelay">calcTurnOnDelay</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find turn on delay, td_on, the time from gate rise start to current rise start.</td>
+<td>Description</td>
+<td align="left">Find turn on delay, td_on, the time from gate rise start to current rise start.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnoffdelay">calcTurnOffDelay</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find turn off delay, td_off, the time from the start of the gate fall to the start of the current fall.</td>
+<td>Description</td>
+<td align="left">Find turn off delay, td_off, the time from the start of the gate fall to the start of the current fall.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calccurrentrisetime">calcCurrentRiseTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Current Rise time, t_cr, the time for the current to rise from 0 to the load current.</td>
+<td>Description</td>
+<td align="left">Find Current Rise time, t_cr, the time for the current to rise from 0 to the load current.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcvoltagefalltime">calcVoltageFallTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Voltage Fall time, t_vf, the time it takes for the voltage to reach zero after the voltage starts falling. We can say that the voltage will start falling at the same time the current starts rising.</td>
+<td>Description</td>
+<td align="left">Find Voltage Fall time, t_vf, the time it takes for the voltage to reach zero after the voltage starts falling. We can say that the voltage will start falling at the same time the current starts rising.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcvoltagerisetime">calcVoltageRiseTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Find Voltage Rise time, t_vr, the time it takes for the voltage to reach the bus after the voltage starts rising. We can say that the voltage will start rising at the same time the current starts falling.</td>
+<td>Description</td>
+<td align="left">Find Voltage Rise time, t_vr, the time it takes for the voltage to reach the bus after the voltage starts rising. We can say that the voltage will start rising at the same time the current starts falling.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnontime">calcTurnOnTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate on time, t_on, the time from initial V_GS rise to final V_DS fall.</td>
+<td>Description</td>
+<td align="left">Calculate on time, t_on, the time from initial V_GS rise to final V_DS fall.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnofftime">calcTurnOffTime</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate off time, t_off, the time from initial V_GS fall to V_DS reaching the Bus Voltage.</td>
+<td>Description</td>
+<td align="left">Calculate off time, t_off, the time from initial V_GS fall to V_DS reaching the Bus Voltage.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h3 id="calcturnonpeakdvdt">calcTurnOnPeakDV_DT</h3>
-
+</tbody>
+</table>
+<h3 id="calcturnonpeakdv_dt">calcTurnOnPeakDV_DT</h3>
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the peak DV/DT in V_DS during the turn on time period.</td>
+<td>Description</td>
+<td align="left">Calculate the peak DV/DT in V_DS during the turn on time period.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h3 id="calcturnoffpeakdvdt">calcTurnOffPeakDV_DT</h3>
-
+</tbody>
+</table>
+<h3 id="calcturnoffpeakdv_dt">calcTurnOffPeakDV_DT</h3>
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the peak DV/DT in V_DS during the turn off time period.</td>
+<td>Description</td>
+<td align="left">Calculate the peak DV/DT in V_DS during the turn off time period.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnonenergy">calcTurnOnEnergy</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the energy loss during turn on.</td>
+<td>Description</td>
+<td align="left">Calculate the energy loss during turn on.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcturnoffenergy">calcTurnOffEnergy</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the energy loss during turn off.</td>
+<td>Description</td>
+<td align="left">Calculate the energy loss during turn off.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcpeakvds">calcPeakVDS</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate maximum V_DS during turn on and turn off waveform.</td>
+<td>Description</td>
+<td align="left">Calculate maximum V_DS during turn on and turn off waveform.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calconintegrals">calcOnIntegrals</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the turn on integral of VDS and ID.</td>
+<td>Description</td>
+<td align="left">Calculate the turn on integral of VDS and ID.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcoffintegrals">calcOffIntegrals</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Calculate the turn off integral of VDS and ID.</td>
+<td>Description</td>
+<td align="left">Calculate the turn off integral of VDS and ID.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="calcivmisalignment">calcIVMisalignment</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left"></td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left"></td>
+<td>Output</td>
+<td align="left"></td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Use di/dt method to deskew voltage and current measurements. Returns the delay in the current signal, e.g. if the current lags the voltage by 5 ns the function will return +5 ns.</td>
+<td>Description</td>
+<td align="left">Use di/dt method to deskew voltage and current measurements. Returns the delay in the current signal, e.g. if the current lags the voltage by 5 ns the function will return +5 ns.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="methods-public-static">Methods (public, Static)</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="methods_public_static">Methods (public, Static)</h2>
 <h3 id="findivmisalignment">findIVMisalignment</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(FullWaveform) fullWaveforms</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(FullWaveform) fullWaveforms</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">ivMisalignment (Float, Seconds)</td>
+<td>Output</td>
+<td align="left">ivMisalignment (Float, Seconds)</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Takes a FullWaveform and returns the IV misalignment in it.</td>
+<td>Description</td>
+<td align="left">Takes a FullWaveform and returns the IV misalignment in it.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="findnominalvalue">findNominalValue</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(Float Array) waveform</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) waveform</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Float) nomValue</td>
+<td>Output</td>
+<td align="left">(Float) nomValue</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Takes an array of floats (Should represent a switching waveform) and returns the nominal value. For the purpose of this function the nominal value is the higher value of the two switch states.</td>
+<td>Description</td>
+<td align="left">Takes an array of floats (Should represent a switching waveform) and returns the nominal value. For the purpose of this function the nominal value is the higher value of the two switch states.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="movingavg">movingAvg</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">((Integer) avgPts, (Float Array) waveform)</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">((Integer) avgPts, (Float Array) waveform)</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Float Array) movingAvg</td>
+<td>Output</td>
+<td align="left">(Float Array) movingAvg</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Filters waveform with a moving average containing avgPts + 1 points. Odd values of avgPts may produce undesirable results. Even values will result in a filter with avgPts / 2 points on either side and the actual point.</td>
+<td>Description</td>
+<td align="left">Filters waveform with a moving average containing avgPts + 1 points. Odd values of avgPts may produce undesirable results. Even values will result in a filter with avgPts / 2 points on either side and the actual point.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
-<h2 id="methods-protected-static">Methods (protected, Static)</h2>
-
-
-
+</tbody>
+</table>
+<h2 id="methods_protected_static">Methods (protected, Static)</h2>
 <h3 id="findonidx">findOnIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(Float Array) onWaveform</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) onWaveform</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Integer) onIdx</td>
+<td>Output</td>
+<td align="left">(Integer) onIdx</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Finds the point where a switching waveform starts to turn on. Final method is a WIP.</td>
+<td>Description</td>
+<td align="left">Finds the point where a switching waveform starts to turn on. Final method is a WIP.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
-
-
+</tbody>
+</table>
 <h3 id="findoffidx">findOffIdx</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(Float Array) offWaveform</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) offWaveform</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Integer) offIdx</td>
+<td>Output</td>
+<td align="left">(Integer) offIdx</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Finds the point where a switching waveform starts to turn off. Final method is a WIP.</td>
+<td>Description</td>
+<td align="left">Finds the point where a switching waveform starts to turn off. Final method is a WIP.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table>
-
-
+</tbody>
+</table>
 <p>Methods (Non-Class)</p>
-
-
-
 <h3 id="range">range</h3>
-
 <table>
 <thead>
 <tr>
-  <th>Method</th>
-  <th align="left"></th>
+<th>Method</th>
+<th align="left"></th>
 </tr>
 </thead>
-<tbody><tr>
-  <td>Arguments</td>
-  <td align="left">(Float Array)</td>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array)</td>
 </tr>
 <tr>
-  <td>Output</td>
-  <td align="left">(Float) out</td>
+<td>Output</td>
+<td align="left">(Float) out</td>
 </tr>
 <tr>
-  <td>Description</td>
-  <td align="left">Finds the range of an array.</td>
+<td>Description</td>
+<td align="left">Finds the range of an array.</td>
 </tr>
 <tr>
-  <td></td>
-  <td align="left"></td>
+<td></td>
+<td align="left"></td>
 </tr>
-</tbody></table></div></body>
-</html>
+</tbody>
+</table></html>
