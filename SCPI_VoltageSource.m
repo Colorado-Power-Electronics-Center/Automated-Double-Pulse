@@ -34,7 +34,7 @@ classdef SCPI_VoltageSource < SCPI_Instrument & handle
     end
     
     methods
-        %% Super Overides
+        %% Super Overrides
         function self = SCPI_VoltageSource(visaVendor, visaAddress)
             self@SCPI_Instrument(visaVendor, visaAddress);
         end

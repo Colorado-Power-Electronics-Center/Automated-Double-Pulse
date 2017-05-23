@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setVoltageToLoad</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="setvoltagetoload">setVoltageToLoad</h1>
+<p>setVoltageToLoad sets a given power supply's out put to a given voltage in 10 linearly spaced steps. The function also uses a given oscilloscope to verify that the voltage is increasing across the device. If there is a discrepancy greater than 5% between the device <script type="math/tex">V_{DS}</script> and the power supply output the function will throw an error. From a given settings the function will either perform all actions automatically or will prompt the user to manually change the voltage.</p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#setvoltagetoload">setVoltageToLoad</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#methods">methods</a><ul>
+<li><a href="#setvoltagetoload_1">setVoltageToLoad</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="methods">methods</h2>
+<h3 id="setvoltagetoload_1">setVoltageToLoad</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(<a href="SCPI_Oscilloscope.html">SCPI_Oscilloscope</a>) myScope, (<a href="SCPI_VoltageSource.html">SCPI_VoltageSource</a>) myBusSupply, (Float) busVoltage, (<a href="DPTSettings.html">DPTSettings</a>) settings</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets bus supply to given output voltage with error checking.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

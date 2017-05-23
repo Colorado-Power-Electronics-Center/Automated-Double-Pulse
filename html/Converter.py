@@ -5,6 +5,10 @@ from string import Template
 import glob
 import os.path
 
+# Get the mdLinks list
+with codecs.open("mdLinks.txt", "r", "utf-8") as mdLinksF:
+    mdLinksText = mdLinksF.read()
+
 # Get list of markdown files
 md_files = glob.glob("*.md")
 
@@ -15,7 +19,7 @@ for fn in md_files:
 
     input_file = codecs.open(md_file, mode="r", encoding="utf-8")
 
-    text = input_file.read()
+    text = input_file.read() + mdLinksText
 
     extension_configs = {
         'mdx_math': {
