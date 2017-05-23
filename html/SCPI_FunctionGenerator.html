@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCPI_FunctionGenerator</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="scpi_functiongenerator">SCPI_FunctionGenerator</h1>
+<p>SCPI_FunctionGenerator Sub-Class of SCPI_Instrument for use with Function Generators. Currently the class works with Keysight / Agilent Function generators, but it can be modified to work with other scopes either by modifying the methods here or by creating another level of subclass (either beneath this class or SCPI_Instrument) that works with other brands of function generators. </p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#scpi_functiongenerator">SCPI_FunctionGenerator</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super Classes</a></li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">constructor</a></li>
+<li><a href="#loadarbwaveform">loadArbWaveform</a></li>
+<li><a href="#setupburst">setupBurst</a></li>
+<li><a href="#setoutputload">setOutputLoad</a></li>
+<li><a href="#getoutputload">getOutputLoad</a></li>
+<li><a href="#setarbsamplerate">setArbSampleRate</a></li>
+<li><a href="#getarbsamplerate">getArbSampleRate</a></li>
+<li><a href="#geterror">getError</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="super_classes">Super Classes</h2>
+<p><a href="SCPI_Instrument.html">SCPI_Instrument</a> <br />
+handle</p>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor">constructor</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) visaVendor, (String) visaAddress</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"><a href="SCPI_FunctionGenerator.html">SCPI_FunctionGenerator</a></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Identical to parent class.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="loadarbwaveform">loadArbWaveform</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) wave_points, (Float) sample_rate, (Float) PeakValue, (String) name, (Integer | String) channel</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">wave_points: Vector of datapoints in the wave</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">sample_rate: Rate at which data points should be read</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">PeakValue: Maximum height of waveform (bottom is always 0)</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">name: String title of waveform (max 12 Characters)</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">channel: Function Generator Channel to load waveform on, can be string or number.</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">loads arbitrary waveform onto Function</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="setupburst">setupBurst</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) mode, (Integer) nCycles, (Float) period, (String) source, (Integer | String) channel</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">mode: Burst mode  <code class="prettyprint lang-MATLAB">{ 'TRIGgered' | 'GATed' }</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="left">nCycles: Number of times to send burst</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">period: Total length of each cycle</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">source: Source of burst Trigger  <code class="prettyprint lang-MATLAB">{ 'IMMediate' | 'EXTernal' | 'TIMer' | 'BUS' }</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="left">channel: Function Generator channel to setup Burst for</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets Function Generator Burst Settings</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="setoutputload">setOutputLoad</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Integer | String) channel, (Integer | String) load</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Set function generator output load for a given channel. Acceptable values for load: <code class="prettyprint lang-MATLAB">{[ohms] | 'INFinity' | 'MINimum' | 'MAXimum' | 'DEFault' }</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getoutputload">getOutputLoad</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Integer | String) channel, (String) modifier</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Number) load</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Gets the current output load for the function generator. Can also fetch the maximum and minimum possible values with the modifier parameter. Acceptable values for modifier <code class="prettyprint lang-MATLAB">{ 'MINimum' | 'MAXimum' }</code>. The modifier parameter is optional.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="setarbsamplerate">setArbSampleRate</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Integer | String) channel, (Integer | String) rate</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the sample rate for a given channels arbitrary function. Acceptable values for rate are: <code class="prettyprint lang-MATLAB">{[sample_rate] | 'MINimum' | 'MAXimum' | 'DEFault' }</code></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getarbsamplerate">getArbSampleRate</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Integer | String) channel, (String) modifier</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Number) load</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Gets the function Generator's arbitrary function sample rate. Can also fetch the maximum and minimum possible values with the modifier parameter. Acceptable values for modifier <code class="prettyprint lang-MATLAB">{ 'MINimum' | 'MAXimum' }</code>. The modifier parameter is optional.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="geterror">getError</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(String) error</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Gets the most recent error string from the function generator. If there are multiple errors on the error queue this method maybe called multiple times to fetch them all.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

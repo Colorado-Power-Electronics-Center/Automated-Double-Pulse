@@ -22,7 +22,7 @@ classdef SCPI_FunctionGenerator < SCPI_Instrument & handle
             %   sample_rate: Rate at which data points should be read
             %   PeakValue: Maximum height of waveform (bottom is always 0)
             %   name: String title of waveform (max 12 Characters)
-            %   channel: Function Generator Channel to load waveform, on can
+            %   channel: Function Generator Channel to load waveform on, can
             %   be string or number.
             
             if isnumeric(channel)
