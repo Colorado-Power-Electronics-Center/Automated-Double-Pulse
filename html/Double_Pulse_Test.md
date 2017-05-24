@@ -1,5 +1,5 @@
 # Automated Double Pulse Test
-The Automated Double Pulse Test toolbox allows users to run the double pulse test (DPT) completely automated. The toolbox can control all aspects of the double pulse test including oscilloscope setup, data capture, and full control of all other lab equipment. The toolbox is highly  configurable and will allow the user to control as much or as little of its operation as desirable.
+The Automated Double Pulse Test toolbox allows users to run the double pulse test (DPT) completely automated. The toolbox can control all aspects of the double pulse test including oscilloscope setup, data capture, and full control of all other lab equipment. The toolbox is highly configurable and will allow the user to control as much or as little of its operation as desirable.
 
 ## Table of Contents
 [TOC]
