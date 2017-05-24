@@ -18,6 +18,7 @@
     	<tocitem target="setVoltageToLoad.html">setVoltageToLoad</tocitem>
     	<tocitem target="SweepResults.html">SweepResults
     		<tocitem target="SweepPlotSettings.html">SweepPlotSettings</tocitem>
+    		<tocitem target="SurfacePlotSettings.html">SurfacePlotSettings</tocitem>
     	</tocitem>
     	<tocitem target="GeneralWaveform.html">GeneralWaveform
     		<tocitem target="FullWaveform.html">FullWaveform</tocitem>

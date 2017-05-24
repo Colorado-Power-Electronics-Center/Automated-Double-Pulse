@@ -4,6 +4,9 @@ The sweepResults object stores multiple [DoublePulseResults][DoublePulseResults]
 ## Table of Contents
 [TOC]
 
+## Super Classes
+matlab.mixin.Copyable
+
 ## Properties
 ### chan4Results
 | Properties | |
