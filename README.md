@@ -7,4 +7,4 @@ For the full documentation use the MATLAB command:
 showdemo Double_Pulse_Test
 ```
 
-For information on contributing see [contributing](contributing.md). 
+For information on contributing see [contributing](CONTRIBUTING.md). 
