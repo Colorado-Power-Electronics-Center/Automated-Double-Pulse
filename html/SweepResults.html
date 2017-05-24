@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweepResults</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="sweepresults">sweepResults</h1>
+<p>The sweepResults object stores multiple <a href="DoublePulseResults.html">DoublePulseResults</a> that make up a sweep. It also contains methods for plotting the results of a sweep.</p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#sweepresults">sweepResults</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#chan4results">chan4Results</a></li>
+<li><a href="#chan2results">chan2Results</a></li>
+<li><a href="#chan4byvoltage">chan4ByVoltage</a></li>
+<li><a href="#chan2byvoltage">chan2ByVoltage</a></li>
+<li><a href="#currentdelay">currentDelay</a></li>
+</ul>
+</li>
+<li><a href="#properties_private">Properties (Private)</a><ul>
+<li><a href="#plotintresults">plotIntResults</a></li>
+</ul>
+</li>
+<li><a href="#methods_protected">Methods (Protected)</a><ul>
+<li><a href="#copyelement">copyElement</a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#addresult">addResult</a></li>
+<li><a href="#runallplots">runAllPlots</a></li>
+<li><a href="#recalcresults">reCalcResults</a></li>
+<li><a href="#shiftallcurrents">shiftAllCurrents</a></li>
+<li><a href="#plotsweep">plotSweep</a></li>
+<li><a href="#ploteon">plotEOn</a></li>
+<li><a href="#ploteoff">plotEOff</a></li>
+<li><a href="#plotsurfaceplot">plotSurfacePlot</a></li>
+<li><a href="#ploteonsurface">plotEOnSurface</a></li>
+<li><a href="#ploteoffsurface">plotEOffSurface</a></li>
+<li><a href="#plotpeakonvsurface">plotPeakOnVSurface</a></li>
+<li><a href="#plotpeakoffvsurface">plotPeakOffVSurface</a></li>
+<li><a href="#plotvdsonintsurface">plotVdsOnIntSurface</a></li>
+<li><a href="#plotvdsoffintsurface">plotVdsOffIntSurface</a></li>
+<li><a href="#plotidonintsurface">plotIdOnIntSurface</a></li>
+<li><a href="#plotidoffintsurface">plotIdOffIntSurface</a></li>
+<li><a href="#plottvrsurface">plotTVRSurface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="properties">Properties</h2>
+<h3 id="chan4results">chan4Results</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left"><a href="DoublePulseResults.html">DoublePulseResults</a></td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Vector containing all of the 4 channel waveforms from a given sweep.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chan2results">chan2Results</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left"><a href="DoublePulseResults.html">DoublePulseResults</a></td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Vector containing all of the 2 channel waveforms from a given sweep.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chan4byvoltage">chan4ByVoltage</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">containers.Map</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Map containing all of the 4 channel waveforms from a given sweep grouped by approximate bus voltage. For example to obtain an array of all of the 400 V <a href="DoublePulseResults.html">DoublePulseResults</a> from a given sweep you would use the following command <code class="prettyprint lang-MATLAB">sweepResultsObj.chan4ByVoltage(400)</code>. If you do not know what voltages are contained in a given sweep you can use the command <code class="prettyprint lang-MATLAB">sweepResultsObj.chan4ByVoltage.keys</code> to receive a cell array of all existing voltages.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chan2byvoltage">chan2ByVoltage</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">containers.Map</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Map containing all of the 2 channel waveforms from a given sweep grouped by approximate bus voltage. For example to obtain an array of all of the 400 V <a href="DoublePulseResults.html">DoublePulseResults</a> from a given sweep you would use the following command <code class="prettyprint lang-MATLAB">sweepResultsObj.chan2ByVoltage(400)</code>. If you do not know what voltages are contained in a given sweep you can use the command <code class="prettyprint lang-MATLAB">sweepResultsObj.chan2ByVoltage.keys</code> to receive a cell array of all existing voltages.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="currentdelay">currentDelay</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Current delay used for the sweep contained in the object. This property tells you what the deskew was set to in the oscilloscope during the waveform capture.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="properties_private">Properties (Private)</h2>
+<h3 id="plotintresults">plotIntResults</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left"><a href="DoublePulseResults.html">DoublePulseResults</a></td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Temporary storage point for plotting methods.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods_protected">Methods (Protected)</h2>
+<h3 id="copyelement">copyElement</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(<a href="SweepResults.html">SweepResults</a>) cpObj</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Method enables deep copy of all object properties. Not called directly, but used when using the copy() function to duplicate a sweep object.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor">Constructor</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"><a href="SweepResults.html">SweepResults</a></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates the <a href="#chan4byvoltage">chan4ByVoltage</a> and <a href="#chan2byvoltage">chan2ByVoltage</a> maps.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="addresult">addResult</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Integer) numChannels, (Integer) busVoltage, (<a href="DoublePulseResults.html">DoublePulseResults</a>) result</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Adds a new result to the sweep. Must provide the number of channels in the result, the approximate bus voltage, and the result itself.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="runallplots">runAllPlots</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String | Boolean) imageType, (String) saveDirectory</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">This method runs all methods in the class that have the string (case sensitive) <code class="prettyprint lang-MATLAB">'plot'</code> anywhere in their name. The method can save the results of all plotting methods to disk, to set the image type you must set the imageType parameter to your desired file type. Unless you have a compelling reason not to, it is highly recommended that you choose a vector image file format (e.g. <code class="prettyprint lang-MATLAB">{ 'pdf' | 'eps' | 'emf' }</code>) for this argument. You may turn off saving the image by setting the imageType parameter to \<code class="prettyprint lang-MATLAB">false</code>. The save saveDirectory argument is optional, if one is not provided the files will be saved in <code class="prettyprint lang-MATLAB">./plotImages/[imageType]/</code>. In order to save figures you must download the <a href="https://www.mathworks.com/matlabcentral/fileexchange/23629-export-fig">export_fig</a> function from the MathWorks file Exchange and add it your MATLAB path. If you are interested in doing weird things with MATLAB I would encourage you to read and understand the source code for this method, it's pretty neat!</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="recalcresults">reCalcResults</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">This method will recalculate all of the calculations for all <a href="DoublePulseResults.html">DoublePulseResults</a> stored in the sweep. Useful if a calculation method is changed or a new one is added and you want to apply this to old data.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="shiftallcurrents">shiftAllCurrents</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) nanoSec</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Shifts all currents by nanoSec nanoseconds (i.e. nanoSec = 5 will shift by 5 nanoseconds, nanoSec = 5e-9 will shift by 5 attoseconds.) Pay special attention to the sign of nanoSec when you run this method and ensure that the current has moved in the direction you intended.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="plotsweep">plotSweep</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(<a href="SweepPlotSettings.html">SweepPlotSettings</a>) plotSettings</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) plotFigure</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a plot with the settings given in the <a href="SweepPlotSettings.html">SweepPlotSettings</a> object plotSettings. Returns the figure created if further customization is desired.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ploteon">plotEOn</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) plotFigure</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Plots the full sweep turn on energy vs. load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="plotEOn" src="ExamplePlots/X_loadCurrent_Y_turnOnEnergy.png" /></p>
+<h3 id="ploteoff">plotEOff</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) plotFigure</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Plots the full sweep turn off energy vs. load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="plotEOff" src="ExamplePlots/X_loadCurrent_Y_turnOffEnergy.png" /></p>
+<h3 id="plotsurfaceplot">plotSurfacePlot</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(<a href="SurfacePlotSettings.html">SurfacePlotSettings</a>) surfacePlotSettings</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot from the given surface plot settings. Returns the figure, surf Object, and axis for additional customization if desired.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ploteonsurface">plotEOnSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the turn on energy loss vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="plotEOnSurface" src="ExamplePlots/Z_turnOnEnergy_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="ploteoffsurface">plotEOffSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the turn off energy loss vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="plotEOffSurface" src="ExamplePlots/Z_turnOffEnergy_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotpeakonvsurface">plotPeakOnVSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the peak turn on <script type="math/tex">V_{DS}</script> vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="peakOnVDS" src="ExamplePlots/Z_turnOnVDSInt_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotpeakoffvsurface">plotPeakOffVSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the peak turn off <script type="math/tex">V_{DS}</script> vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="peakOffVDS" src="ExamplePlots/Z_turnOffPeakVDS_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotvdsonintsurface">plotVdsOnIntSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the integral of <script type="math/tex">V_{DS}</script> during turn on vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="vdsOnInt" src="ExamplePlots/Z_turnOnVDSInt_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotvdsoffintsurface">plotVdsOffIntSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the integral of <script type="math/tex">V_{DS}</script> during turn off vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="vdsOffInt" src="ExamplePlots/Z_turnOffVDSInt_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotidonintsurface">plotIdOnIntSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the integral of <script type="math/tex">I_D</script> during the turn on vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="IdOnInt" src="ExamplePlots/Z_turnOnIDInt_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plotidoffintsurface">plotIdOffIntSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the integral of <script type="math/tex">I_D</script> during the turn off vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="OdOffInt" src="ExamplePlots/Z_turnOffIDInt_X_busVoltage_Y_loadCurrent.png" /></p>
+<h3 id="plottvrsurface">plotTVRSurface</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Figure) surfFigure, (Surf) surfObj, (axis) ax</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a surface plot of the voltage rise time vs bus voltage and load current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="TVR" src="ExamplePlots/Z_voltageRiseTime_X_busVoltage_Y_loadCurrent.png" /></p></html>

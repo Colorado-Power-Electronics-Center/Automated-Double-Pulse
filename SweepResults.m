@@ -166,7 +166,7 @@ classdef SweepResults < matlab.mixin.Copyable
             
             self.plotEOn
             a = gca;
-            if nanoSec >= 0, opStr = '+'; else opStr = ''; end
+            if nanoSec >= 0, opStr = '+'; else opStr = '-'; end
             title([a.Title.String ' ' opStr ' ' num2str(nanoSec) ' ns']);
         end
         function [plotFigure] = plotSweep(self, plotSettings)
