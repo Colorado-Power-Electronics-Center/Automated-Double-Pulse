@@ -359,7 +359,7 @@ matlab.mixin.Copyable
 | | (Integer) filterSamples: Number of samples in the moving filter. Default: 1  |
 | | (Float) startMargin: Number of switching time length segments to include before the switching point in the plot. Default: 1 |
 | | (Float) endMargin: Number of switching time length segments to include after the switching point in the plot. Default: 3 |
-| | (Integer) wfNumber: Number to include in the plot Figure. If this function is called on an array of [DoublePulseResults][DoublePulseResults] it will be the first number and all others will increment after it. |
+| | (Integer) wfNumber: Number to include in the plot Figure. If this function is called on an array of [DoublePulseResults][DoublePulseResults] it will be the first number and all others will increment after it. Default: 1 |
 | Output |  |
 | Description | Shows a plot(s) that can be used to visually verify that the current and voltage waveforms are properly aligned. All arguments are optional; however, you must give all arguments up to the final argument. |
 |||
