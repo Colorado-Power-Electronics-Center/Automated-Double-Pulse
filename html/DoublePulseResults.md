@@ -328,8 +328,10 @@ matlab.mixin.Copyable
 |--------|:--|
 | Arguments |  |
 | Output |  |
-| Description | Generates plots for the turn on, turn off, and full waveforms. |
+| Description | Generates plots for the turn on, turn off, and full waveforms. Example turn on plot shown below.|
 |||
+
+![matlabStyle](ExamplePlots/matlabStyle.png)
 
 ### plotWaveform
 | Method | |
@@ -338,6 +340,30 @@ matlab.mixin.Copyable
 | Output |  |
 | Description | Plots a given waveform and gives the figure a title of name. The power argument is optional, but should be included if the waveform is a SwitchWaveform. |
 |||
+
+### plotWaveformsScopeStyle
+| Method | |
+|--------|:--|
+| Arguments | (Float) Array timeBoundsOn, (Float) Array timeBoundsOff |
+| Output |  |
+| Description | Plots the turn on and turn off waveforms in the "Oscilloscope" style. See below for reference. The two arguments allow for sectioning the waveform into smaller pieces than what is stored for each switch. They are both two element arrays where the first element is the start time in nanoseconds and the second is the stop time in nanoseconds. They are both optional; however, if you wish to include only timeBoundsOff you must include a non-numeric first argument (e.g. <code class="prettyprint lang-MATLAB">{ 'full' \| true }</code>.) |
+|||
+
+![ScopeStyle](ExamplePlots/scopeStyle.png)
+
+### checkDeskew
+| Method | |
+|--------|:--|
+| Arguments | (Float) Lloop, (Integer) filterSamples, (Float) startMargin, (Float) endMargin, (Integer) wfNumber |
+| | (Float) Lloop: Inductance of the loop in nH. Default: 10 nH |
+| | (Integer) filterSamples: Number of samples in the moving filter. Default: 1  |
+| | (Float) startMargin: Number of switching time length segments to include before the switching point in the plot. Default: 1 |
+| | (Float) endMargin: Number of switching time length segments to include after the switching point in the plot. Default: 3 |
+| | (Integer) wfNumber: Number to include in the plot Figure. If this function is called on an array of [DoublePulseResults][DoublePulseResults] it will be the first number and all others will increment after it. |
+| Output |  |
+| Description | Shows a plot(s) that can be used to visually verify that the current and voltage waveforms are properly aligned. All arguments are optional; however, you must give all arguments up to the final argument. |
+|||
+
 
 ## Methods (private)
 ### calcBusVoltage

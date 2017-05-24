@@ -71,6 +71,8 @@
 <li><a href="#dispresults">dispResults</a></li>
 <li><a href="#plotresults">plotResults</a></li>
 <li><a href="#plotwaveform">plotWaveform</a></li>
+<li><a href="#plotwaveformsscopestyle">plotWaveformsScopeStyle</a></li>
+<li><a href="#checkdeskew">checkDeskew</a></li>
 </ul>
 </li>
 <li><a href="#methods_private">Methods (private)</a><ul>
@@ -1195,7 +1197,7 @@
 </tr>
 <tr>
 <td>Description</td>
-<td align="left">Generates plots for the turn on, turn off, and full waveforms.</td>
+<td align="left">Generates plots for the turn on, turn off, and full waveforms. Example turn on plot shown below.</td>
 </tr>
 <tr>
 <td></td>
@@ -1203,6 +1205,7 @@
 </tr>
 </tbody>
 </table>
+<p><img alt="matlabStyle" src="ExamplePlots/matlabStyle.png" /></p>
 <h3 id="plotwaveform">plotWaveform</h3>
 <table>
 <thead>
@@ -1223,6 +1226,81 @@
 <tr>
 <td>Description</td>
 <td align="left">Plots a given waveform and gives the figure a title of name. The power argument is optional, but should be included if the waveform is a SwitchWaveform.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="plotwaveformsscopestyle">plotWaveformsScopeStyle</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) Array timeBoundsOn, (Float) Array timeBoundsOff</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Plots the turn on and turn off waveforms in the "Oscilloscope" style. See below for reference. The two arguments allow for sectioning the waveform into smaller pieces than what is stored for each switch. They are both two element arrays where the first element is the start time in nanoseconds and the second is the stop time in nanoseconds. They are both optional; however, if you wish to include only timeBoundsOff you must include a non-numeric first argument (e.g. <code class="prettyprint lang-MATLAB">{ 'full' | true }</code>.)</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="ScopeStyle" src="ExamplePlots/scopeStyle.png" /></p>
+<h3 id="checkdeskew">checkDeskew</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) Lloop, (Integer) filterSamples, (Float) startMargin, (Float) endMargin, (Integer) wfNumber</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">(Float) Lloop: Inductance of the loop in nH. Default: 10 nH</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">(Integer) filterSamples: Number of samples in the moving filter. Default: 1</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">(Float) startMargin: Number of switching time length segments to include before the switching point in the plot. Default: 1</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">(Float) endMargin: Number of switching time length segments to include after the switching point in the plot. Default: 3</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">(Integer) wfNumber: Number to include in the plot Figure. If this function is called on an array of <a href="DoublePulseResults.html">DoublePulseResults</a> it will be the first number and all others will increment after it.</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Shows a plot(s) that can be used to visually verify that the current and voltage waveforms are properly aligned. All arguments are optional; however, you must give all arguments up to the final argument.</td>
 </tr>
 <tr>
 <td></td>
