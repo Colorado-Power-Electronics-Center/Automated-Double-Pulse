@@ -419,12 +419,16 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 %                 switchFigure.Units = 'inches';
                 
                 if (waveformNumber == 1)
-                    if (nargin < 3)
+                    if (nargin < 2 || ~isnumeric(timeBoundsOn))
                         timeBoundsOn = [0 time(end)];
                         timeIndices = [1:length(time)];
                     else
+                        % Ensure timeBoundsOn does not exceed array dimensions
+                        timeBoundsOn(1) = max(timeBoundsOn(1), time(1));
+                        timeBoundsOn(2) = min(timeBoundsOn(2), time(end));
+
                         timeBoundsOn(2) = ceil((timeBoundsOn(2)-timeBoundsOn(1))/10)*10+timeBoundsOn(1);
-                        timeIndices = [find(time>timeBoundsOn(1),1):find(time>timeBoundsOn(2),1)];
+                        timeIndices = [find(time>timeBoundsOn(1),1):find(time<=timeBoundsOn(2),1, 'last')];
                     end
                     screenSize = get(groot,'ScreenSize');
 %                     switchFigure.Position = [1 2 7.4 4.5];
@@ -434,8 +438,12 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                         timeBoundsOff = [0 time(end)];
                         timeIndices = [1:length(time)];
                     else
+                        % Ensure timeBoundsOff does not exceed array dimensions
+                        timeBoundsOff(1) = max(timeBoundsOff(1), time(1));
+                        timeBoundsOff(2) = min(timeBoundsOff(2), time(end));
+
                         timeBoundsOff(2) = ceil((timeBoundsOff(2)-timeBoundsOff(1))*10)/10+timeBoundsOff(1);
-                        timeIndices = [find(time>timeBoundsOff(1),1):find(time>timeBoundsOff(2),1)];
+                        timeIndices = [find(time>timeBoundsOff(1),1):find(time<=timeBoundsOff(2),1, 'last')];
                     end
 %                     switchFigure.Position = [9 2 7.4 4.5];
                     switchFigure.Position = [screenSize(3)*0.44 screenSize(4)*0.15 screenSize(3)*0.55 screenSize(4)*0.55];
