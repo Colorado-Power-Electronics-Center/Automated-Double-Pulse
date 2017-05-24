@@ -16,7 +16,9 @@
     	<tocitem target="runDoublePulseTest.html">runDoublePulseTest</tocitem>
     	<tocitem target="rescaleAndRepulse.html">rescaleAndRepulse</tocitem>
     	<tocitem target="setVoltageToLoad.html">setVoltageToLoad</tocitem>
-    	<tocitem target="SweepResults.html">SweepResults</tocitem>
+    	<tocitem target="SweepResults.html">SweepResults
+    		<tocitem target="SweepPlotSettings.html">SweepPlotSettings</tocitem>
+    	</tocitem>
     	<tocitem target="GeneralWaveform.html">GeneralWaveform
     		<tocitem target="FullWaveform.html">FullWaveform</tocitem>
     		<tocitem target="SwitchWaveform.html">SwitchWaveform</tocitem>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweepPlotSettings</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="sweepplotsettings">SweepPlotSettings</h1>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#sweepplotsettings">SweepPlotSettings</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#title">title</a></li>
+<li><a href="#numbertitle">numberTitle</a></li>
+<li><a href="#xlabel">xLabel</a></li>
+<li><a href="#xvaluename">xValueName</a></li>
+<li><a href="#xscale">xScale</a></li>
+<li><a href="#ylabel">yLabel</a></li>
+<li><a href="#yvaluename">yValueName</a></li>
+<li><a href="#yscale">yScale</a></li>
+<li><a href="#zlabel">zLabel</a></li>
+<li><a href="#zvaluename">zValueName</a></li>
+<li><a href="#zscale">zScale</a></li>
+<li><a href="#legendsuffix">legendSuffix</a></li>
+<li><a href="#legendlocation">legendLocation</a></li>
+<li><a href="#markerorder">markerOrder</a></li>
+<li><a href="#plotmap">plotMap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="properties">Properties</h2>
+<h3 id="title">title</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the title for the plot.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="numbertitle">numberTitle</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'off'</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Set to <code class="prettyprint lang-MATLAB">'on'</code> if you would like the figure titles to be numbered.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="xlabel">xLabel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the x-label</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="xvaluename">xValueName</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the x vale to be used in the plot. Possible values are any property of <a href="DoublePulseResults.html">DoublePulseResults</a>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="xscale">xScale</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">1</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the scale for the x values. Can be used to normalize data.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="ylabel">yLabel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the y-label for the plot.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="yvaluename">yValueName</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the y vale to be used in the plot. Possible values are any property of <a href="DoublePulseResults.html">DoublePulseResults</a></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="yscale">yScale</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">1</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the scale for the y values. Can be used to normalize the data.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="zlabel">zLabel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the z-label for the plot.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="zvaluename">zValueName</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the z vale to be used in the plot. Possible values are any property of <a href="DoublePulseResults.html">DoublePulseResults</a></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="zscale">zScale</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">1</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the scale for the z values. Can be used to normalize the data.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="legendsuffix">legendSuffix</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'V'</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the suffix for the legend.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="legendlocation">legendLocation</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'NorthWest'</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the location of the legend.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="markerorder">markerOrder</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">{'*','x','s','d','^','v','&gt;','&lt;','p','h'}</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">(String) Cell Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the marker order for the plot.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="plotmap">plotMap</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">containers.Map</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the data map to use for the plot. Most likely either <a href="SweepResults.html#chan2byvoltage">chan2ByVoltage</a> or <a href="SweepResults.html#chan4byvoltage">chan4ByVoltage</a>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>
