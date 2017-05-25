@@ -1,3 +1,23 @@
+%{
+    Part of the Automated Double Pulse Test Project
+    Copyright (C) 2017  Kyle Goodrick
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Kyle Goodrick: Kyle.Goodrick@Colorado.edu
+%}
+
 function [ switching_idx, turn_off_idx, turn_on_idx, turn_on_voltage,...
     turn_on_gate, turn_on_current, turn_on_time, turn_on_offset ] = ...
     extract_turn_on_waveform( busVoltage, V_DS, V_GS, I_D, time )
