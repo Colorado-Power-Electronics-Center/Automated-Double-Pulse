@@ -34,7 +34,7 @@ classdef GeneralWaveform < handle
         v_gs
         i_d
         i_l
-        v_sync
+        v_complementary
         time
         
         % Capture Channels
@@ -84,8 +84,8 @@ classdef GeneralWaveform < handle
                 chCell = cell(1, 5);
                 chCell(:) = {GeneralWaveform.NOT_RECORDED};
                 chCell{self.channel.VDS} = self.v_ds;
-                if self.channel.VSYNC ~= GeneralWaveform.NOT_RECORDED;
-                    chCell{self.channel.VSYNC} = self.v_sync;
+                if self.channel.Vcomplementary ~= GeneralWaveform.NOT_RECORDED;
+                    chCell{self.channel.Vcomplementary} = self.v_complementary;
                 end
                 chCell{self.channel.ID} = self.i_d;
                 if self.channel.VGS ~= GeneralWaveform.NOT_RECORDED;
@@ -125,10 +125,10 @@ classdef GeneralWaveform < handle
             else
                 newCapture.i_l = GeneralWaveform.NOT_RECORDED;
             end
-            if newCapture.channel.VSYNC > 0
-                newCapture.v_sync = waveforms{newCapture.channel.VSYNC};
+            if newCapture.channel.Vcomplementary > 0
+                newCapture.v_complementary = waveforms{newCapture.channel.Vcomplementary};
             else
-                newCapture.v_sync = GeneralWaveform.NOT_RECORDED;
+                newCapture.v_complementary = GeneralWaveform.NOT_RECORDED;
             end
             newCapture.time = waveforms{end};
             

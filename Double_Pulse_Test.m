@@ -145,17 +145,19 @@ function Double_Pulse_Test(settings)
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
                 save(file_name, vName(dpResults));
 
-                % Remove Full Waveform waveforms from Double Pulse Results object
-                % This will reduce the size of the sweep result object in memory 
-                % and allow more results to be added to a given sweep. No data
-                % is lost as we just saved the fullWaveform to disk. Only remove 
-                % Waveforms so metadata may still be used if necessary.
-                dpResults.fullWaveform.v_ds = [];
-                dpResults.fullWaveform.v_gs = [];
-                dpResults.fullWaveform.i_d = [];
-                dpResults.fullWaveform.i_l = [];
-                dpResults.fullWaveform.v_complementary = [];
-                dpResults.fullWaveform.time = [];
+                if saveFullWaveforms == false
+                    % Remove Full Waveform waveforms from Double Pulse Results object
+                    % This will reduce the size of the sweep result object in memory 
+                    % and allow more results to be added to a given sweep. No data
+                    % is lost as we just saved the fullWaveform to disk. Only remove 
+                    % Waveforms so metadata may still be used if necessary.
+                    dpResults.fullWaveform.v_ds = [];
+                    dpResults.fullWaveform.v_gs = [];
+                    dpResults.fullWaveform.i_d = [];
+                    dpResults.fullWaveform.i_l = [];
+                    dpResults.fullWaveform.v_complementary = [];
+                    dpResults.fullWaveform.time = [];
+                end
 
                 % Save in SweepResults Object
                 sweepResults.addResult(testChannel, busVoltage, dpResults);
@@ -166,9 +168,11 @@ function Double_Pulse_Test(settings)
     % Save Sweep Results
     save([settings.dataDirectory 'sweep_results.mat'], 'sweepResults');
     
-    % Plot Sweep Results
-    sweepResults.plotEOff;
-    sweepResults.plotEOn;
+    if settings.plotLoss == true
+        % Plot Sweep Results
+        sweepResults.plotEOff;
+        sweepResults.plotEOn;
+    end
 
     % Disconnect from instruments
     myScope.disconnect;

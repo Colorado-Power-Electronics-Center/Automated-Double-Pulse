@@ -104,10 +104,10 @@ classdef FullWaveform < GeneralWaveform & handle
             else
                 sectionedWF.i_l = self.i_l;
             end
-            if ~all(self.v_sync == GeneralWaveform.NOT_RECORDED);
-                sectionedWF.v_sync = self.v_sync(startIdx:stopIdx);
+            if ~all(self.v_complementary == GeneralWaveform.NOT_RECORDED);
+                sectionedWF.v_complementary = self.v_complementary(startIdx:stopIdx);
             else
-                sectionedWF.v_sync = self.v_sync;
+                sectionedWF.v_complementary = self.v_complementary;
             end
             sectionedWF.time = self.time(startIdx:stopIdx) - self.time(startIdx);
         end

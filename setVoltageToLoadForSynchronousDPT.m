@@ -49,7 +49,7 @@ function setVoltageToLoadForSynchronousDPT(myScope, myBusSupply, busVoltage, set
             myBusSupply.setSlewedVoltage(step, settings.busSlewRate);
             
             % Check that drain voltage is actually the bus voltage
-            V_complementary = myScope.getImmediateMeasurementValue;
+            Vcomplementary = myScope.getImmediateMeasurementValue;
             % ceil and +1 give a little more buffer at low voltages,
             % without making it too large at high voltages. 
             if abs(step - Vcomplementary) > ceil(.05 * step) + 1

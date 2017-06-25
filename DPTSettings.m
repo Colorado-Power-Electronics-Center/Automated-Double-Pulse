@@ -32,6 +32,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    VGS_Channel
 	    ID_Channel
         IL_Channel
+        Vcomplementary_Channel
     end
     
     properties
@@ -44,6 +45,8 @@ classdef DPTSettings < matlab.mixin.Copyable
 		minGateVoltage = 0;
         maxGateVoltage
         gateLogicVoltage
+        plotLoss
+        saveFullWaveforms
 
 		%% Instrument Setup
 	    % Buffer Sizes
@@ -189,6 +192,9 @@ classdef DPTSettings < matlab.mixin.Copyable
         end
         function out = get.IL_Channel(self)
             out = self.channel.IL;
+        end
+        function out = get.Vcomplementary_Channel(self)
+            out = self.channel.Vcomplementary;
         end
 
         % Functions for returning default values if values not assigned

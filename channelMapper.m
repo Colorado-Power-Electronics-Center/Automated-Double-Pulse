@@ -27,21 +27,22 @@ classdef channelMapper < matlab.mixin.Copyable
         VGS = GeneralWaveform.NOT_RECORDED;
         ID = GeneralWaveform.NOT_RECORDED;
         IL = GeneralWaveform.NOT_RECORDED;
-        VSYNC = GeneralWaveform.NOT_RECORDED;
+        Vcomplementary = GeneralWaveform.NOT_RECORDED;
     end
 
     methods
         function self = channelMapper(VDS_Channel, VGS_Channel,...
-                                      ID_Channel, IL_Channel)
+                                      ID_Channel, IL_Channel, Vcomplementary_Channel)
             if nargin > 0
                 self.VDS = VDS_Channel;
                 self.VGS = VGS_Channel;
                 self.ID = ID_Channel;
                 self.IL = IL_Channel;
+                self.Vcomplementary = Vcomplementary_Channel;
             end
         end
         function out = allUnset(self)
-            Channels = [self.VDS, self.VGS, self.ID, self.IL];
+            Channels = [self.VDS, self.VGS, self.ID, self.IL, self.Vcomplementary];
             out =  all(Channels == GeneralWaveform.NOT_RECORDED);
         end
     end

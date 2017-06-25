@@ -68,7 +68,7 @@ function Synchronous_Double_Pulse_Test(settings)
     % Find Deskew if no append file is given
     if settings.appendFile == false % If not appending to existing sweep
         % Create Sweep results Object
-    	syncSweepResults = sweepResults;
+    	syncSweepResults = SweepResults;
         syncSweepResults.currentDelay = settings.currentDelay;
     else % If appending to file load load old sweep result and get its current delay
         load Measurements\sync_sweep_results.mat
@@ -113,7 +113,7 @@ function Synchronous_Double_Pulse_Test(settings)
                     end
                 end
                 % Create Results Object
-                dpResults = DoublePulseResults(onWaveform, offWaveform);
+                dpResults = SyncDoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
                 dpResults.plotResults;
                 
@@ -125,17 +125,19 @@ function Synchronous_Double_Pulse_Test(settings)
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
                 save(file_name, vName(dpResults));
 
-                % Remove Full Waveform waveforms from Double Pulse Results object
-                % This will reduce the size of the sweep result object in memory 
-                % and allow more results to be added to a given sweep. No data
-                % is lost as we just saved the fullWaveform to disk. Only remove 
-                % Waveforms so metadata may still be used if necessary.
-                dpResults.fullWaveform.v_ds = [];
-                dpResults.fullWaveform.v_gs = [];
-                dpResults.fullWaveform.i_d = [];
-                dpResults.fullWaveform.i_l = [];
-                dpResults.fullWaveform.v_complementary = [];
-                dpResults.fullWaveform.time = [];
+                if saveFullWaveforms == false
+                    % Remove Full Waveform waveforms from Double Pulse Results object
+                    % This will reduce the size of the sweep result object in memory 
+                    % and allow more results to be added to a given sweep. No data
+                    % is lost as we just saved the fullWaveform to disk. Only remove 
+                    % Waveforms so metadata may still be used if necessary.
+                    dpResults.fullWaveform.v_ds = [];
+                    dpResults.fullWaveform.v_gs = [];
+                    dpResults.fullWaveform.i_d = [];
+                    dpResults.fullWaveform.i_l = [];
+                    dpResults.fullWaveform.v_complementary = [];
+                    dpResults.fullWaveform.time = [];
+                end
 
                 % Save in syncSweepResults Object
                 syncSweepResults.addResult(testChannel, busVoltage, dpResults);
