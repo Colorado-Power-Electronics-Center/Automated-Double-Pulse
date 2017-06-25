@@ -18,7 +18,7 @@
     Kyle Goodrick: Kyle.Goodrick@Colorado.edu
 %}
 
-function Double_Pulse_Test(settings)
+function Synchronous_Double_Pulse_Test(settings)
     % Create Copy of Settings File in data Folder
     if ~exist(settings.dataDirectory, 'dir')
         mkdir(settings.dataDirectory);
@@ -28,6 +28,8 @@ function Double_Pulse_Test(settings)
     %% Setup
     % Clear MATLAB Workspace of any previous instrument connections
     instrreset;
+    
+    settings.triggerSlope = 'RISe';
 
     % Setup Oscilloscope
     myScope = SCPI_Oscilloscope(settings.scopeVendor, settings.scopeVisaAddress);
@@ -65,41 +67,19 @@ function Double_Pulse_Test(settings)
     
     % Find Deskew if no append file is given
     if settings.appendFile == false % If not appending to existing sweep
-        if isnan(settings.currentDelay) % If current delay is unset find it
-            % Find Deskew using lowest load settings
-            loadCurrent = settings.deskewCurrent;
-            busVoltage = settings.deskewVoltage;
-
-            setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
-
-            % Switch to triggering on V_GS for IV misalignment pulses
-            deskew_settings = copy(settings);
-            deskew_settings.triggerSource = deskew_settings.triggerSourceDeskew;
-            deskew_settings.triggerLevel = deskew_settings.triggerLevelDeskew;
-            deskew_settings.triggerSlope = deskew_settings.triggerSlopeDeskew;
-
-            [ fullWaveforms ] = runDoublePulseTest(myScope, myFGen,...
-                        loadCurrent, busVoltage, deskew_settings);
-            [ rescaledFullWaveform ] = rescaleAndRepulse(myScope, myFGen, 4, fullWaveforms, settings);
-
-            % Find Deskew
-            settings.currentDelay = DoublePulseResults.findIVMisalignment(rescaledFullWaveform);
-            disp(['IV Misalignment: ' num2str(settings.currentDelay)]);
-        end
-
         % Create Sweep results Object
-    	sweepResults = SweepResults;
-        sweepResults.currentDelay = settings.currentDelay;
+    	syncSweepResults = sweepResults;
+        syncSweepResults.currentDelay = settings.currentDelay;
     else % If appending to file load load old sweep result and get its current delay
-        load Measurements\sweep_results.mat
-        settings.currentDelay = sweepResults.currentDelay; %#ok<NODEF>
+        load Measurements\sync_sweep_results.mat
+        settings.currentDelay = syncSweepResults.currentDelay; %#ok<NODEF>
     end    
     
     
     % Obtain Measurements
     for busVoltage = settings.busVoltages    
         % set Voltage (user or auto)
-        setVoltageToLoad(myScope, myBusSupply, busVoltage, settings);
+        setVoltageToLoadForSynchronousDPT(myScope, myBusSupply, busVoltage, settings);
         
         % Change VDS Vertical Settings to account for new bus voltage
         settings.calcScale(settings.VDS_Channel, 0, busVoltage, 100);
@@ -157,18 +137,18 @@ function Double_Pulse_Test(settings)
                 dpResults.fullWaveform.v_complementary = [];
                 dpResults.fullWaveform.time = [];
 
-                % Save in SweepResults Object
-                sweepResults.addResult(testChannel, busVoltage, dpResults);
+                % Save in syncSweepResults Object
+                syncSweepResults.addResult(testChannel, busVoltage, dpResults);
             end
         end
     end
     
     % Save Sweep Results
-    save([settings.dataDirectory 'sweep_results.mat'], 'sweepResults');
+    save([settings.dataDirectory 'sync_sweep_results.mat'], 'syncSweepResults');
     
     % Plot Sweep Results
-    sweepResults.plotEOff;
-    sweepResults.plotEOn;
+    syncSweepResults.plotEOff;
+    syncSweepResults.plotEOn;
 
     % Disconnect from instruments
     myScope.disconnect;

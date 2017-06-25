@@ -35,9 +35,9 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     end
     
     % Rescale Oscilloscope IL Channel
-    if settings.channel.VSYNC > 0
-        myScope.setChScale(settings.channel.VSYNC, myScope.getChScale(settings.channel.VSYNC));
-        myScope.setChPosition(settings.channel.VSYNC, myScope.getChPosition(settings.channel.VSYNC));
+    if settings.channel.Vcomplementary > 0
+        myScope.setChScale(settings.channel.Vcomplementary, myScope.getChScale(settings.channel.Vcomplementary));
+        myScope.setChPosition(settings.channel.Vcomplementary, myScope.getChPosition(settings.channel.Vcomplementary));
     end
     
     % Ensure Channels are all on
@@ -45,7 +45,7 @@ function [ returnWaveforms ] = rescaleAndRepulse(myScope, myFGen, numChannels, s
     
     % Turn Off I_L and V_GS if 2 Channel measurement
     if numChannels == 2
-        myScope.channelsOff([settings.IL_Channel settings.VGS_Channel settings.channel.VSYNC]);
+        myScope.channelsOff([settings.IL_Channel settings.VGS_Channel settings.channel.Vcomplementary]);
     end
     
     % Set Sample rate and record Length

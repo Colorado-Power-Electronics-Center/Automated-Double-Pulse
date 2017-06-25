@@ -23,8 +23,8 @@ function [ settings ] = SimpleSettings()
 
     % Double Pulse Test Settings
     %% Test Specific Settings
-    dpt_settings.busVoltages = [200];
-    dpt_settings.loadCurrents = [2,5:5:30,32];
+    dpt_settings.busVoltages = [400];
+    dpt_settings.loadCurrents = [2,5:5:35];
     dpt_settings.currentResistor = 50E-3;
     dpt_settings.loadInductor = 720E-6;
     dpt_settings.maxGateVoltage = 7;
@@ -42,13 +42,13 @@ function [ settings ] = SimpleSettings()
     dpt_settings.channel.VDS = 1;
     dpt_settings.channel.VGS = 2;
     dpt_settings.channel.ID = 4;
-    dpt_settings.channel.VSYNC = 3;
+    dpt_settings.channel.Vcomplementary = 3;
 %     dpt_settings.channel.IL = 3; % Comment out if not measuring
 
     %% Vertical Settings
     % Initial Veritcal Settings
-    dpt_settings.maxCurrentSpike = 300;
-    dpt_settings.percentBuffer = 110;
+    dpt_settings.maxCurrentSpike = 100;
+    dpt_settings.percentBuffer = 20;
     dpt_settings.calcDefaultScales;
     
     dpt_settings.autoBusControl = true;
@@ -63,11 +63,17 @@ function [ settings ] = SimpleSettings()
     dpt_settings.window.turn_off_time = 200e-9;
     
     % Set Desired Deskew
-    dpt_settings.currentDelay = 5e-9;
+    dpt_settings.currentDelay = -3.8e-9;
     
     %% Data Settings
 %     dpt_settings.appendFile = 'Measurements\sweep_results.mat';
-    dpt_settings.dataDirectory = 'Measurements\3\';
+    dpt_settings.dataDirectory = 'Measurements\';
        
+    %% Pulse Creation
+    pulse_lead_dead_t = 1e-6;
+    pulse_off_t = 5e-6;
+    pulse_second_pulse_t = 5e-6;
+    pulse_end_dead_t = 1e-6;
+        
     settings = dpt_settings;
 end

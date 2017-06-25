@@ -76,8 +76,8 @@ classdef DPTSettings < matlab.mixin.Copyable
 	    pulse_end_dead_t = 1e-6;
         
         % Mini Second Pulse (For Edwards Test Setup)
-        use_mini_2nd_pulse = false;
-        mini_2nd_pulse_off_time = 50e-9;
+%         use_mini_2nd_pulse = false;
+%         mini_2nd_pulse_off_time = 50e-9;
 
 	    % Burst Settings
 	    burstMode = 'TRIGgered';
