@@ -39,6 +39,8 @@ function setVoltageToLoadForSynchronousDPT(myScope, myBusSupply, busVoltage, set
         % Setup Measurement on oscilloscope
         myScope.setImmediateMeasurementSource(settings.channel.Vcomplementary);
         myScope.setImmediateMeasurementType('MEAN');
+        myScope.setChProbeControl(settings.channel.Vcomplementary, 'MANual');
+        myScope.setChProbeForcedRange(settings.channel.Vcomplementary, 750);
         
         % Separate voltage change into 10 sections        
         steps = linspace(curVoltage, busVoltage, 10);

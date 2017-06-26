@@ -160,7 +160,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             self.calcCurrentTurnOffIdx;
 
             % Current Rise, Voltage Fall, and turn on times
-            self.calcCurrentRiseTime;
+%             self.calcCurrentRiseTime;
             self.calcVoltageFallTime;
 %             if self.numChannels == 4
 %                 self.calcTurnOnTime;
@@ -551,8 +551,8 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             % Calculate the Bus Voltage by finding the average of V_DS from 
             % the start of the turn on waveform to 1/4 of the time until
             % turn on.
-            stopIdx = floor(self.turnOnWaveform.switchIdx / 2);
-            beforeSwitchVDS = self.turnOnWaveform.v_ds(1:stopIdx);
+            stopIdx = floor(self.turnOffWaveform.switchIdx / 2);
+            beforeSwitchVDS = self.turnOffWaveform.v_ds(1:stopIdx);
             
             self.busVoltage = mean(beforeSwitchVDS);
         end
@@ -563,10 +563,10 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             pointsInTime = @(t) floor(self.turnOnWaveform.sampleRate * t);
             
             startIdx = 1;
-            endIdx = self.turnOnWaveform.switchIdx - pointsInTime(5e-9);
+            endIdx = floor (self.turnOnWaveform.switchIdx / 2); % - pointsInTime(5e-9);
             beforeSwitchID = self.turnOnWaveform.i_d(startIdx:endIdx);
             
-            self.loadCurrent = mean(beforeSwitchID);
+            self.loadCurrent = -mean(beforeSwitchID);
         end
         function calcCurrentTurnOnIdx(self)
             % Find Current Turn on idx
@@ -580,30 +580,30 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             % decrease and does not stop decreasing.
             self.currentTurnOffIdx = self.findOnIdx(self.turnOffWaveform.i_d);
         end
-        function calcCurrentRiseTime(self)
-            % Find Current Rise time, t_cr, the time for the current to rise from 0
-            % to the load current.
-            id_atLoadIdx = find(self.turnOnWaveform.i_d > self.loadCurrent, 1);
-            t_cr_idx = id_atLoadIdx - self.currentTurnOnIdx;
-            self.currentRiseTime = t_cr_idx * self.turnOnWaveform.samplePeriod;
-        end
+%         function calcCurrentRiseTime(self)
+%             % Find Current Rise time, t_cr, the time for the current to rise from 0
+%             % to the load current.
+%             id_atLoadIdx = find(self.turnOnWaveform.i_d > self.loadCurrent, 1);
+%             t_cr_idx = id_atLoadIdx - self.currentTurnOnIdx;
+%             self.currentRiseTime = t_cr_idx * self.turnOnWaveform.samplePeriod;
+%         end
         function calcVoltageFallTime(self)
             % Find Voltage Fall time, t_vf, the time it takes for the voltage to
             % reach zero after the voltage starts falling. We can say that the
             % voltage will start falling at the same time the current starts
             % rising.
-            self.v_ds_at0Idx = find(self.turnOnWaveform.v_ds < 0, 1);
-            t_vf_idx = self.v_ds_at0Idx - self.currentTurnOnIdx;
-            self.voltageFallTime = t_vf_idx * self.turnOnWaveform.samplePeriod;
+            self.v_ds_at0Idx = find(self.turnOffWaveform.v_ds < 0, 1);
+            t_vf_idx = self.v_ds_at0Idx - self.currentTurnOffIdx;
+            self.voltageFallTime = t_vf_idx * self.turnOffWaveform.samplePeriod;
         end
         function calcVoltageRiseTime(self)
             % Find Voltage Rise time, t_vr, the time it takes for the
             % voltage to reach the bus after the voltage starts rising. We
             % can say that the voltage will start rising at the same time
             % the current starts falling.
-            self.vDSatBus = find(self.turnOffWaveform.v_ds > self.busVoltage, 1);
-            tVRidx = self.vDSatBus - self.currentTurnOffIdx;
-            self.voltageRiseTime = tVRidx * self.turnOffWaveform.samplePeriod;
+            self.vDSatBus = find(self.turnOnWaveform.v_ds > self.busVoltage, 1);
+            tVRidx = self.vDSatBus - self.currentTurnOnIdx;
+            self.voltageRiseTime = tVRidx * self.turnOnWaveform.samplePeriod;
         end
         function calcTurnOnPeakDV_DT(self)
             % Calculate the peak DV/DT in V_DS during the turn on time
@@ -647,36 +647,36 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             % Max DV/DT 
             self.turnOffPeakDV_DT = max(abs(dv_dt));
         end
-        function calcTurnOnEnergy(self)
+        function calcTurnOffEnergy(self)
             % Calculate the energy loss during turn on.
             % Find the power
-            self.pOn = self.turnOnWaveform.v_ds .* self.turnOnWaveform.i_d;
+            self.pOff = self.turnOffWaveform.v_ds .* self.turnOffWaveform.i_d;
             
             % Find Energy loss during switching
-            eOnCum = cumtrapz(self.turnOnWaveform.time, self.pOn);
+            eOffCum = cumtrapz(self.turnOffWaveform.time, self.pOff);
             
-            eOn = eOnCum(self.v_ds_at0Idx) - eOnCum(self.currentTurnOnIdx);
+            eOff = eOffCum(self.v_ds_at0Idx) - eOffCum(self.currentTurnOffIdx);
             % Set Loss
-            self.turnOnEnergy = eOn;            
+            self.turnOffEnergy = eOff;            
         end
-        function calcTurnOffEnergy(self)
+        function calcTurnOnEnergy(self)
             % Calculate the energy loss during turn off
             % Find the power
-            self.pOff = self.turnOffWaveform.v_ds .* self.turnOffWaveform.i_d;
+            self.pOn = self.turnOnWaveform.v_ds .* self.turnOnWaveform.i_d;
             
             % Find point where current is zero
 %             idAtZero = find(self.turnOffWaveform.i_d < 0, 1);
 
             % Find Current zero crossings
-            signId = sign(self.turnOffWaveform.i_d);
+            signId = sign(self.turnOnWaveform.i_d);
             signDiff = diff(signId);
             zeroCrossings = find(signDiff < 0);
 
             % Find maximum V_DS point
-            [~, maxVdsIdx] = max(self.turnOffWaveform.v_ds);
+            [~, maxVdsIdx] = max(self.turnOnWaveform.v_ds);
             
             % Take moving average of V_DS
-            smoothVds = self.movingAvg(5, self.turnOffWaveform.v_ds);
+            smoothVds = self.movingAvg(5, self.turnOnWaveform.v_ds);
             
             % Find V_DS Peaks
             [vdsPeaks, vdsPeakLocs] = findpeaks(smoothVds(smoothVds > self.busVoltage));
@@ -691,12 +691,12 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             end
             
             % find energy loss during switching
-            eOffCum = cumtrapz(self.turnOffWaveform.time, self.pOff);
+            eOnCum = cumtrapz(self.turnOnWaveform.time, self.pOn);
             
-            eOff = eOffCum(stopIdx) - eOffCum(self.currentTurnOffIdx);
+            eOn = eOnCum(stopIdx) - eOnCum(self.currentTurnOnIdx);
             
             % Set loss
-            self.turnOffEnergy = eOff;
+            self.turnOnEnergy = eOn;
         end
         function calcPeakVDS(self)
             % Calculate maximum V_DS during turn on and turn off waveform

@@ -80,9 +80,9 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     acquisitionSamplingMode = settings.acquisitionSamplingMode;
     acquisitionStop = settings.acquisitionStop;
     
-    % Reset to default state
-    myScope.reset;
-    myScope.clearStatus;
+%     % Reset to default state
+%     myScope.reset;
+%     myScope.clearStatus;
     myFGen.reset;
     myFGen.clearStatus;
 
@@ -168,7 +168,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         myScope.recordLength = scopeRecordLength;
     end
 
-    % Setup Probe Gains of necessary
+    % Setup Probe Gains if necessary
     if myScope.scopeSeries == SCPI_Oscilloscope.Series4000
         for channel = 1:4
             myScope.setChProbeGain(channel, chProbeGain(channel));
@@ -196,6 +196,11 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
         myScope.setChScale(settings.IL_Channel, myScope.getChScale(settings.ID_Channel));
         myScope.setChPosition(settings.IL_Channel, myScope.getChPosition(settings.ID_Channel));
     end
+    % Set Vcomplementary Scaling to the same as V_DS
+    if settings.Vcomplementary_Channel > 0
+        myScope.setChScale(settings.Vcomplementary_Channel, myScope.getChScale(settings.VDS_Channel));
+        myScope.setChPosition(settings.Vcomplementary_Channel, myScope.getChPosition(settings.VDS_Channel));
+    end
     
     % Invert Current Channel
     if settings.invertCurrent
@@ -217,6 +222,11 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     if IL_Channel > 0
         myScope.setChProbeControl(IL_Channel, 'MANual');
         myScope.setChProbeForcedRange(IL_Channel, 30);
+    end
+    % Set Vcomp Probe Range
+    if Vcomplementary_Channel > 0
+        myScope.setChProbeControl(Vcomplementary_Channel, 'MANual');
+        myScope.setChProbeForcedRange(Vcomplementary_Channel, 750);
     end
 
     % Set Initial Horizontal Axis
