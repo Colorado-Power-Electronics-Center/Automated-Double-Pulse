@@ -166,6 +166,8 @@ function Double_Pulse_Test(settings)
 
                 % Save in SweepResults Object
                 sweepResults.addResult(testChannel, busVoltage, dpResults);
+                
+                fprintf('\nFinished testing %4.0f V, %4.1f A.\n',busVoltage,loadCurrent);
             end
         end
     end

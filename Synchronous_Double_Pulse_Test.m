@@ -143,6 +143,8 @@ function Synchronous_Double_Pulse_Test(settings)
 
                 % Save in syncSweepResults Object
                 syncSweepResults.addResult(testChannel, busVoltage, dpResults);
+                                
+                fprintf('\nFinished testing %4.0f V, %4.1f A.\n',busVoltage,loadCurrent);
             end
         end
     end
