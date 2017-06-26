@@ -115,7 +115,9 @@ function Synchronous_Double_Pulse_Test(settings)
                 % Create Results Object
                 dpResults = SyncDoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
-                dpResults.plotResults;
+                if settings.plotWaveforms == true
+                    dpResults.plotResults;
+                end
                 
                 % Anonymous function to convert variable name to string
                 vName=@(x) inputname(1);

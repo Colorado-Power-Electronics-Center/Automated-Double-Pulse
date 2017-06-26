@@ -163,7 +163,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     myScope.acqSamplingMode = acquisitionSamplingMode;
     if settings.useAutoRecordLength
         myScope.recordLength = total_time * myScope.sampleRate...
-            * settings.autoRecordLengthBuffer;
+             * settings.autoRecordLengthBuffer;
     else
         myScope.recordLength = scopeRecordLength;
     end
@@ -179,6 +179,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
 
     % Set Oscilloscope Deskew
     myScope.setChDeskew(settings.ID_Channel, settings.currentDelay);
+    myScope.setChDeskew(settings.Vcomplementary_Channel, settings.vcompDelay);
     myScope.setChDeskew(settings.VGS_Channel, settings.VGSDeskew);
     
     % Set Scope Channel Termination

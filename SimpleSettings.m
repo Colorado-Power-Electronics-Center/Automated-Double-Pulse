@@ -31,6 +31,7 @@ function [ settings ] = SimpleSettings()
     dpt_settings.minGateVoltage = -6;
     dpt_settings.gateLogicVoltage = 5;
     dpt_settings.plotLoss = false;
+    dpt_settings.plotWaveforms = false;
     dpt_settings.saveFullWaveforms = false;
 
     %% Instrument Setup
@@ -58,14 +59,15 @@ function [ settings ] = SimpleSettings()
     %% Horizontal Settings
     % Turn on Window
     dpt_settings.window.turn_on_prequel = 100e-9;
-    dpt_settings.window.turn_on_time = 500e-9;
+    dpt_settings.window.turn_on_time = 300e-9;
 
     % Turn off Window
     dpt_settings.window.turn_off_prequel = 100e-9;
-    dpt_settings.window.turn_off_time = 500e-9;
+    dpt_settings.window.turn_off_time = 300e-9;
     
     % Set Desired Deskew
     dpt_settings.currentDelay = -3.6e-9;
+    dpt_settings.vcompDelay = 8e-9;
     
     %% Data Settings
 %     dpt_settings.appendFile = 'Measurements\sweep_results.mat';

@@ -45,6 +45,7 @@ classdef DPTSettings < matlab.mixin.Copyable
 		minGateVoltage = 0;
         maxGateVoltage
         gateLogicVoltage
+        plotWaveforms
         plotLoss
         saveFullWaveforms
 
@@ -113,6 +114,7 @@ classdef DPTSettings < matlab.mixin.Copyable
         deskewVoltage = NaN;
         deskewCurrent = NaN;
         currentDelay = NaN;
+        vcompDelay = 0;
         VGSDeskew = 0;
 
 	    % Initial Horizontal Settings

@@ -90,9 +90,11 @@ function Double_Pulse_Test(settings)
         % Create Sweep results Object
     	sweepResults = SweepResults;
         sweepResults.currentDelay = settings.currentDelay;
+        sweepResults.vcompDelay = settings.vcompDelay;
     else % If appending to file load load old sweep result and get its current delay
         load Measurements\sweep_results.mat
         settings.currentDelay = sweepResults.currentDelay; %#ok<NODEF>
+        settings.vcompDelay = sweepResults.vcompDelay;
     end    
     
     
@@ -135,7 +137,10 @@ function Double_Pulse_Test(settings)
                 % Create Results Object
                 dpResults = DoublePulseResults(onWaveform, offWaveform);
                 dpResults.fullWaveform = overviewWaveform;
-                dpResults.plotResults;
+                
+                if settings.plotWaveforms == true
+                    dpResults.plotResults;
+                end
                 
                 % Anonymous function to convert variable name to string
                 vName=@(x) inputname(1);
