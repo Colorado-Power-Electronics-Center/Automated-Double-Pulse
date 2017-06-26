@@ -32,6 +32,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     VGS_Channel = settings.VGS_Channel;
     ID_Channel = settings.ID_Channel;
     IL_Channel = settings.IL_Channel;
+    Vcomplementary_Channel = settings.Vcomplementary_Channel;
     
     %% Pulse Creation
     gateLogicVoltage = settings.gateLogicVoltage;
@@ -139,6 +140,7 @@ function [ returnWaveforms ] = runDoublePulseTest( myScope, myFGen,...
     myScope.setChLabelName(VGS_Channel, 'V_GS');
     myScope.setChLabelName(ID_Channel, 'I_D');
     myScope.setChLabelName(IL_Channel, 'I_L');
+    myScope.setChLabelName(Vcomplementary_Channel, 'V_comp');
     
     % Turn Off Headers
     myScope.removeHeaders;

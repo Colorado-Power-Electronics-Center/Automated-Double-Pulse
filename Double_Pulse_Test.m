@@ -123,13 +123,13 @@ function Double_Pulse_Test(settings)
                     % Process Results
                     if scalingWaveform.isTurnOn
                         onWaveform = switchingWaveform.turnOnWaveform;
-                    else
-                        offWaveform = switchingWaveform.turnOffWaveform;
-                        
-                        % Set overview Waveform
+                         % Set overview Waveform
                         if testChannel == 4
                             overviewWaveform = switchingWaveform;
                         end
+                    else
+                        offWaveform = switchingWaveform.turnOffWaveform;
+                        
                     end
                 end
                 % Create Results Object
@@ -145,7 +145,7 @@ function Double_Pulse_Test(settings)
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
                 save(file_name, vName(dpResults));
 
-                if saveFullWaveforms == false
+                if settings.saveFullWaveforms == false
                     % Remove Full Waveform waveforms from Double Pulse Results object
                     % This will reduce the size of the sweep result object in memory 
                     % and allow more results to be added to a given sweep. No data

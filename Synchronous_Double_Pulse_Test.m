@@ -82,7 +82,7 @@ function Synchronous_Double_Pulse_Test(settings)
         setVoltageToLoadForSynchronousDPT(myScope, myBusSupply, busVoltage, settings);
         
         % Change VDS Vertical Settings to account for new bus voltage
-        settings.calcScale(settings.VDS_Channel, 0, busVoltage, 100);
+        settings.calcScale(settings.VDS_Channel, 0, busVoltage, 200);
         if (settings.channel.Vcomplementary ~= GeneralWaveform.NOT_RECORDED)
             settings.calcScale(settings.channel.Vcomplementary, 0, busVoltage, 200);
         end
@@ -103,13 +103,13 @@ function Synchronous_Double_Pulse_Test(settings)
                     % Process Results
                     if scalingWaveform.isTurnOn
                         onWaveform = switchingWaveform.turnOnWaveform;
-                    else
-                        offWaveform = switchingWaveform.turnOffWaveform;
-                        
-                        % Set overview Waveform
+                         % Set overview Waveform
                         if testChannel == 4
                             overviewWaveform = switchingWaveform;
                         end
+                    else
+                        offWaveform = switchingWaveform.turnOffWaveform;
+                       
                     end
                 end
                 % Create Results Object
@@ -125,7 +125,7 @@ function Synchronous_Double_Pulse_Test(settings)
                     'V_' num2str(loadCurrent) 'A_' num2str(testChannel) 'CH.mat'];
                 save(file_name, vName(dpResults));
 
-                if saveFullWaveforms == false
+                if settings.saveFullWaveforms == false
                     % Remove Full Waveform waveforms from Double Pulse Results object
                     % This will reduce the size of the sweep result object in memory 
                     % and allow more results to be added to a given sweep. No data
@@ -148,9 +148,11 @@ function Synchronous_Double_Pulse_Test(settings)
     % Save Sweep Results
     save([settings.dataDirectory 'sync_sweep_results.mat'], 'syncSweepResults');
     
-    % Plot Sweep Results
-    syncSweepResults.plotEOff;
-    syncSweepResults.plotEOn;
+    if settings.plotLoss == true
+        % Plot Sweep Results
+        syncSweepResults.plotEOff;
+        syncSweepResults.plotEOn;
+    end
 
     % Disconnect from instruments
     myScope.disconnect;

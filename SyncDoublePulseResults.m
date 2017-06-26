@@ -19,7 +19,7 @@
 %}
 
 classdef SyncDoublePulseResults < matlab.mixin.Copyable
-    %DoublePulseResults Stores the results of a double Pulse Test.
+    %SyncDoublePulseResults Stores the results of a double Pulse Test.
     %   Also contains methods for processing the results of a double pulse
     %   test. Can be included in a SweepResults object to allow for
     %   construction of a sweep result.
@@ -35,14 +35,12 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
         % Shared Properties
         busVoltage
         loadCurrent
-        gateVoltage
+%         gateVoltage
         
         % Turn On Properties
         turnOnEnergy
-        turnOnDelay        
         voltageFallTime
         currentRiseTime
-        turnOnTime
         turnOnPeakDV_DT
         pOn
         turnOnPeakVDS
@@ -51,9 +49,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
         
         % Turn Off Properties
         turnOffEnergy
-        turnOffDelay
         voltageRiseTime
-        turnOffTime
         turnOffPeakDV_DT
         pOff
         turnOffPeakVDS
@@ -63,19 +59,17 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
     
     properties (Access = private)
         % Turn On
-        gateTurnOnIdx
         currentTurnOnIdx
         v_ds_at0Idx
         
         % Turn Off
-        gateTurnOffIdx
         currentTurnOffIdx
         vDSatBus
     end
     
     methods
         % Constructor
-        function self = DoublePulseResults(onWaveforms, offWaveforms)
+        function self = SyncDoublePulseResults(onWaveforms, offWaveforms)
             self.turnOnWaveform = SwitchWaveform;
             self.turnOffWaveform = SwitchWaveform;
 
@@ -146,39 +140,39 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             % Nominal Values
             self.calcBusVoltage;
             self.calcLoadCurrent;
-            if self.numChannels == 4
-                self.calcGateVoltage;       
-            end
+%             if self.numChannels == 4
+%                 self.calcGateVoltage;       
+%             end
             
             % Calculate Peak V_DS
             self.calcPeakVDS;
 
             % Turn On indices
-            if self.numChannels == 4
-                self.calcGateTurnOnIdx;
-            end
+%             if self.numChannels == 4
+%                 self.calcGateTurnOnIdx;
+%             end
             self.calcCurrentTurnOnIdx;
 
             % Turn Off indices
-            if self.numChannels == 4
-                self.calcGateTurnOffIdx;
-            end
+%             if self.numChannels == 4
+%                 self.calcGateTurnOffIdx;
+%             end
             self.calcCurrentTurnOffIdx;
 
             % Current Rise, Voltage Fall, and turn on times
             self.calcCurrentRiseTime;
             self.calcVoltageFallTime;
-            if self.numChannels == 4
-                self.calcTurnOnTime;
-                self.calcTurnOnDelay;
-            end
+%             if self.numChannels == 4
+%                 self.calcTurnOnTime;
+%                 self.calcTurnOnDelay;
+%             end
 
             % Voltage Rise, turn off times
             self.calcVoltageRiseTime;
-            if self.numChannels == 4
-                self.calcTurnOffTime;
-                self.calcTurnOffDelay;
-            end
+%             if self.numChannels == 4
+%                 self.calcTurnOffTime;
+%                 self.calcTurnOffDelay;
+%             end
 
             % Calculate Maximum DV/DT in turn off and turn on V_DS
             self.calcTurnOnPeakDV_DT;
@@ -202,14 +196,14 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             fprintf('\n V_dc         %4.0f V', self.busVoltage);
             fprintf('\n I_L          %4.1f A', self.loadCurrent);
             fprintf('\n Eoff         %4.1f uJ', self.turnOffEnergy * 1e6);
-            fprintf('\n td_off       %4.1f ns', self.turnOffTime * 1e9);
+%             fprintf('\n td_off       %4.1f ns', self.turnOffTime * 1e9);
             fprintf('\n tvr          %4.1f ns', self.voltageRiseTime * 1e9);
             fprintf('\n Peak dv/dt   %4.1f V/ns \n\n', self.turnOffPeakDV_DT / 1e9);
             disp('Turn-on waveform analysis:');
             fprintf('\n V_dc         %4.0f V', self.busVoltage);
             fprintf('\n I_L          %4.1f A', self.loadCurrent);
             fprintf('\n Eon          %4.1f uJ', self.turnOnEnergy * 1e6);
-            fprintf('\n td_on        %4.1f ns', self.turnOnDelay * 1e9);
+%             fprintf('\n td_on        %4.1f ns', self.turnOnDelay * 1e9);
             fprintf('\n tcr          %4.1f ns', self.currentRiseTime * 1e9);
             fprintf('\n tvf          %4.1f ns', self.voltageFallTime * 1e9);
             fprintf('\n Peak dv/dt   %4.1f V/ns \n', self.turnOnPeakDV_DT / 1e9);
@@ -254,9 +248,9 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             
             if isSwitch
                 % Find VGS Scaling Factor
-                if self.numChannels == 4
-                    vgsScaling = self.busVoltage / self.gateVoltage;
-                end
+%                 if self.numChannels == 4
+%                     vgsScaling = self.busVoltage / self.gateVoltage;
+%                 end
 
                 % Change time to nS
                 time = waveform.time * 1e9;
@@ -266,13 +260,13 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 mostCom = @(x) mode(round(x(x > mean(x))));
                 
                 % Find approximate Bus and gate Voltage
-                if self.numChannels == 4
-                    approxGateVoltage = mostCom(waveform.v_gs);
-                
-                    approxBusVoltage = mostCom(waveform.v_ds);
-                    % Find VGS Scaling Factor
-                    vgsScaling = approxBusVoltage / approxGateVoltage;
-                end
+%                 if self.numChannels == 4
+%                     approxGateVoltage = mostCom(waveform.v_gs);
+%                 
+%                     approxBusVoltage = mostCom(waveform.v_ds);
+%                     % Find VGS Scaling Factor
+%                     vgsScaling = approxBusVoltage / approxGateVoltage;
+%                 end
                 
                 % Change time to uS
                 time = waveform.time * 1e6;
@@ -280,10 +274,10 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             end
             
             % Round VGS Scaling to nearest 10
-            if self.numChannels == 4
-                vgsScaling = floor(vgsScaling / 10) * 10;
-                if vgsScaling == 0, vgsScaling = 1; end
-            end
+%             if self.numChannels == 4
+%                 vgsScaling = floor(vgsScaling / 10) * 10;
+%                 if vgsScaling == 0, vgsScaling = 1; end
+%             end
             
             % Plot Waveform
             switchFigure = figure();
@@ -341,13 +335,13 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             legendStrs{end + 1} = 'V_{DS}';
             
             % V_GS
-            if self.numChannels == 4
-                yyaxis left
-                vgsOnLine = line(time, waveform.v_gs * vgsScaling);
-                vgsOnLine.Color = vgsColor;
-                vgsOnLine.LineWidth = lineWidth;
-                legendStrs{end + 1} = ['V_{GS} \times ' num2str(vgsScaling)];
-            end
+%             if self.numChannels == 4
+%                 yyaxis left
+%                 vgsOnLine = line(time, waveform.v_gs * vgsScaling);
+%                 vgsOnLine.Color = vgsColor;
+%                 vgsOnLine.LineWidth = lineWidth;
+%                 legendStrs{end + 1} = ['V_{GS} \times ' num2str(vgsScaling)];
+%             end
             
             % I_D
             yyaxis right
@@ -375,9 +369,10 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             vdsColor = [0 0 1];
             vgsColor = [0 1 0];
             idColor = [1 0 0];
-%             ilColor = 'magenta';
+            vcompColor = [1 0 1];
             powerColor = [0 0 0];
             vdsScaling = 100;
+            vcompScaling = 100;
 
             % Set other plot values
             lineWidth = 3;
@@ -395,12 +390,12 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 end
             
                 % Find VGS Scaling Factor
-                if self.numChannels == 4
-                    vgsScaling = ceil(max(waveform.v_gs)) / ceil(max(waveform.v_ds)/vdsScaling);
-                    while (min(waveform.v_gs/vgsScaling) < -1)
-                        vgsScaling = vgsScaling + 1;
-                    end
-                end
+%                 if self.numChannels == 4
+%                     vgsScaling = ceil(max(waveform.v_gs)) / ceil(max(waveform.v_ds)/vdsScaling);
+%                     while (min(waveform.v_gs/vgsScaling) < -1)
+%                         vgsScaling = vgsScaling + 1;
+%                     end
+%                 end
                 idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling) / 5) * 5;
                 if (idScaling < 5)
                     idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling));
@@ -416,7 +411,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 end
                 fprintf('Pon scale = %2.0f kW/div \n',pScaling/1e3);
                 fprintf('vds scale = %2.0f V/div \n',vdsScaling);
-                fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
+%                 fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
                 fprintf('id scale  = %2.0f A/div \n\n',idScaling);
                 % Change time to nS
                 time = waveform.time * 1e9;
@@ -516,31 +511,31 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 vdsOnLine.LineWidth = lineWidth;
 
                 % V_GS
-                if self.numChannels == 4
-                    vgsOnLine = line(time, waveform.v_gs(timeIndices) / vgsScaling);
-                    vgsOnLine.Color = vgsColor;
-                    vgsOnLine.LineWidth = lineWidth;
-                end
+%                 if self.numChannels == 4
+%                     vgsOnLine = line(time, waveform.v_gs(timeIndices) / vgsScaling);
+%                     vgsOnLine.Color = vgsColor;
+%                     vgsOnLine.LineWidth = lineWidth;
+%                 end
 
                 % I_D
                 idOnLine = line(time, waveform.i_d(timeIndices) / idScaling);
                 idOnLine.Color = idColor;
                 idOnLine.LineWidth = lineWidth;
 
-    %             % I_L
-    %             ilOnLine = line(waveform.time, waveform.i_l);
-    %             ilOnLine.Color = ilColor;
-    %             ilOnLine.LineWidth = lineWidth;
-    %             legendStrs{end + 1} = 'I_L';
+                % Vcomp
+                vcompOnLine = line(time, waveform.v_complementary(timeIndices) / vcompScaling);
+                vcompOnLine.Color = vcompColor;
+                vcompOnLine.LineWidth = lineWidth;
 
                 axis([0 time(end) measYAxis.Limits]);
                 measYAxisLength = measYAxis.Limits(2)-measYAxis.Limits(1);
                 xTick = get(measSubP,'XTick');
                 measSubP.XTick = xTick(1:end-1);
                 hold on;
-                if self.numChannels == 4
-                    fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vgsColor);
-                end
+%                 if self.numChannels == 4
+%                     fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vgsColor);
+%                 end
+                fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vcompColor);
                 fill([0 0 time(end)/30]+time(end)/100, [-1 1 0]*measYAxisLength/20, idColor);
                 fill([0 0 time(end)/30], [-1 1 0]*measYAxisLength/20, vdsColor);
                 line([0 0], [measYAxis.Limits], 'color','black','linewidth',2)
@@ -548,8 +543,8 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 line([0 time(end)], [1 1]*measYAxis.Limits(1), 'color','black','linewidth',2)
                 line([0 time(end)], [1 1]*measYAxis.Limits(2), 'color','black','linewidth',2)
             end
-
         end
+    end
     
     methods (Access = private)
         function calcBusVoltage(self)
@@ -568,55 +563,22 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             pointsInTime = @(t) floor(self.turnOnWaveform.sampleRate * t);
             
             startIdx = 1;
-            endIdx = self.turnOffWaveform.switchIdx - pointsInTime(5e-9);
-            beforeSwitchID = self.turnOffWaveform.i_d(startIdx:endIdx);
+            endIdx = self.turnOnWaveform.switchIdx - pointsInTime(5e-9);
+            beforeSwitchID = self.turnOnWaveform.i_d(startIdx:endIdx);
             
             self.loadCurrent = mean(beforeSwitchID);
-        end
-        function calcGateVoltage(self)
-            % Calculate the gate voltage by finding the average of the
-            % values from the start of the turn off waveform to 1/4 of the
-            % time until turn off.
-            stopIdx = floor(self.turnOffWaveform.switchIdx / 2);
-            beforeSwitchVGS = self.turnOffWaveform.v_gs(1:stopIdx);
-            
-            self.gateVoltage = mean(beforeSwitchVGS);
-        end
-        function calcGateTurnOnIdx(self)
-            % Find Gate Turn on idx
-            % Point in V_GS turn on waveform where voltage starts to 
-            % increase and does not stop increasing.
-            self.gateTurnOnIdx = self.findOnIdx(self.turnOnWaveform.v_gs);
-        end
-        function calcGateTurnOffIdx(self)
-            % Find Gate Turn off idx
-            % Point in V_GS turn off waveform where voltage starts to fall
-            % and does not stop decreasing.
-            self.gateTurnOffIdx = self.findOffIdx(self.turnOffWaveform.v_gs);
         end
         function calcCurrentTurnOnIdx(self)
             % Find Current Turn on idx
             % Point in I_D turn on waveform where current starts to 
             % increase and does not stop increasing
-            self.currentTurnOnIdx = self.findOnIdx(self.turnOnWaveform.i_d);
+            self.currentTurnOnIdx = self.findOffIdx(self.turnOnWaveform.i_d);
         end
         function calcCurrentTurnOffIdx(self)
             % Find Current Turn Off idx
             % Point in I_D turn off waveform where current starts to
             % decrease and does not stop decreasing.
-            self.currentTurnOffIdx = self.findOffIdx(self.turnOffWaveform.i_d);
-        end
-        function calcTurnOnDelay(self)
-            % Find turn on delay, td_on, the time from gate rise start to current
-            % rise start.
-            t_d_onIdx = self.currentTurnOnIdx - self.gateTurnOnIdx;
-            self.turnOnDelay = t_d_onIdx * self.turnOnWaveform.samplePeriod;
-        end
-        function calcTurnOffDelay(self)
-            % Find turn off delay, td_off, the time from the start of the
-            % gate fall to the start of the current fall.
-            tdOffIdx = self.currentTurnOffIdx - self.gateTurnOffIdx;
-            self.turnOffDelay = tdOffIdx * self.turnOffWaveform.samplePeriod;
+            self.currentTurnOffIdx = self.findOnIdx(self.turnOffWaveform.i_d);
         end
         function calcCurrentRiseTime(self)
             % Find Current Rise time, t_cr, the time for the current to rise from 0
@@ -642,18 +604,6 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             self.vDSatBus = find(self.turnOffWaveform.v_ds > self.busVoltage, 1);
             tVRidx = self.vDSatBus - self.currentTurnOffIdx;
             self.voltageRiseTime = tVRidx * self.turnOffWaveform.samplePeriod;
-        end
-        function calcTurnOnTime(self)
-            % Calculate on time, t_on, the time from initial V_GS rise to final
-            % V_DS fall. 
-            t_on_idx = self.v_ds_at0Idx - self.gateTurnOnIdx;
-            self.turnOnTime = t_on_idx * self.turnOnWaveform.samplePeriod;
-        end
-        function calcTurnOffTime(self)
-            % Calculate off time, t_off, the time from initial V_GS fall to
-            % V_DS reaching the Bus Voltage.
-            tOffIdx = self.vDSatBus - self.gateTurnOffIdx;
-            self.turnOffTime = tOffIdx * self.turnOffWaveform.samplePeriod;
         end
         function calcTurnOnPeakDV_DT(self)
             % Calculate the peak DV/DT in V_DS during the turn on time
@@ -821,7 +771,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
     methods (Access = protected, Static)
         function [onIdx] = findOnIdx(onWaveform)
             % Find nominal value
-            nomValue = DoublePulseResults.findNominalValue(onWaveform);
+            nomValue = SyncDoublePulseResults.findNominalValue(onWaveform);
 
             % Start searching at 10% of the nominal value
             startValue = 0.5 * nomValue;
@@ -834,7 +784,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
 
             % offIdx is point before startIdx where value starts to
             % decrease and does not stop. Use +- 5 sample moving average.
-            movingAvg = DoublePulseResults.movingAvg(10, onWaveform);
+            movingAvg = SyncDoublePulseResults.movingAvg(10, onWaveform);
 
             onDiff = diff(movingAvg);
 
@@ -842,7 +792,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
         end
         function [offIdx] = findOffIdx(offWaveform)
             % Find Nominal Value
-            nomValue = DoublePulseResults.findNominalValue(offWaveform);
+            nomValue = SyncDoublePulseResults.findNominalValue(offWaveform);
             
             % Start searching at the 90% of nominal value
             startValue = 0.9 * nomValue;
@@ -850,7 +800,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
             
             % offIdx is point before startIdx where value starts to
             % decrease and does not stop. Use +- 5 sample moving average.
-            movingAvg = DoublePulseResults.movingAvg(10, offWaveform);
+            movingAvg = SyncDoublePulseResults.movingAvg(10, offWaveform);
             
             offDiff = diff(movingAvg);
             

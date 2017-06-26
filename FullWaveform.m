@@ -54,7 +54,7 @@ classdef FullWaveform < GeneralWaveform & handle
             
             %% Check if first switch is on or off
             % and define turn on and turn off indices
-            if V_DS_Round_Diff(switching_idx(1)) > 0
+            if V_DS_Round_Diff(switching_idx(1)) > 0 && self.i_d(end) < 1 %Temporary trick to correctly trigger synchronous switch events
                 % Turn off
                 self.turn_off_idx = switching_idx(1);
                 self.turn_on_idx = switching_idx(2);

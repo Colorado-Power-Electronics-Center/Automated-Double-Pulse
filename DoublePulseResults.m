@@ -386,8 +386,10 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             vgsColor = [0 1 0];
             idColor = [1 0 0];
 %             ilColor = 'magenta';
+            vcompColor = [1 0 1];
             powerColor = [0 0 0];
             vdsScaling = 100;
+            vcompScaling = 100;
 
             % Set other plot values
             lineWidth = 3;
@@ -428,6 +430,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 fprintf('vds scale = %2.0f V/div \n',vdsScaling);
                 fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
                 fprintf('id scale  = %2.0f A/div \n\n',idScaling);
+                fprintf('vcomp scale = %2.0f V/div \n',vcompScaling);
                 % Change time to nS
                 time = waveform.time * 1e9;
                 timeUnits = 'ns';
@@ -537,6 +540,11 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 idOnLine.Color = idColor;
                 idOnLine.LineWidth = lineWidth;
 
+                % V_Complementary
+                vcompOnLine = line(time, waveform.v_complementary(timeIndices) / vcompScaling);
+                vcompOnLine.Color = vcompColor;
+                vcompOnLine.LineWidth = lineWidth;
+                
     %             % I_L
     %             ilOnLine = line(waveform.time, waveform.i_l);
     %             ilOnLine.Color = ilColor;
@@ -549,8 +557,9 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 measSubP.XTick = xTick(1:end-1);
                 hold on;
                 if self.numChannels == 4
-                    fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vgsColor);
+                    fill([0 0 time(end)/30]+time(end)/33, [-1 1 0]*measYAxisLength/20, vgsColor);
                 end
+                fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vcompColor);
                 fill([0 0 time(end)/30]+time(end)/100, [-1 1 0]*measYAxisLength/20, idColor);
                 fill([0 0 time(end)/30], [-1 1 0]*measYAxisLength/20, vdsColor);
                 line([0 0], [measYAxis.Limits], 'color','black','linewidth',2)
