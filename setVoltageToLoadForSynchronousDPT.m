@@ -42,6 +42,8 @@ function setVoltageToLoadForSynchronousDPT(myScope, myBusSupply, busVoltage, set
         myScope.setChProbeControl(settings.channel.Vcomplementary, 'MANual');
         myScope.setChProbeForcedRange(settings.channel.Vcomplementary, 750);
         
+        
+        pause(3);
         % Separate voltage change into 10 sections        
         steps = linspace(curVoltage, busVoltage, 10);
         

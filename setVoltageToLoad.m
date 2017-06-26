@@ -39,6 +39,8 @@ function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
         myScope.setImmediateMeasurementSource(settings.channel.VDS);
         myScope.setImmediateMeasurementType('MEAN');
         
+        pause(3);
+        
         % Separate voltage change into 10 sections        
         steps = linspace(curVoltage, busVoltage, 10);
         

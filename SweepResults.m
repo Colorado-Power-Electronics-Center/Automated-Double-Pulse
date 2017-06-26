@@ -33,6 +33,7 @@ classdef SweepResults < matlab.mixin.Copyable
         
         % Current Delay
         currentDelay
+        vcompDelay
     end
     
     properties (Access = private)
