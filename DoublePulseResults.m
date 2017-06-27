@@ -823,8 +823,12 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             
             % Check if max V_DS is before or after 3rd peak
             if maxVdsIdx > vdsPeakLocs(3)
-                % Unstable, Use first zero crossing
-                stopIdx = zeroCrossings(1);
+                % Unstable, Use first zero crossing after bus voltage
+                iii = 1;
+                while (self.turnOffWaveforms.v_ds(zeroCrossings(iii)) < self.busVoltage) && (ii < length(zeroCrossings)
+                    iii = iii + 1;
+                end
+                stopIdx = zeroCrossings(iii);
             else
                 % Use zero crossing after max
                 stopIdx = zeroCrossings(find(zeroCrossings > maxVdsIdx, 1));

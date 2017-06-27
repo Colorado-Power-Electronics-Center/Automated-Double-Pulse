@@ -38,6 +38,10 @@ function setVoltageToLoad(myScope, myBusSupply, busVoltage, settings)
         % Setup Measurement on oscilloscope
         myScope.setImmediateMeasurementSource(settings.channel.VDS);
         myScope.setImmediateMeasurementType('MEAN');
+        if (settings.channel.Vcomplementary > 0)
+            myScope.setChProbeControl(settings.channel.Vcomplementary, 'MANual');
+            myScope.setChProbeForcedRange(settings.channel.Vcomplementary, 750);
+        end
         
         pause(3);
         
