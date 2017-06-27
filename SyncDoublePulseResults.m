@@ -390,12 +390,14 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 end
             
                 % Find VGS Scaling Factor
-%                 if self.numChannels == 4
-%                     vgsScaling = ceil(max(waveform.v_gs)) / ceil(max(waveform.v_ds)/vdsScaling);
-%                     while (min(waveform.v_gs/vgsScaling) < -1)
-%                         vgsScaling = vgsScaling + 1;
-%                     end
-%                 end
+                if max(waveform.v_gs) > 0
+                    vgsScaling = ceil(max(waveform.v_gs) / ceil(max(waveform.v_ds)/vdsScaling))
+                    while (min(waveform.v_gs/vgsScaling) < -1)
+                        vgsScaling = vgsScaling + 1
+                    end
+                else
+                    vgsScaling = 1;
+                end
                 idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling) / 5) * 5;
                 if (idScaling < 5)
                     idScaling = ceil((max(waveform.i_d)) / ceil(max(waveform.v_ds)/vdsScaling));
@@ -411,7 +413,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 end
                 fprintf('Pon scale = %2.0f kW/div \n',pScaling/1e3);
                 fprintf('vds scale = %2.0f V/div \n',vdsScaling);
-%                 fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
+                fprintf('vgs scale = %2.0f V/div \n',vgsScaling);
                 fprintf('id scale  = %2.0f A/div \n\n',idScaling);
                 % Change time to nS
                 time = waveform.time * 1e9;
@@ -511,11 +513,9 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 vdsOnLine.LineWidth = lineWidth;
 
                 % V_GS
-%                 if self.numChannels == 4
-%                     vgsOnLine = line(time, waveform.v_gs(timeIndices) / vgsScaling);
-%                     vgsOnLine.Color = vgsColor;
-%                     vgsOnLine.LineWidth = lineWidth;
-%                 end
+                vgsOnLine = line(time, waveform.v_gs(timeIndices) / vgsScaling);
+                vgsOnLine.Color = vgsColor;
+                vgsOnLine.LineWidth = lineWidth;
 
                 % I_D
                 idOnLine = line(time, waveform.i_d(timeIndices) / idScaling);
@@ -532,9 +532,7 @@ classdef SyncDoublePulseResults < matlab.mixin.Copyable
                 xTick = get(measSubP,'XTick');
                 measSubP.XTick = xTick(1:end-1);
                 hold on;
-%                 if self.numChannels == 4
-%                     fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vgsColor);
-%                 end
+                fill([0 0 time(end)/30]+time(end)/33, [-1 1 0]*measYAxisLength/20, vgsColor);
                 fill([0 0 time(end)/30]+time(end)/50, [-1 1 0]*measYAxisLength/20, vcompColor);
                 fill([0 0 time(end)/30]+time(end)/100, [-1 1 0]*measYAxisLength/20, idColor);
                 fill([0 0 time(end)/30], [-1 1 0]*measYAxisLength/20, vdsColor);
