@@ -185,10 +185,10 @@ classdef SweepResults < matlab.mixin.Copyable
 
             self.currentDelay = self.currentDelay - nanoSec * 1e-9;
             
-            self.plotEOn
-            a = gca;
-            if nanoSec >= 0, opStr = '+'; else opStr = '-'; end
-            title([a.Title.String ' ' opStr ' ' num2str(nanoSec) ' ns']);
+%             self.plotEOn
+%             a = gca;
+%             if nanoSec >= 0, opStr = '+'; else opStr = '-'; end
+%             title([a.Title.String ' ' opStr ' ' num2str(nanoSec) ' ns']);
         end
         function [plotFigure] = plotSweep(self, plotSettings)
             % Function to create plot for the turn on Energy Loss with 2

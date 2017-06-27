@@ -570,7 +570,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
 
         end
 
-        function checkDeskew(self, Lloop, filterSamples, startMargin, endMargin, wfNumber)
+        function checkDeskew(self, Lloop, filterSamples, shuntResistance, startMargin, endMargin, wfNumber)
             if nargin < 2
                 Lloop = 10;
             end
@@ -578,12 +578,15 @@ classdef DoublePulseResults < matlab.mixin.Copyable
                 filterSamples = 1;
             end
             if nargin < 4
-                startMargin = 1;
+                shuntResistance = 0.1;
             end
             if nargin < 5
-                endMargin = 3;
+                startMargin = 1;
             end
             if nargin < 6
+                endMargin = 3;
+            end
+            if nargin < 7
                 wfNumber = 1;
             end
             
@@ -591,7 +594,7 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % function one at a time.           
             if numel(self) > 1
                 for obj = self
-                    obj.checkDeskew(Lloop,filterSamples,startMargin,endMargin,wfNumber)
+                    obj.checkDeskew(Lloop,filterSamples,shuntResistance,startMargin,endMargin,wfNumber)
                     wfNumber = wfNumber + 1;
                 end
                 return;
@@ -632,7 +635,8 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             vdsLine.Color = vdsColor;
             vdsLine.LineWidth = lineWidth;
             % Lloop*di/dt
-            didtLine = line(time, Vdc-Lloop*1e-9*didt);
+            id_based_v = Vdc-Lloop*1e-9*didt - shuntResistance*waveform.i_d(wfStart:wfEnd);
+            didtLine = line(time, id_based_v);
             didtLine.Color = didtColor;
             didtLine.LineWidth = lineWidth;
             
@@ -824,11 +828,11 @@ classdef DoublePulseResults < matlab.mixin.Copyable
             % Check if max V_DS is before or after 3rd peak
             if maxVdsIdx > vdsPeakLocs(3)
                 % Unstable, Use first zero crossing after bus voltage
-                iii = 1;
-                while (self.turnOffWaveforms.v_ds(zeroCrossings(iii)) < self.busVoltage) && (ii < length(zeroCrossings)
-                    iii = iii + 1;
+                counter = 1;
+                while (self.turnOffWaveform.v_ds(zeroCrossings(counter)) < self.busVoltage) && (counter < length(zeroCrossings))
+                    counter = counter + 1;
                 end
-                stopIdx = zeroCrossings(iii);
+                stopIdx = zeroCrossings(counter);
             else
                 % Use zero crossing after max
                 stopIdx = zeroCrossings(find(zeroCrossings > maxVdsIdx, 1));
