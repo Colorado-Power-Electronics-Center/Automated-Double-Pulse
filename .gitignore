@@ -6,8 +6,8 @@
 scratch/*
 
 # Images
-*.png
-*.eps
+# *.png
+# *.eps
 *.emf
 
 # Plot outputs
