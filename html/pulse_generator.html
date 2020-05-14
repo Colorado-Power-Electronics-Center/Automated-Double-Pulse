@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pulse_generator</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="pulse_generator">pulse_generator</h1>
+<p>The pulse_generator function generates an array of points from a list of times that can be given to a function generator to output an arbitrary pulse waveform.</p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#pulse_generator">pulse_generator</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#pulse_generator_1">pulse_generator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="methods">Methods</h2>
+<h3 id="pulse_generator_1">pulse_generator</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) sampleRate, (Float or Float Array) times, Optional (Unlimited): (Float) times</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(Integer Array) pulse_waveform, (Float) total_time</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Function takes in a sample rate and a list of times in order to create an arbitrary pulse train. The function has two ways of supply the times of the pulse train. The first is to supply an array of all times (e.g. [1, 2, 1, 2, 4]) as the 2nd argument. The second is to supply an unlimited number of arguments to supply the times (e.g. pulse_generator(sampleRate, 1, 2, 1, 2, 4)). In either case the times should be given in seconds and the first number in the list is the initial dead time (meaning in our previous example a pulse will be generated with 1 second off, 2 seconds on, 1 off, 2 on, 4 off). An argument of 0 may be given at any time to put to skip a particular on or off period.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SorensonVoltageSource</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="sorensonvoltagesource">SorensonVoltageSource</h1>
+<p>SorensonVoltageSource Sub-Class of SCPI_VoltageSource that will control the Sorenson XG Series voltage sources. <strong>After the completion of this class I was unable to connect the Sorenson voltage source to the computer successfully. It has has therefore NEVER BEEN TESTED; use with caution.</strong></p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#sorensonvoltagesource">SorensonVoltageSource</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#methods_super_overrides">Methods (Super Overrides)</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#initsupply">initSupply</a></li>
+<li><a href="#setslewedvoltage">setSlewedVoltage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="methods_super_overrides">Methods (Super Overrides)</h2>
+<h3 id="constructor">Constructor</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(String) visaVendor, (String) visaAddress</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"><a href="SorensonVoltageSource.html">SorensonVoltageSource</a></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Runs super constructor and also sets the output voltage command as well as the output state command.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="initsupply">initSupply</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets output to 0 V and turns output on.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="setslewedvoltage">setSlewedVoltage</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float) outVoltage, (Float) slewRate</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sets the output to the given voltage at the given slew rate. Throws an error if the supply is not initialized. Blocks until supply is finished.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

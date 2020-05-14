@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WindowSize</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="windowsize">WindowSize</h1>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#windowsize">WindowSize</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super Classes</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#turn_on_prequel">turn_on_prequel</a></li>
+<li><a href="#turn_on_time">turn_on_time</a></li>
+<li><a href="#turn_off_prequel">turn_off_prequel</a></li>
+<li><a href="#turn_off_time">turn_off_time</a></li>
+<li><a href="#samplerate">sampleRate</a></li>
+</ul>
+</li>
+<li><a href="#properties_dependent">Properties (Dependent)</a><ul>
+<li><a href="#turn_on_prequel_idxs">turn_on_prequel_idxs</a></li>
+<li><a href="#turn_on_time_idxs">turn_on_time_idxs</a></li>
+<li><a href="#turn_off_prequel_idxs">turn_off_prequel_idxs</a></li>
+<li><a href="#turn_off_time_idxs">turn_off_time_idxs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="super_classes">Super Classes</h2>
+<p>matlab.mixin.copyable</p>
+<h2 id="properties">Properties</h2>
+<h3 id="turn_on_prequel">turn_on_prequel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">30ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Time to include in the turn on switching waveform before the switch.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_on_time">turn_on_time</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">80ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Time to include in the turn on switching waveform after the switch.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_off_prequel">turn_off_prequel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">30ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Time to include in the turn off switching waveform before the switch.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_off_time">turn_off_time</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">80ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Time to include in the turn off switching waveform after the switch.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="samplerate">sampleRate</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Hertz</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sample rate of the waveform in Hertz.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="properties_dependent">Properties (Dependent)</h2>
+<h3 id="turn_on_prequel_idxs">turn_on_prequel_idxs</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">30ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Indices to include in the turn on switching waveform before the switch. Calculated by multiplying the sample rate and the respective time.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_on_time_idxs">turn_on_time_idxs</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">80ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Indices to include in the turn on switching waveform after the switch. Calculated by multiplying the sample rate and the respective time.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_off_prequel_idxs">turn_off_prequel_idxs</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">30ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Indices to include in the turn off switching waveform before the switch. Calculated by multiplying the sample rate and the respective time.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_off_time_idxs">turn_off_time_idxs</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left">80ns</td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Indices to include in the turn off switching waveform after the switch. Calculated by multiplying the sample rate and the respective time.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

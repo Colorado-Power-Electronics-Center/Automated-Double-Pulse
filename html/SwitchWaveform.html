@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwitchWaveform</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="switchwaveform">SwitchWaveform</h1>
+<p>The SwitchWaveform class is used to store only the waveforms of the individual switching events. It can store either a turn off or a turn on waveform.</p>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#switchwaveform">SwitchWaveform</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super Classes</a></li>
+<li><a href="#properties_constant">Properties (Constant)</a><ul>
+<li><a href="#turn_on">TURN_ON</a></li>
+<li><a href="#turn_off">TURN_OFF</a></li>
+</ul>
+</li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#switchcapture">switchCapture</a></li>
+<li><a href="#switchidx">switchIdx</a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#isturnon">isTurnOn</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="super_classes">Super Classes</h2>
+<p><a href="GeneralWaveform.html">GeneralWaveform</a> <br />
+handle</p>
+<h2 id="properties_constant">Properties (Constant)</h2>
+<h3 id="turn_on">TURN_ON</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'turn_on'</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">String used in determining switching event.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="turn_off">TURN_OFF</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"><code class="prettyprint lang-MATLAB">'turn_off'</code></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">String used in determining switching event.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="properties">Properties</h2>
+<h3 id="switchcapture">switchCapture</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Indicates whether the object is storing the turn on or turn off waveform.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="switchidx">switchIdx</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Integer</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Number representing the index where the switch occurs. This is an approximate value and should not be relied upon for accurate timing.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor">Constructor</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) v_ds, (Float Array) v_gs, (Float Array) i_d, (Float Array) i_l, (Float Array) time, (String) switchCapture</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left"><a href="SwitchWaveform.html">SwitchWaveform</a></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a new SwitchWaveform object from arrays of each waveform. The channel property inherited from <a href="GeneralWaveform.html">GeneralWaveform</a> is instantiated with the default <a href="channelMapper.html">channelMapper</a> properties. The final argument, switchCapture, determines whether the switching even is turn on or turn off. Can be either of the two constant values defined <a href="#properties-constant">above</a>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="isturnon">isTurnOn</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">Boolean</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Returns true if turn on waveform or false if turn off waveform.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

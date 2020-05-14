@@ -1,0 +1,25 @@
+# MATLAB Specific
+*.asv
+*.mat
+
+# Scratch
+scratch/*
+
+# Images
+# *.png
+# *.eps
+*.emf
+
+# Plot outputs
+plotImages/*
+
+# Measurements
+Measurements/*
+
+# PyCharm Files (For Spell Checking)
+.idea/*
+
+# Others
+num2strEng.m
+Tekronix Programmer Manual DPO5000.pdf
+Tekronix User Manual DPO5000.pdf

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneralWaveform</title>
+    <link rel="stylesheet" href="themes/base.css" />
+    <link rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+</head><h1 id="general_waveform">General Waveform</h1>
+<h2 id="table_of_contents">Table of Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#general_waveform">General Waveform</a><ul>
+<li><a href="#table_of_contents">Table of Contents</a></li>
+<li><a href="#super_classes">Super Classes</a></li>
+<li><a href="#properties">Properties</a><ul>
+<li><a href="#approxbusvoltage">approxBusVoltage</a></li>
+<li><a href="#v_ds">v_ds</a></li>
+<li><a href="#v_gs">v_gs</a></li>
+<li><a href="#i_d">i_d</a></li>
+<li><a href="#i_l">i_l</a></li>
+<li><a href="#v_sync">v_sync</a></li>
+<li><a href="#time">time</a></li>
+<li><a href="#channel">channel</a></li>
+<li><a href="#channelorderedcell">channelOrderedCell</a></li>
+</ul>
+</li>
+<li><a href="#properties_dependent">Properties (Dependent)</a><ul>
+<li><a href="#samplerate">sampleRate</a></li>
+<li><a href="#sampleperiod">samplePeriod</a></li>
+</ul>
+</li>
+<li><a href="#methods">Methods</a><ul>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#chcell">chCell</a></li>
+</ul>
+</li>
+<li><a href="#methods_static">Methods (Static)</a><ul>
+<li><a href="#fromchannelcell">fromChannelCell</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="super_classes">Super Classes</h2>
+<p>handle</p>
+<h2 id="properties">Properties</h2>
+<h3 id="approxbusvoltage">approxBusVoltage</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Integer</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Volts</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Value for the approximate Bus Voltage of the Waveform. Used to section waveform and for graphing purposes.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="v_ds">v_ds</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Volts</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of the measured <script type="math/tex">V_{DS}</script>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="v_gs">v_gs</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Volts</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of the measured <script type="math/tex">V_{GS}</script>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="i_d">i_d</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Amps</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of the measured <script type="math/tex">I_D</script>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="i_l">i_l</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Amps</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of the measured inductor current.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="v_sync">v_sync</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Volts</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of the measured voltage across the synchronous device.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="time">time</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">float Array</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Array of time associated with the other waveforms.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="channel">channel</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left"><a href="channelMapper.html">channelMapper</a></td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Channel Mapper used to associate waveforms with their oscilloscope channels.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="channelorderedcell">channelOrderedCell</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Cell Array (Float)</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Multiple</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Cell array of all waveforms in the order given in <a href="#channel">channel</a>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="properties_dependent">Properties (Dependent)</h2>
+<h3 id="samplerate">sampleRate</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Hertz</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sample rate of the measured data. Calculated using the <a href="#time">time</a> array.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sampleperiod">samplePeriod</h3>
+<table>
+<thead>
+<tr>
+<th>Properties</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Default Value</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Type</td>
+<td align="left">Float</td>
+</tr>
+<tr>
+<td>Units</td>
+<td align="left">Seconds</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Sample period of the measured data. Calculated using the <a href="#time">time</a> array.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<h3 id="constructor">Constructor</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Float Array) v_ds, (Float Array) v_gs, (Float Array) i_d, (Float Array) i_l, (Float Array) time</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">GeneralWaveform</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates a new GeneralWaveform object from arrays of each waveform. The channel property is instantiated with the default <a href="channelMapper.html">channelMapper</a> properties.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chcell">chCell</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">Cell array</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Getter method for <a href="#channelOrderedCell">channelOrderedCell</a>. Result is cached after method is run for the first time and therefore changes to object properties after not reflected in the channel ordered cell unless the <a href="#channelOrderedCell">channelOrderedCell</a> is set to empty (e.g. <code class="prettyprint lang-MATLAB">GeneralWaveformObj.channelOrderedCell = {};</code>).</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods_static">Methods (Static)</h2>
+<h3 id="fromchannelcell">fromChannelCell</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arguments</td>
+<td align="left">(Class) class, (Cell Array) waveforms, (<a href="channelMapper.html">channelMapper</a>) channels</td>
+</tr>
+<tr>
+<td>Output</td>
+<td align="left">(class) GW</td>
+</tr>
+<tr>
+<td>Description</td>
+<td align="left">Creates an object of type "class," with waveforms given by the channel ordered cell "waveforms," and with channels given by the channelMapper parameter channels. Class can be any Class that inherits GeneralWaveform; however, in the Double_Pulse_Test program this is either <a href="FullWaveform.html">FullWaveform</a> or <a href="SwitchWaveform.html">SwitchWaveform</a>.</td>
+</tr>
+<tr>
+<td></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table></html>

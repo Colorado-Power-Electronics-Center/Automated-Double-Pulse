@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding="utf-8"?>
+<toc version="2.0">
+
+    <tocitem target="Double_Pulse_Test.html">Automated Double Pulse Test
+<!--         <tocitem target="Double_Pulse_Test.html#Requirements">Requirements 
+            <tocitem target="Double_Pulse_Test.html#Software Requirements">Software Requirements</tocitem>
+        </tocitem>
+        <tocitem target="simpleEx.html">Simple Example
+        </tocitem>-->    
+
+    	<tocitem target="channelMapper.html">channelMappper</tocitem>
+    	<tocitem target="DoublePulseResults.html">DoublePulseResults</tocitem>
+    	<tocitem target="DPTSettings.html">DPT Settings
+    		<tocitem target="windowSize.html">windowSize</tocitem>
+    	</tocitem>
+    	<tocitem target="runDoublePulseTest.html">runDoublePulseTest</tocitem>
+    	<tocitem target="rescaleAndRepulse.html">rescaleAndRepulse</tocitem>
+    	<tocitem target="setVoltageToLoad.html">setVoltageToLoad</tocitem>
+    	<tocitem target="SweepResults.html">SweepResults
+    		<tocitem target="SweepPlotSettings.html">SweepPlotSettings</tocitem>
+    		<tocitem target="SurfacePlotSettings.html">SurfacePlotSettings</tocitem>
+    	</tocitem>
+    	<tocitem target="GeneralWaveform.html">GeneralWaveform
+    		<tocitem target="FullWaveform.html">FullWaveform</tocitem>
+    		<tocitem target="SwitchWaveform.html">SwitchWaveform</tocitem>
+    	</tocitem>
+    	<tocitem target="min2Scale.html">min2scale</tocitem>
+    	<tocitem target="pulse_generator.html">pulse_generator</tocitem>
+
+ 	</tocitem>
+ 	<tocitem target="SCPI_Instrument.html">SCPI Instrument
+		<tocitem target="SCPI_Oscilloscope.html">SCPI Oscilloscope</tocitem>
+		<tocitem target="SCPI_VoltageSource.html">SCPI VoltageSource
+			<tocitem target="Keithley2260B.html">Keithley2260B</tocitem>
+			<tocitem target="SorensonVoltageSource.html">SorensonVoltageSource</tocitem>
+		</tocitem>
+		<tocitem target="SCPI_FunctionGenerator.html">SCPI FunctionGenerator</tocitem>
+ 	</tocitem>
+</toc>
